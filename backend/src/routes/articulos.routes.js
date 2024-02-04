@@ -1,5 +1,5 @@
 import { Routes } from "express";
-import { createArticles, deleteArticles, showAArticles, showArticles, updateArticles } from "../controllers/articulos.controllers";
+import { createArticles, deleteArticles, showAArticles, showArticles, updateArticles } from "../controllers/articulos.controller";
 
 const router = Routes()
 
