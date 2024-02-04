@@ -8,3 +8,6 @@ router.post("/articulos", createArticles)
 router.put("/articulos", updateArticles)
 router.get("/articulos", showAArticles)
 router.delete("/articulos", deleteArticles)
+
+
+export default router()
