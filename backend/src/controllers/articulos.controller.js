@@ -7,7 +7,7 @@
 */
 
 
-import { pool } from "../database/conexion"; 
+import { pool } from "../database/conexion.js"; 
 
 export const showArticles = async (req, res) => {
     try {
