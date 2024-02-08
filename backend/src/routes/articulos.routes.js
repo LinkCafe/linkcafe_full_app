@@ -1,7 +1,7 @@
-import { Routes } from "express";
+import { Router } from "express";
 import { createArticles, deleteArticles, showAArticles, showArticles, updateArticles } from "../controllers/articulos.controller.js";
 
-const router = Routes()
+const router = Router()
 
 router.get("/articulos", showArticles)
 router.post("/articulos", createArticles)
@@ -10,4 +10,4 @@ router.get("/articulos", showAArticles)
 router.delete("/articulos", deleteArticles)
 
 
-export default router()
+export default router
