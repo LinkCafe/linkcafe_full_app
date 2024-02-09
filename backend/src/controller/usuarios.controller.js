@@ -1,16 +1,13 @@
 /* 
 listar todo
 crear todo
-actualiizar }
+actualiizar 
 mostrar
 */
 
 import { pool } from "../database/conexion.js";
-
-// funcion asincrona  funciona recibiendo un request por part del usuario y un response por parte del desarrolador
 export const listartodo = async(req, res)=>{
     try {
-        // el await va de la mano con async
         const [resultado]= await pool.query("select*from usuarios")
 
         if (resultado.length >0) {
@@ -30,7 +27,6 @@ export const listartodo = async(req, res)=>{
 
 export const crearUnUsuario = async (req, res) => {
     try {
-        // se crea un  
         const { nombre_completo, correo, clave } = req.body
         const [ resultado ] = await pool.query("insert into usuarios(nombre_completo, correo, clave) values (?, ?, ?)", [nombre_completo, correo, clave])
 
@@ -53,7 +49,6 @@ export const crearUnUsuario = async (req, res) => {
 
 export const actualizarUnUsuario = async (req, res) => {
     try {
-        //se crea el id como parametro
         const { id } = req.params
         const { nombre_completo, correo, clave } = req.body
         const [ oldUser ] = await pool.query("select * from usuarios where id=?", [id])
@@ -80,7 +75,6 @@ export const actualizarUnUsuario = async (req, res) => {
     export const mostrarunusuario = async(req, res)=>{
         try {
             const {id}=req.params
-            // el await va de la mano con async
             const [resultado] = await pool.query("SELECT * FROM usuarios WHERE id = ?", [id]);
             if (resultado.length >0) {
                 res.status(200).json(resultado)
@@ -100,15 +94,11 @@ export const actualizarUnUsuario = async (req, res) => {
 export const eliminarUnUsuario = async (req, res) => {
     try {
         const { id } = req.params;
-        
-        // Eliminar registros relacionados en otras tablas
         await pool.query("DELETE FROM comentarios WHERE id_usuario = ?", [id]);
-        // Agrega aquí más consultas DELETE según sea necesario para las tablas relacionadas
+
         await pool.query("DELETE FROM articulos where id_usuario=?", [id])
 
         await pool.query("DELETE FROM publicaciones where id_usuario=?", [id])
-        
-        // Eliminar el usuario de la tabla "usuarios"
         const [resultado] = await pool.query("DELETE FROM usuarios WHERE id = ?", [id]);
 
         if (resultado.affectedRows > 0) {
