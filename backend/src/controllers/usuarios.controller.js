@@ -94,11 +94,6 @@ export const actualizarUnUsuario = async (req, res) => {
 export const eliminarUnUsuario = async (req, res) => {
     try {
         const { id } = req.params;
-        await pool.query("DELETE FROM comentarios WHERE id_usuario = ?", [id]);
-
-        await pool.query("DELETE FROM articulos where id_usuario=?", [id])
-
-        await pool.query("DELETE FROM publicaciones where id_usuario=?", [id])
         const [resultado] = await pool.query("DELETE FROM usuarios WHERE id = ?", [id]);
 
         if (resultado.affectedRows > 0) {
