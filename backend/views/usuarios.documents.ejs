@@ -1,0 +1,316 @@
+<h1>Documentacion Modulo Usuarios</h1>
+<hr>
+<h3>Requerimiento 1 Documentacion Del ENDPOINT USUARIOS</h3>
+<hr>
+<table>
+    <tr>
+        <td>NUMERO</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>NOMBRE DEL SERVICIO</td>
+        <td>Mostrar Usuarios</td>
+    </tr>
+    <tr>
+        <td>URL</td>
+        <td>/usuarios</td>
+    </tr>
+    <tr>
+        <td>DESCRIPCIÓN</td>
+        <td>Mostrar Todos Los Registros De Usuarios De La Base De Datos</td>
+    </tr>
+    <tr>
+        <td>VERBO HTTP</td>
+        <td>Get</td>
+    </tr>
+    <tr>
+        <td>HEADER</td>
+        <td>Null</td>
+    </tr>
+    <tr>
+        <td>USUARIOS</td>
+        <td>Administradores</td>
+    </tr>
+    <tr>
+        <td>PETICIÓN body</td>
+        <td>””</td>
+    </tr>
+    <tr>
+        <td>RESPUESTA JSON</td>
+        <td>
+            Se Listo Correctamente Los usuarios:
+            Status: 200
+            JSON{
+
+               { "nombre_completo": "",
+                "correo": "",
+                "tipo": "",
+                "clave": "",
+                "id": "",
+               }
+
+               { "nombre_completo": "",
+               "correo": "",
+               "tipo": "",
+               "clave": "",
+               "id": "",
+              }
+            }
+
+            No Se Listo Los usuarios:
+            Status: 404
+            JSON{
+                "mensaje":"no hay usuarios registrados"
+            }
+
+            Error:
+            Status: 500
+            JSON{
+                "Mensaje": "error"
+            }
+        </td>
+    </tr>
+</table>
+
+
+<h3>Requerimiento 2 Documentacion Del ENDPOINT USUARIOS</h3>
+<hr>
+<table>
+    <tr>
+        <td>NUMERO</td>
+        <td>2</td>
+    </tr>
+    <tr>
+        <td>NOMBRE DEL SERVICIO</td>
+        <td>Crear  Un Usuario</td>
+    </tr>
+    <tr>
+        <td>URL</td>
+        <td>/usuarios</td>
+    </tr>
+    <tr>
+        <td>DESCRIPCIÓN</td>
+        <td>Creara Un Usuario Con Los Espacios Necesarios Para Poder Crearlo</td>
+    </tr>
+    <tr>
+        <td>VERBO HTTP</td>
+        <td>Post</td>
+    </tr>
+    <tr>
+        <td>HEADER</td>
+        <td>Null</td>
+    </tr>
+    <tr>
+        <td>USUARIOS</td>
+        <td>Administradores</td>
+    </tr>
+    <tr>
+        <td>PETICIÓN body</td>
+        <td>””</td>
+    </tr>
+    <tr>
+        <td>RESPUESTA JSON</td>
+        <td>
+            Se Crea Correctamente Un usuario:
+            Status: 200
+            JSON{
+                "mensaje": "El usuario ha sido creado con exito!!!!!"
+            }
+
+            No Se Creo El usuario:
+            Status: 404
+            JSON{
+                "mensaje": "No se pudo crear el usuario el usuario"
+            }
+
+            Error:
+            Status: 500
+            JSON{
+                "Mensaje": "error"
+            }
+        </td>
+    </tr>
+</table>
+
+
+<h3>Requerimiento 3 Documentacion Del ENDPOINT USUARIOS</h3>
+<hr>
+<table>
+    <tr>
+        <td>NUMERO</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>NOMBRE DEL SERVICIO</td>
+        <td>Actualizar Un Usuarios</td>
+    </tr>
+    <tr>
+        <td>URL</td>
+        <td>/usuario/:id</td>
+    </tr>
+    <tr>
+        <td>DESCRIPCIÓN</td>
+        <td>Actualizar Los Usuarios Mediante su id</td>
+    </tr>
+    <tr>
+        <td>VERBO HTTP</td>
+        <td>Put</td>
+    </tr>
+    <tr>
+        <td>HEADER</td>
+        <td>Null</td>
+    </tr>
+    <tr>
+        <td>USUARIOS</td>
+        <td>Administradores</td>
+    </tr>
+    <tr>
+        <td>PETICIÓN body</td>
+        <td>””</td>
+    </tr>
+    <tr>
+        <td>RESPUESTA JSON</td>
+        <td>
+            Se Actualizo Correctamente El Usuarios:
+            Status: 200
+            JSON{
+                "mensaje": "El usuario ha sido actualizado"
+            }
+
+            No Se Actualizo El usuario:
+            Status: 404
+            JSON{
+                "mensaje": "No se pudo actualizar el usuario"
+            }
+
+            Error:
+            Status: 500
+            JSON{
+                "Mensaje": "error"
+            }
+        </td>
+    </tr>
+</table>
+
+<h3>Requerimiento 4 Documentacion Del ENDPOINT USUARIOS</h3>
+<hr>
+<table>
+    <tr>
+        <td>NUMERO</td>
+        <td>4</td>
+    </tr>
+    <tr>
+        <td>NOMBRE DEL SERVICIO</td>
+        <td>Mostrar Udsuario Por si id</td>
+    </tr>
+    <tr>
+        <td>URL</td>
+        <td>/usuarios/:id</td>
+    </tr>
+    <tr>
+        <td>DESCRIPCIÓN</td>
+        <td>Mostrar Los Registros De Usuarios De La Base De Datos Mediante su unico id</td>
+    </tr>
+    <tr>
+        <td>VERBO HTTP</td>
+        <td>Get</td>
+    </tr>
+    <tr>
+        <td>HEADER</td>
+        <td>Null</td>
+    </tr>
+    <tr>
+        <td>USUARIOS</td>
+        <td>Administradores</td>
+    </tr>
+    <tr>
+        <td>PETICIÓN body</td>
+        <td>””</td>
+    </tr>
+    <tr>
+        <td>RESPUESTA JSON</td>
+        <td>
+            Se Listo Correctamente El usuario:
+            Status: 200
+            JSON{
+
+                "nombre_completo": "",
+                "correo": "",
+                "tipo": "",
+                "clave": "",
+                "id": "",
+            }
+
+            No Se Encuentra El Usuario:
+            Status: 404
+            JSON{
+                "mensaje":"no se encontro este usuario"
+            }
+
+            Error:
+            Status: 500
+            JSON{
+                "Mensaje": "error"
+            }
+        </td>
+    </tr>
+</table>
+
+
+<h3>Requerimiento 5 Documentacion Del ENDPOINT USUARIOS</h3>
+<hr>
+<table>
+    <tr>
+        <td>NUMERO</td>
+        <td>5</td>
+    </tr>
+    <tr>
+        <td>NOMBRE DEL SERVICIO</td>
+        <td>Eliminar Un Usuario</td>
+    </tr>
+    <tr>
+        <td>URL</td>
+        <td>/usuarios/:id</td>
+    </tr>
+    <tr>
+        <td>DESCRIPCIÓN</td>
+        <td>Eliminar El Usuarios De La Base De Datos</td>
+    </tr>
+    <tr>
+        <td>VERBO HTTP</td>
+        <td>Delete</td>
+    </tr>
+    <tr>
+        <td>HEADER</td>
+        <td>Null</td>
+    </tr>
+    <tr>
+        <td>USUARIOS</td>
+        <td>Administradores</td>
+    </tr>
+    <tr>
+        <td>PETICIÓN body</td>
+        <td>””</td>
+    </tr>
+    <tr>
+        <td>RESPUESTA JSON</td>
+        <td>
+            Se Elimino Correctamente El usuarios:
+            Status: 200
+            JSON{
+                "mensaje": "Se eliminó exitosamente el usuario y los registros relacionados"
+            }
+            No Se Elimino El usuarios:
+            Status: 404
+            JSON{
+                "mensaje": "No se encontró ningún usuario con ese ID y no se pudo eliminar"
+            }
+
+            Error:
+            Status: 500
+            JSON{
+                "Mensaje": "error"
+            }
+        </td>
+    </tr>
+</table>
