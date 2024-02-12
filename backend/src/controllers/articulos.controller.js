@@ -7,7 +7,7 @@
 */
 
 
-import { pool } from "../database/conexion"; 
+import { pool } from "../database/conexion.js"; 
 
 export const showArticles = async (req, res) => {
     try {
@@ -96,6 +96,7 @@ export const showAArticles = async (req, res) => {
         })
     }
 }
+
 
 export const deleteArticles = async (req, res) => {
     try {
