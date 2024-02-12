@@ -1,5 +1,9 @@
 import express from 'express'
 import body_parser from 'body-parser'
+import rutasArticulos from './src/routes/articulos.routes.js'
+import rutasComentarios from './src/routes/comentarios.routes.js'
+import rutasPublicaciones from './src/routes/publicaciones.routes.js'
+import rutasUsuarios from './src/routes/usuarios.routes.js'
 
 const server = express()
 const PORT = 3333
@@ -8,12 +12,19 @@ const PORT = 3333
 server.use(body_parser.json())
 server.use(body_parser.urlencoded({ extended: false }))
 
-server.set('views engine', 'ejs')
+// Ejs
+server.set('view engine', 'ejs')
 server.set('views', './views')
 
-server.get("/document", (req,res) => {
-    res.render('articulos.documents.ejs')
+server.get('/document', (req, res) => {
+    res.render('document.ejs')
 })
+
+// Rutas
+server.use(rutasArticulos)
+server.use(rutasComentarios)
+server.use(rutasPublicaciones)
+server.use(rutasUsuarios)
 
 server.listen(PORT, () => {
     console.log(`Servidor en funcionamiento en el puerto http://localhost:${PORT}`);
