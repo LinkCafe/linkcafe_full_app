@@ -1,0 +1,325 @@
+<h1>Documentacion Modulo Articulos</h1>
+<hr>
+<h3>Requerimiento 1 Documentacion Del ENDPOINT ARTICULOS</h3>
+<hr>
+<table>
+    <tr>
+        <td>NUMERO</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>NOMBRE DEL SERVICIO</td>
+        <td>Mostrar Articulos</td>
+    </tr>
+    <tr>
+        <td>URL</td>
+        <td>/articulos</td>
+    </tr>
+    <tr>
+        <td>DESCRIPCIÓN</td>
+        <td>Permite Listar Los Articulos Registrados En La Base De Datos</td>
+    </tr>
+    <tr>
+        <td>VERBO HTTP</td>
+        <td>Get</td>
+    </tr>
+    <tr>
+        <td>HEADER</td>
+        <td>Null</td>
+    </tr>
+    <tr>
+        <td>USUARIOS</td>
+        <td>Todos</td>
+    </tr>
+    <tr>
+        <td>PETICIÓN body</td>
+        <td>””</td>
+    </tr>
+    <tr>
+        <td>RESPUESTA JSON</td>
+        <td>
+            Correcto:
+            Status: 200
+            JSON{
+
+                "id": 3,
+                "nombre": "mojarra",
+                "tipo": "PDF",
+                "enlace": "Sirep",
+                "fecha": "2024-01-20T05:00:00.000Z",
+                "autor": "Agropecua",
+                "id_usuario": 3
+            }
+
+            Incorrecto:
+            Status: 404
+            JSON{
+                "Mensaje": "No Se Encontro Ningun Articulo"
+            }
+
+            Error:
+            Status: 500
+            JSON{
+                "Mensaje": "error"
+            }
+        </td>
+    </tr>
+</table>
+<hr>
+<h3>Requerimiento 2 Documentacion Del ENDPOINT ARTICULOS</h3>
+<hr>
+<table>
+    <tr>
+        <td>NUMERO</td>
+        <td>2</td>
+    </tr>
+    <tr>
+        <td>NOMBRE DEL SERVICIO</td>
+        <td>Crear Un Articulo</td>
+    </tr>
+    <tr>
+        <td>URL</td>
+        <td>/articulos</td>
+    </tr>
+    <tr>
+        <td>DESCRIPCIÓN</td>
+        <td>Permite Crear Los Articulos Los Cuales Son Almacenados En La Base De Datos</td>
+    </tr>
+    <tr>
+        <td>VERBO HTTP</td>
+        <td>Post</td>
+    </tr>
+    <tr>
+        <td>HEADER</td>
+        <td>Null</td>
+    </tr>
+    <tr>
+        <td>USUARIOS</td>
+        <td>Administrador,Redactor</td>
+    </tr>
+    <tr>
+        <td>PETICIÓN body</td>
+        <td>
+            JSON:{
+
+            "nombre": "Como germinar cafe en tiempos de sequia",
+            "tipo": "PDF",
+            "enlace": "google.com",
+            "autor": "Andres",
+            "id_usuario": 1
+
+            }
+        </td>
+    </tr>
+    <tr>
+        <td>RESPUESTA JSON</td>
+        <td>
+            Correcto:
+            Status: 200
+            JSON{
+                "Mensaje": "El Articulo Se Creo Con Exito"
+            }
+
+            Incorrecto:
+            Status: 404
+            JSON{
+                "Mensaje": "No Se Pudo Crear El Articulo"
+            }
+
+            Error:
+            Status: 500
+            JSON{
+                "Mensaje": "error"
+            }
+        </td>
+    </tr>
+</table>
+<hr>
+<h3>Requerimiento 3 Documentacion Del ENDPOINT ARTICULOS</h3>
+<hr>
+<table>
+    <tr>
+        <td>NUMERO</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>NOMBRE DEL SERVICIO</td>
+        <td>Actualizar Un  Articulo</td>
+    </tr>
+    <tr>
+        <td>URL</td>
+        <td>/articulos/id</td>
+    </tr>
+    <tr>
+        <td>DESCRIPCIÓN</td>
+        <td>Permite Actualizar los Articulos Que Se Encuentran En La Base De Datos Por ID</td>
+    </tr>
+    <tr>
+        <td>VERBO HTTP</td>
+        <td>Put</td>
+    </tr>
+    <tr>
+        <td>HEADER</td>
+        <td>Null</td>
+    </tr>
+    <tr>
+        <td>USUARIOS</td>
+        <td>Administrador,Redactor</td>
+    </tr>
+    <tr>
+        <td>PETICIÓN body</td>
+        <td>
+            JSON:{
+
+            "autor": "Nicolas",
+
+            }
+        </td>
+    </tr>
+    <tr>
+        <td>RESPUESTA JSON</td>
+        <td>
+            Correcto:
+            Status: 200
+            JSON{
+                "mensaje": "El Articulo A Sido Modificado Con Exito"
+            }
+
+            Incorrecto:
+            Status: 404
+            JSON{
+                "mensaje": "No Se Pudo Modificar El Articulo"
+            }
+
+            Error:
+            Status: 500
+            JSON{
+                "Mensaje": "error"
+            }
+        </td>
+    </tr>
+</table>
+<hr>
+<h3>Requerimiento 4 Documentacion Del ENDPOINT ARTICULOS</h3>
+<hr>
+<table>
+    <tr>
+        <td>NUMERO</td>
+        <td>4</td>
+    </tr>
+    <tr>
+        <td>NOMBRE DEL SERVICIO</td>
+        <td>Buscar Un Articulo</td>
+    </tr>
+    <tr>
+        <td>URL</td>
+        <td>/articulos/id</td>
+    </tr>
+    <tr>
+        <td>DESCRIPCIÓN</td>
+        <td>Permite Realizar Busquedas De Articulos Que Se Encuentran En La Base De Datos Por ID</td>
+    </tr>
+    <tr>
+        <td>VERBO HTTP</td>
+        <td>Get</td>
+    </tr>
+    <tr>
+        <td>HEADER</td>
+        <td>Null</td>
+    </tr>
+    <tr>
+        <td>USUARIOS</td>
+        <td>Todos</td>
+    </tr>
+    <tr>
+        <td>PETICIÓN body</td>
+        <td>""</td>
+    </tr>
+    <tr>
+        <td>RESPUESTA JSON</td>
+        <td>
+            Correcto:
+            Status: 200
+            JSON{
+                "id": 3,
+                "nombre": "Trucha",
+                "tipo": "PDF",
+                "enlace": "SIREP",
+                "fecha": "2024-01-20T05:00:00.000Z",
+                "autor": "Agropecuaria",
+                "id_usuario": 3
+            }
+
+            Incorrecto:
+            Status: 404
+            JSON{
+                "mensaje": "No se encontró Ningun articulo con ese ID"
+            }
+
+            Error:
+            Status: 500
+            JSON{
+                "Mensaje": "error"
+            }
+        </td>
+    </tr>
+</table>
+<hr>
+<h3>Requerimiento 5 Documentacion Del ENDPOINT ARTICULOS</h3>
+<hr>
+<table>
+    <tr>
+        <td>NUMERO</td>
+        <td>5</td>
+    </tr>
+    <tr>
+        <td>NOMBRE DEL SERVICIO</td>
+        <td>Eliminar Un Articulo</td>
+    </tr>
+    <tr>
+        <td>URL</td>
+        <td>/articulos/id</td>
+    </tr>
+    <tr>
+        <td>DESCRIPCIÓN</td>
+        <td>Permite Eliminar Articulos Que Se Encuentran En La Base De Datos Por ID</td>
+    </tr>
+    <tr>
+        <td>VERBO HTTP</td>
+        <td>Delete</td>
+    </tr>
+    <tr>
+        <td>HEADER</td>
+        <td>Null</td>
+    </tr>
+    <tr>
+        <td>USUARIOS</td>
+        <td>Administrador</td>
+    </tr>
+    <tr>
+        <td>PETICIÓN body</td>
+        <td>""</td>
+    </tr>
+    <tr>
+        <td>RESPUESTA JSON</td>
+        <td>
+            Correcto:
+            Status: 200
+            JSON{
+                "mensaje": "Se A Eliminado Con Exito El Articulo"
+            }
+
+            Incorrecto:
+            Status: 404
+            JSON{
+                "mensaje": "No se encontró Ningun Articulo con ese ID y no se pudo Efectuar El Borrado"
+            }
+
+            Error:
+            Status: 500
+            JSON{
+                "Mensaje": "error"
+            }
+        </td>
+    </tr>
+</table>
