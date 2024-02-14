@@ -4,10 +4,10 @@ import { actualizarUnaPublicacion, crearUnaPublicacion, eliminarUnaPublicacion, 
 const router = Router();
 
 
-// http://localhost:3500/publicaciones
+// http://localhost:3333/publicaciones
 router.get("/publicaciones", listarPublicaciones)
 router.post("/publicaciones", crearUnaPublicacion)
-// http://localhost:3500/publicaciones/3
+// http://localhost:3333/publicaciones/3
 router.put("/publicaciones/:id", actualizarUnaPublicacion)
 router.get("/publicaciones/:id", mostrarSoloUnaPublicacion)
 router.delete("/publicaciones/:id", eliminarUnaPublicacion)
