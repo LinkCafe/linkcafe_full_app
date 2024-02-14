@@ -17,7 +17,7 @@ server.set('view engine', 'ejs')
 server.set('views', './views')
 
 server.get('/document', (req, res) => {
-    res.render('documents.ejs')
+    res.render('document.ejs')
 })
 
 // Rutas
