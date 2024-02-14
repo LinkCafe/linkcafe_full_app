@@ -18,7 +18,7 @@ export const listarPublicaciones = async (req, res) => {
             res.status(200).json(resultado);
         } else {
             res.status(404).json({
-                "mensaje": "No encontramos publicaciones :c"
+                "mensaje": "No encontramos publicaciones "
             });
         }
 
