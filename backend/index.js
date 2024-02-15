@@ -15,7 +15,7 @@ server.use(body_parser.urlencoded({ extended: false }))
 // Ejs
 server.set('view engine', 'ejs')
 server.set('views', './views')
-
+server.use(express.static('./public'))
 server.get('/document', (req, res) => {
     res.render('document.ejs')
 })

@@ -1,6 +1,6 @@
-<h1>Documentacion Modulo Comentarios</h1>
+<h1>Documentación Módulo Comentarios</h1>
 <hr>
-<h3>Requerimiento 1 Documentacion Del ENDPOINT COMENTARIOS</h3>
+<h3>Requerimiento 1 Documentación Del ENDPOINT COMENTARIOS</h3>
 <hr>
 <table>
     <tr>
@@ -21,7 +21,7 @@
     </tr>
     <tr>
         <td>VERBO HTTP</td>
-        <td>Get</td>
+        <td>GET</td>
     </tr>
     <tr>
         <td>HEADER</td>
@@ -33,35 +33,26 @@
     </tr>
     <tr>
         <td>PETICIÓN body</td>
-        <td>””</td>
+        <td></td>
     </tr>
     <tr>
         <td>RESPUESTA JSON</td>
         <td>
-            Se listo correctamente los comentarios:
+            Correcto:
             Status: 200
             JSON{
+              "id": 1,
+              "comentario": "comentario",
+              "id_usuario": 1,
+              "id_publicacion": 3,
+              "fecha": "2024-01-25T05:00:00.000Z"
+            } <br>
 
-               {"id":"",
-                "Comentario": "",
-                "id_usuario": "",
-                "id_publicacion": "",
-                "fecha": "",
-               }
-
-               {"id":"",
-                "Comentario": "",
-                "id_usuario": "",
-                "id_publicacion": "",
-                "fecha": "",
-               }
-            }
-
-            No se listo los comentarios
+            Incorrecto:
             Status: 404
             JSON{
                 "mensaje":"No hay comentarios"
-            }
+            } <br>
 
             Error:
             Status: 500
@@ -71,9 +62,8 @@
         </td>
     </tr>
 </table>
-
-
-<h3>Requerimiento 2 Documentacion Del ENDPOINT COMENTARIOS</h3>
+<hr>
+<h3>Requerimiento 2 Documentación Del ENDPOINT COMENTARIOS</h3>
 <hr>
 <table>
     <tr>
@@ -94,7 +84,7 @@
     </tr>
     <tr>
         <td>VERBO HTTP</td>
-        <td>Post</td>
+        <td>POST</td>
     </tr>
     <tr>
         <td>HEADER</td>
@@ -106,22 +96,28 @@
     </tr>
     <tr>
         <td>PETICIÓN body</td>
-        <td>””</td>
+        <td>
+            JSON:{
+                "comentario": "comentario 2",
+                "id_usuario": 1,
+                "id_publicacion": 3,
+            }
+        </td>
     </tr>
     <tr>
         <td>RESPUESTA JSON</td>
         <td>
-            Se crea correctamente el comentario:
+            Correcto:
             Status: 200
             JSON{
                 "mensaje": "Comentario creado con exito"
-            }
+            } <br>
 
-            No se creo el comentario:
+            Incorrecto:
             Status: 404
             JSON{
                 "mensaje": "No se pudo crear el comentario"
-            }
+            } <br>
 
             Error:
             Status: 500
@@ -131,9 +127,8 @@
         </td>
     </tr>
 </table>
-
-
-<h3>Requerimiento 3 Documentacion Del ENDPOINT COMENTARIOS</h3>
+<hr>
+<h3>Requerimiento 3 Documentación Del ENDPOINT COMENTARIOS</h3>
 <hr>
 <table>
     <tr>
@@ -150,11 +145,11 @@
     </tr>
     <tr>
         <td>DESCRIPCIÓN</td>
-        <td>Actualizar un comentario mediante su id</td>
+        <td>Actualizar un comentario mediante su ID</td>
     </tr>
     <tr>
         <td>VERBO HTTP</td>
-        <td>Put</td>
+        <td>PUT</td>
     </tr>
     <tr>
         <td>HEADER</td>
@@ -166,22 +161,26 @@
     </tr>
     <tr>
         <td>PETICIÓN body</td>
-        <td>””</td>
+        <td>
+            JSON{
+                "comentario": "lorem ipsum"
+            }
+        </td>
     </tr>
     <tr>
         <td>RESPUESTA JSON</td>
         <td>
-            Se Actualizo correctamente:
+            Correcto:
             Status: 200
             JSON{
                 "mensaje": "Comentario actualizado"
-            }
+            } <br>
 
-            No Se actualizo el comentario:
+            Incorrecto:
             Status: 404
             JSON{
                 "mensaje": "No se pudo actualizar el comentario"
-            }
+            } <br>
 
             Error:
             Status: 500
@@ -191,8 +190,8 @@
         </td>
     </tr>
 </table>
-
-<h3>Requerimiento 4 Documentacion Del ENDPOINT COMENTARIOS</h3>
+<hr>
+<h3>Requerimiento 4 Documentación Del ENDPOINT COMENTARIOS</h3>
 <hr>
 <table>
     <tr>
@@ -209,11 +208,11 @@
     </tr>
     <tr>
         <td>DESCRIPCIÓN</td>
-        <td>Muestra un comentario de la Base De Datos Mediante su id</td>
+        <td>Muestra un comentario de la Base De Datos Mediante su ID</td>
     </tr>
     <tr>
         <td>VERBO HTTP</td>
-        <td>Get</td>
+        <td>GET</td>
     </tr>
     <tr>
         <td>HEADER</td>
@@ -225,27 +224,27 @@
     </tr>
     <tr>
         <td>PETICIÓN body</td>
-        <td>””</td>
+        <td></td>
     </tr>
     <tr>
         <td>RESPUESTA JSON</td>
         <td>
             Correcto:
             Status: 200
-            JSON  {
-            "id":"",
-            "Comentario": "",
-            "id_usuario": "",
-            "id_publicacion": "",
-            "fecha": "",
-           }
-
-            No Se Encuentra el comentario:
+            JSON{
+              "id": 1,
+              "comentario": "comentario",
+              "id_usuario": 1,
+              "id_publicacion": 3,
+              "fecha": "2024-01-25T05:00:00.000Z"
+            } <br>
+          
+            Incorrecto:
             Status: 404
             JSON{
-                "mensaje":"no se encontro el comentario"
-            }
-
+                "mensaje":"no se encontró el comentario"
+            } <br>
+ 
             Error:
             Status: 500
             JSON{
@@ -254,9 +253,8 @@
         </td>
     </tr>
 </table>
-
-
-<h3>Requerimiento 5 Documentacion Del ENDPOINT COMENTARIOS</h3>
+<hr>
+<h3>Requerimiento 5 Documentación Del ENDPOINT COMENTARIOS</h3>
 <hr>
 <table>
     <tr>
@@ -273,11 +271,11 @@
     </tr>
     <tr>
         <td>DESCRIPCIÓN</td>
-        <td>Eliminar el comentario De La Base De Datos</td>
+        <td>Eliminar el comentario De La Base De Datos por medio de su ID</td>
     </tr>
     <tr>
         <td>VERBO HTTP</td>
-        <td>Delete</td>
+        <td>DELETE</td>
     </tr>
     <tr>
         <td>HEADER</td>
@@ -289,21 +287,21 @@
     </tr>
     <tr>
         <td>PETICIÓN body</td>
-        <td>””</td>
+        <td></td>
     </tr>
     <tr>
         <td>RESPUESTA JSON</td>
         <td>
-            Se Elimino Correctamente:
+            Correcto:
             Status: 200
             JSON{
                 "mensaje": "Haz eliminado con exito el comentario"
-            }
-            No Se Elimino el comentario:
+            } <br>
+            Incorrecto:
             Status: 404
             JSON{
                 "mensaje": "No se encontró el comentario"
-            }
+            } <br>
 
             Error:
             Status: 500
