@@ -8,7 +8,7 @@ mostrar
 import { pool } from "../database/conexion.js";
 export const listartodo = async(req, res)=>{
     try {
-        const [resultado]= await pool.query("select*from usuarios")
+        const [resultado]= await pool.query("select * from usuarios")
 
         if (resultado.length >0) {
             res.status(200).json(resultado)
@@ -107,7 +107,7 @@ export const eliminarUnUsuario = async (req, res) => {
         }
     } catch (error) {
         res.status(500).json({
-            "mensaje": error.message
+            "mensaje": error
         });
     }
 };

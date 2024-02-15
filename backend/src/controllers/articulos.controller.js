@@ -105,11 +105,11 @@ export const deleteArticles = async (req, res) => {
 
         if (resultado.affectedRows > 0) {
             res.status(200).json({
-                "mensaje": "Se A Eliminado Con Exito El Articulo"
+                "mensaje": "Se Ha Eliminado Con Exito El Articulo"
             })
         } else {
             res.status(404).json({
-                "mensaje": "No se encontró Ningun Articulo con ese ID y no se pudo Efectuar El Borrado"
+                "mensaje": "No se encontró Ningun Articulo con ese ID y no se pudo Efectuar el eliminado"
             })
         }
 
