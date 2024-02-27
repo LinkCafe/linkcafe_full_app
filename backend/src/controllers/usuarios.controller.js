@@ -6,6 +6,7 @@ mostrar
 */
 
 import { pool } from "../database/conexion.js";
+import { validationResult } from "express-validator";
 export const listartodo = async(req, res)=>{
     try {
         const [resultado]= await pool.query("select * from usuarios")
@@ -27,6 +28,12 @@ export const listartodo = async(req, res)=>{
 
 export const crearUnUsuario = async (req, res) => {
     try {
+
+        const error = validationResult(req)
+
+        if (!error.isEmpty()) {
+            return res.status(404).json({error})
+        }
         const { nombre_completo, correo, clave } = req.body
         const [ resultado ] = await pool.query("insert into usuarios(nombre_completo, correo, clave) values (?, ?, ?)", [nombre_completo, correo, clave])
 
@@ -49,6 +56,11 @@ export const crearUnUsuario = async (req, res) => {
 
 export const actualizarUnUsuario = async (req, res) => {
     try {
+
+        const error = validationResult(req)
+        if (!error.isEmpty()) {
+            res.status(404).json({error})
+        }
         const { id } = req.params
         const { nombre_completo, correo, clave } = req.body
         const [ oldUser ] = await pool.query("select * from usuarios where id=?", [id])
