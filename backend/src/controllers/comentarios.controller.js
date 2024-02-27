@@ -1,4 +1,5 @@
 import { pool } from '../database/conexion.js'
+import { validationResult } from "express-validator";
 
 export const listarComentarios = async (req, res) => {
     try {
@@ -21,6 +22,13 @@ export const listarComentarios = async (req, res) => {
 
 export const crearComentario = async (req, res) => {
     try {
+
+        const error = validationResult(req)
+
+        if (!error.isEmpty()) {
+            return res.status(404).json({error})
+        }
+
         const { comentario, id_usuario, id_publicacion } = req.body
         const [ resultado ] = await pool.query("insert into comentarios(comentario, id_usuario, id_publicacion) values (?, ?, ?)", [comentario, id_usuario, id_publicacion])
 
@@ -43,6 +51,13 @@ export const crearComentario = async (req, res) => {
 
 export const actualizarComentario = async (req, res) => {
     try {
+
+        const error = validationResult(req)
+
+        if (!error.isEmpty()) {
+            return res.status(404).json({error})
+        }
+
         const { id } = req.params
         const { comentario, id_usuario, id_publicacion } = req.body
         const [ oldComment ] = await pool.query("select * from comentarios where id=?", [id])
