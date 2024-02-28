@@ -31,6 +31,14 @@ export const listarPublicaciones = async (req, res) => {
 // Crear una nueva publicación
 export const crearUnaPublicacion = async (req, res) => {
     try {
+
+        const error = validationResult(req)
+
+
+        if (!error.isEmpty()) {
+            return res.status(404).json({error})
+        }
+
         const { nombre, descripcion, imagen, fuentes, tipo, id_usuario } = req.body;
         
         // Asegúrate de que id_usuario sea un número
@@ -72,6 +80,13 @@ export const crearUnaPublicacion = async (req, res) => {
 // Actualizar una publicación
 export const actualizarUnaPublicacion = async (req, res) => {
     try {
+
+        const error = validationResult(req)
+        if (!error.isEmpty()) {
+            res.status(404).json({error})
+        }
+
+
         const { id } = req.params;
         const { nombre, descripcion, imagen, fuentes, tipo } = req.body;
         const [oldPost] = await pool.query("select * from publicaciones where id=?", [id]);
