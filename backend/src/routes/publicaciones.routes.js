@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { actualizarUnaPublicacion, crearUnaPublicacion, eliminarUnaPublicacion, listarPublicaciones, mostrarSoloUnaPublicacion } from "../controllers/publicaciones.controller.js";
-import { middlewaresCreatePublics, middlewaresUpdatePublics } from '../middlewares/usuarios.middlewares.js';
+import  { middlewaresCreatePublics, middlewaresUpdatePublics } from '../middlewares/publicaciones.middlewares.js';
 
 const router = Router();
 

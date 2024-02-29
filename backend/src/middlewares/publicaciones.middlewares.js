@@ -6,7 +6,7 @@ export const middlewaresCreatePublics =[
     check('imagen', 'Imagen opcional').optional(),
     check('fuentes', 'Ingrese alguna fuente suministrada').not().isEmpty(),
     check('tipo', 'Obligatorio registrar un tipo').not() .isEmpty(),
-    check('id_usuario','Id usuario obligatorio').not() .isEmpty()
+    check('id_usuario','Id usuario obligatorio').not() .isEmpty().isInt()
 ];
 export const middlewaresUpdatePublics=[
     check('nombre','Nombre invalido').optional(),
@@ -14,5 +14,5 @@ export const middlewaresUpdatePublics=[
     check('imagen', 'Imagen opcional').optional(),
     check('fuentes', 'Fuente invalida').optional(),
     check('tipo', 'Tipo invalido').optional(),
-    check('id_usuario','Id usuario invalido').optional()
+    check('id_usuario','Id usuario invalido').optional().isInt()
 ];
