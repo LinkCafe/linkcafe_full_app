@@ -6,7 +6,7 @@
     * Eliminar Un articulos x
 */
 
-
+import { validationResult } from "express-validator";
 import { pool } from "../database/conexion.js"; 
 
 export const showArticles = async (req, res) => {
@@ -29,6 +29,11 @@ export const showArticles = async (req, res) => {
 
 export const createArticles  = async (req, res) => {
     try {
+        const error = validationResult(req)
+
+        if(!error.isEmpty()){
+            return res.status(400).json(error.array());
+        }
         const { nombre, enlace, autor, id_usuario } = req.body
         const [ resultado ] = await pool.query("insert into articulos(nombre, enlace, autor, id_usuario) value(?, ?, ?, ?)", [nombre, enlace, autor, id_usuario])
 
@@ -46,10 +51,16 @@ export const createArticles  = async (req, res) => {
             "Mensaje": error
         })
     }
+
 }
 
 export const updateArticles = async (req, res) => {
     try {
+        const error = validationResult(req)
+
+        if(!error.isEmpty()){
+            return res.status(400).json(error.array());
+        }
         const { id } = req.params
         const { nombre, enlace, autor, id_usuario } = req.body
         const [ oldUser ] = await pool.query("select * from articulos where id=?", [id])
