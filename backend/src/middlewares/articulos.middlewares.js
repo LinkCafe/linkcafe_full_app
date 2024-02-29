@@ -7,7 +7,7 @@ export const middlewaresShowArticles = [
 ];
 
 export const middlewaresUpdateArticles = [
-    check('nombre','nombre, Necesario').not().isEmpty(),
+    check('nombre','nombre, Necesario').not().isEmpty().isString,
     check('enlace','enlace Necesario').optional(),
     check('autor','autor Obligatorio').not().isEmpty(),
 ]
