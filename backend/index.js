@@ -4,6 +4,8 @@ import rutasArticulos from './src/routes/articulos.routes.js'
 import rutasComentarios from './src/routes/comentarios.routes.js'
 import rutasPublicaciones from './src/routes/publicaciones.routes.js'
 import rutasUsuarios from './src/routes/usuarios.routes.js'
+import rutasAuth from './src/routes/auth.routes.js'
+import { validarToken } from './src/controllers/auth.controller.js'
 
 const server = express()
 const PORT = 3333
@@ -21,10 +23,11 @@ server.get('/document', (req, res) => {
 })
 
 // Rutas
-server.use(rutasArticulos)
-server.use(rutasComentarios)
-server.use(rutasPublicaciones)
-server.use(rutasUsuarios)
+server.use(rutasAuth)
+server.use(validarToken, rutasArticulos)
+server.use(validarToken, rutasComentarios)
+server.use(validarToken, rutasPublicaciones)
+server.use(validarToken, rutasUsuarios)
 
 server.listen(PORT, () => {
     console.log(`Servidor en funcionamiento en el puerto http://localhost:${PORT}`);
