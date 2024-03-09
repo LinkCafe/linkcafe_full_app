@@ -8,6 +8,7 @@
 */
 
 import { pool } from '../database/conexion.js';
+import {validationResult} from  "express-validator";
 
 // Listar todas las publicaciones
 export const listarPublicaciones = async (req, res) => {
