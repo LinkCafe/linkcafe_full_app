@@ -6,6 +6,7 @@ import rutasPublicaciones from './src/routes/publicaciones.routes.js'
 import rutasUsuarios from './src/routes/usuarios.routes.js'
 import rutasAuth from './src/routes/auth.routes.js'
 import { validarToken } from './src/controllers/auth.controller.js'
+import cors from 'cors'
 
 const server = express()
 const PORT = 3333
@@ -13,6 +14,7 @@ const PORT = 3333
 // Configuración
 server.use(body_parser.json())
 server.use(body_parser.urlencoded({ extended: false }))
+server.use(cors())
 
 // Ejs
 server.set('view engine', 'ejs')
