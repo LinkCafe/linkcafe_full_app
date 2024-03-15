@@ -12,7 +12,7 @@ export const middlewaresUpdatePublics=[
     check('nombre','Nombre invalido').optional(),
     check('descripcion','Descripcion invalida').optional(),
     check('imagen', 'Imagen opcional').optional(),
-    check('fuentes', 'Fuente invalida').optional(),
+    check('fuentes', 'Fuentes invalida').optional(),
     check('tipo', 'Tipo invalido').optional(),
     check('id_usuario','Id usuario invalido').optional()
 ];
