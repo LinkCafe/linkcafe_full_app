@@ -9,11 +9,11 @@ export const middlewaresCreatePublics = [
     check('id_usuario', 'Id usuario obligatorio').not().isEmpty().isInt({ max: 11 })
 ];
 
-export const middlewaresUpdatePublics = [
-    check('nombre', 'Nombre invalido').optional().isLength({ min: 2, max: 50 }),
-    check('descripcion', 'Descripcion invalida').optional(),
-    check('imagen', 'Imagen opcional').optional().isLength({ max: 255 }),
-    check('fuentes', 'Fuente invalida').optional().isLength({ max: 100 }),
+export const middlewaresUpdatePublics=[
+    check('nombre','Nombre invalido').optional(),
+    check('descripcion','Descripcion invalida').optional(),
+    check('imagen', 'Imagen opcional').optional(),
+    check('fuentes', 'Fuentes invalida').optional(),
     check('tipo', 'Tipo invalido').optional(),
     check('id_usuario', 'Id usuario invalido').optional().isInt({ max: 11 })
 ];
