@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom"
-import Login from "./pages/Login"
+import Login from "./pages/auth/Login"
 import Inicio from "./pages/Inicio"
 import Chat from "./pages/Chat"
 import Usuarios from "./pages/Usuarios"
@@ -11,12 +11,12 @@ function App() {
   return (
     <Routes>
       <Route path="/" Component={Login} />
-      <Route path="/inicio" Component={Inicio} />
-      <Route path="/chat" Component={Chat} />
-      <Route path="/usuarios" Component={Usuarios} />
-      <Route path="/articulos" Component={Articulos} />
-      <Route path="/publicaciones" Component={Publicaciones} />
-      <Route path="/comentarios" Component={Comentarios} />
+        <Route path="/inicio" Component={Inicio} />
+        <Route path="/chat" Component={Chat} />
+        <Route path="/usuarios" Component={Usuarios} />
+        <Route path="/articulos" Component={Articulos} />
+        <Route path="/publicaciones" Component={Publicaciones} />
+        <Route path="/comentarios" Component={Comentarios} />
     </Routes>
   )
 }
