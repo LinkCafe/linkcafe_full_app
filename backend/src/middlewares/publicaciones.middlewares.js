@@ -15,5 +15,5 @@ export const middlewaresUpdatePublics = [
     check('imagen', 'Imagen opcional').optional().isLength({ max: 255 }),
     check('fuentes', 'Fuente invalida').optional().isLength({ max: 100 }),
     check('tipo', 'Tipo invalido').optional(),
-    check('id_usuario', 'Id usuario invalido').optional().isInt()
+    check('id_usuario', 'Id usuario invalido').optional().isInt({ max: 11 })
 ];
