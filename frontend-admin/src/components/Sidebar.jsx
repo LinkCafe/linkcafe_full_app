@@ -6,7 +6,7 @@ import Vector from '../assets/Vector.png'
 function Sidebar() {
   return (
     <>
-        <nav className="fixed inset-y-0 left-0 w-64 bg-white flex flex-col justify-between rounded-2xl ml-4 my-4">
+        <nav className="inset-y-0 left-0 w-64 bg-white flex flex-col justify-between rounded-2xl ml-4 my-4">
             <div>
                 <div className="flex items-center">
                     <img src={Vector} alt="LINK_CAFE" className="ms-6 h-7 w-8" />
