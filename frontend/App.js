@@ -10,6 +10,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ThemeProvider } from './context/ThemeContext';
 import DetailsProfile from './pages/DetailsProfile';
 import CategoriesPages from './pages/CategoriesPages';
+import {Chat} from './pages/Cha.jsx'
+import { Icon } from '@rneui/base';
+import { Text } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
@@ -53,9 +56,21 @@ export default function App() {
           <Stack.Screen name='CategoriesFull' component={CategoriesPages} options={{
             title: 'Temas de conversación',
           }} />
+         <Stack.Screen
+            name="chat"
+            component={Chat}
+            options={{
+              headerTitle: () => (
+                <React.Fragment>
+                  <Icon type="font-awesome" name="user" style={{ fontSize: 80, marginLeft:3 }} />
+                  <Text style={{ marginLeft: 10, fontSize:22 }}>jose</Text>
+
+                </React.Fragment>
+              )
+            }}
+          />
         </Stack.Navigator>
       </ThemeProvider>
-    
     </NavigationContainer>
   );
 }
