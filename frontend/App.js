@@ -10,6 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ThemeProvider } from './context/ThemeContext';
 import DetailsProfile from './pages/DetailsProfile';
 import CategoriesPages from './pages/CategoriesPages';
+import PublicationView from './pages/Public';
 
 const Stack = createNativeStackNavigator();
 
@@ -53,6 +54,7 @@ export default function App() {
           <Stack.Screen name='CategoriesFull' component={CategoriesPages} options={{
             title: 'Temas de conversación',
           }} />
+          <Stack.Screen name="Public" component={PublicationView} options={{ title: 'Porqué se debería sembrar en luna llena?' }} />
         </Stack.Navigator>
       </ThemeProvider>
     
