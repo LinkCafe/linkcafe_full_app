@@ -11,28 +11,28 @@ import { Avatar, Card } from "@rneui/base";
 import { Button } from "@rneui/base";
 import ThemeContext from "../context/ThemeContext";
 import coffeImage from "../assets/coffe.webp"
+import { useNavigation } from '@react-navigation/native';
+import public1Image from '../assets/public1.png';
+import public2Image from '../assets/public2.png'
 
 const Discussions = () => {
   const data = [
     {
-      imagen:
-        "https://media.istockphoto.com/id/1467739359/es/foto/taza-de-caf%C3%A9-con-humo-y-granos-de-caf%C3%A9-sobre-fondo-de-madera-viejo.jpg?b=1&s=612x612&w=0&k=20&c=-bfZYQ6Y8VdLEPofS1RqLLqM6OkV7vqVNniv52ksD1s=",
-      titulo: "Por qué se debe sembrar en luna llena?",
+      imagen: public1Image,
+      titulo: "Porqué se debe sembrar en luna llena?",
       veridica: true,
       categoria: "Producción 🌱",
       persona: "Fernando",
     },
     {
-      imagen:
-        "https://images.pexels.com/photos/6239866/pexels-photo-6239866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      titulo: "Por qué se debe sembrar en luna llena?",
+      imagen: public2Image,
+      titulo: "Cómo saber que mi café es premiun?",
       veridica: false,
       categoria: "Producción 🌱",
       persona: "Fernando",
     },
     {
-      imagen:
-        "https://images.pexels.com/photos/12833512/pexels-photo-12833512.jpeg?auto=compress&cs=tinysrgb&w=600",
+      imagen: public2Image,
       titulo: "Por qué se debe sembrar en luna llena?",
       veridica: false,
       categoria: "Producción 🌱",
@@ -41,6 +41,13 @@ const Discussions = () => {
   ];
 
   const { theme } = useContext(ThemeContext)
+  const navigation = useNavigation();
+
+  const handlePress = (publication) => {
+    navigation.navigate('Public', {
+      screen: 'Public',
+    });     
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -49,6 +56,7 @@ const Discussions = () => {
         <Button
           type="outline"
           title="Ver todas >"
+          onPress={handlePress}
           buttonStyle={{ padding: 1, borderColor: theme == 'light' ? 'black' : 'white', borderWidth: 1 }}
           titleStyle={{ color: theme == 'light' ? 'black' : 'white' }}
         />
@@ -56,14 +64,14 @@ const Discussions = () => {
       <ScrollView horizontal={true}>
         <View style={style.containerCard}>
           {data.map((d, index) => (
-            <Card key={index} containerStyle={[style.card, { backgroundColor: theme == 'light' ? 'white' : '#464646' }]}>
-              <Image
-                source={{
-                  uri: d.imagen,
-                  width: "100%",
-                  height: 150,
-                }}
-              />
+                <Card
+            key={index}
+            containerStyle={[style.card, { backgroundColor: theme == 'light' ? 'white' : '#464646' }]}
+                >
+                <Image
+              source={d.imagen}
+              style={{ width: "100%", height: 150 }}
+                />
               <Text style={{ paddingTop: 12, color: theme == 'light' ? 'black' : 'white' }}>{d.titulo}</Text>
               <View
                 style={{
@@ -77,7 +85,7 @@ const Discussions = () => {
                 <Text
                   style={{
                     backgroundColor:
-                      d.veridica == true ? theme == 'light' ? "#54e3203e" : '#75DF77' : theme == 'light' ? "#E920203e" : '#FF7070',
+                      d.veridica == true ? theme == 'light' ? "#D4EFDF" : '#75DF77' : theme == 'light' ? "#E920203e" : '#FF7070',
                     padding: 5,
                     borderRadius: 5,
                   }}

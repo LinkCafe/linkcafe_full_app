@@ -24,7 +24,7 @@ const DetailsProfile = () => {
         await AsyncStorage.setItem('email', email);
         await AsyncStorage.setItem('name', name)
         ToastAndroid.showWithGravity(
-            'Datos actulizados',
+            'Datos actualizados',
             ToastAndroid.LONG,
             ToastAndroid.BOTTOM,
           );

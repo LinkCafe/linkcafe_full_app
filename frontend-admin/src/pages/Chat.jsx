@@ -1,8 +1,11 @@
 import React from 'react'
+import Sidebar from '../components/Sidebar'
 
 function Chat() {
   return (
-    <div>Chat</div>
+    <>
+      <Sidebar/>
+    </>
   )
 }
 

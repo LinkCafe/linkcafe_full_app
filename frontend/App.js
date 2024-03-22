@@ -10,6 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ThemeProvider } from './context/ThemeContext';
 import DetailsProfile from './pages/DetailsProfile';
 import CategoriesPages from './pages/CategoriesPages';
+import PublicationView from './pages/Public';
 import {Chat} from './pages/Cha.jsx'
 import { Icon } from '@rneui/base';
 import { Text } from 'react-native';
@@ -69,6 +70,8 @@ export default function App() {
               )
             }}
           />
+          <Stack.Screen name="Public" component={PublicationView} options={{ title: 'Porqué se debería sembrar en luna llena?' 
+          }} />
         </Stack.Navigator>
       </ThemeProvider>
     </NavigationContainer>
