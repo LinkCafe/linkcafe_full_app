@@ -7,6 +7,7 @@ import ThemeContext from "../context/ThemeContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 
+
 const Profile =  () => {
   const { theme, toggleTheme } = useContext(ThemeContext)
   const [name, setName] = useState('')
@@ -78,6 +79,9 @@ const Profile =  () => {
             >
               Editar {">"}
             </Button>
+            <Button onPress={()=>navigation.navigate('chat')}>chat</Button>
+
+
           </View>
         </View>
         <Reviews />
