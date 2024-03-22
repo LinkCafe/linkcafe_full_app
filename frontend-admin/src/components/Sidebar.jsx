@@ -29,7 +29,7 @@ function Sidebar() {
                 <Link to={'/articulos'} className="block py-2 px-6 hover:bg-[#09AF37]  rounded-md mx-2 text-title-sm">
                     Articulos
                 </Link>
-                <Link to={'/Publicaiones'} className="block py-2 px-6 hover:bg-[#09AF37]  rounded-md mx-2 text-title-sm">
+                <Link to={'/Publicaciones'} className="block py-2 px-6 hover:bg-[#09AF37]  rounded-md mx-2 text-title-sm">
                     Publicaciones
                 </Link>
                 <Link to={'/Comentarios'} className="block py-2 px-6 hover:bg-[#09AF37]  rounded-md mx-2 text-title-sm">
