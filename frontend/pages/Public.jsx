@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Image, Dimensions, TextInput, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { Avatar } from 'react-native-elements';
 import public1Image from '../assets/public1.png';
 
@@ -16,13 +17,10 @@ const PublicationView = ({ route }) => {
                 <Avatar
                     rounded
                     size={40}
-                    source={{
-                        uri: 'https://media.istockphoto.com/id/1407271745/es/foto/fondo-gris.webp?b=1&s=170667a&w=0&k=20&c=XkgRUsO0yohl7GW6x4jq2eUqO7LW8kadgEX2gfuvUT4=',
-                    }}
                 />
                 <View style={styles.userDetails}>
                     <Text style={styles.userName}>Fernando</Text>
-                    <Text style={styles.subtitle}>Subido hace 20 min</Text>
+                    <Text style={styles.subtitle}>Hace 20 min</Text>
                 </View>
             </View>
             <Text style={styles.description}>{description}</Text>
@@ -37,6 +35,16 @@ const PublicationView = ({ route }) => {
             <View style={styles.infoContainer}>
                 <Text style={styles.infoText}>Veridica</Text>
                 <Text style={styles.infoText2}>Producción 🌱</Text>
+            </View>
+            <View style={styles.commentContainer}>
+                <TextInput
+                    style={styles.commentInput}
+                    placeholder="Agregar un comentario..."
+                    placeholderTextColor={'#95A5A6'}
+                />
+                <TouchableOpacity style={styles.sendButton}>
+                    <Icon name="paper-plane" size={20} color="#E39B5A" />
+                </TouchableOpacity>
             </View>
         </View>
     );
@@ -137,6 +145,28 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 5,
     },
+    commentContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 5,
+        marginTop: 50,
+    },
+    commentInput: {
+        flex: 1,
+        height: 48,
+        paddingLeft: 20,
+        paddingRight: 30,
+        borderRadius: 5,
+        borderWidth: 1,
+        borderColor: '#D5DBDB',
+        borderRadius: 10,
+        padding: 15
+    },
+    sendButton: {
+        position: 'absolute',
+        right: 25,
+        top: 18,
+    },    
 });
 
 export default PublicationView;

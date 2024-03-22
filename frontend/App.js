@@ -54,7 +54,8 @@ export default function App() {
           <Stack.Screen name='CategoriesFull' component={CategoriesPages} options={{
             title: 'Temas de conversación',
           }} />
-          <Stack.Screen name="Public" component={PublicationView} options={{ title: 'Porqué se debería sembrar en luna llena?' }} />
+          <Stack.Screen name="Public" component={PublicationView} options={{ title: 'Porqué se debería sembrar en luna llena?' 
+          }} />
         </Stack.Navigator>
       </ThemeProvider>
     

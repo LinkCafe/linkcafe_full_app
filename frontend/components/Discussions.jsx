@@ -32,8 +32,7 @@ const Discussions = () => {
       persona: "Fernando",
     },
     {
-      imagen:
-        "https://images.pexels.com/photos/12833512/pexels-photo-12833512.jpeg?auto=compress&cs=tinysrgb&w=600",
+      imagen: public2Image,
       titulo: "Por qué se debe sembrar en luna llena?",
       veridica: false,
       categoria: "Producción 🌱",
