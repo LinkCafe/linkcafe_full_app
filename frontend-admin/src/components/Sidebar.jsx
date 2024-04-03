@@ -6,7 +6,7 @@ import Vector from '../assets/Vector.png'
 function Sidebar() {
   return (
     <>
-        <nav className="inset-y-0 left-0 w-64 bg-white flex flex-col justify-between rounded-2xl ml-4 my-4">
+        <nav className=" w-64 h-[43.5rem] bg-white rounded-2xl flex-col justify-between my-4 ml-4">
             <div>
                 <div className="flex items-center">
                     <img src={Vector} alt="LINK_CAFE" className="ms-6 h-7 w-8" />
@@ -37,8 +37,9 @@ function Sidebar() {
                 </Link>  
             </div>
             <div>
-            <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 mx-2 "></hr>
-                <a href="#" class="block py-2 px-6 hover:bg-[#09AF37] text-center rounded-md mx-4 my-2 text-title-sm">
+            <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 mx-2 mt-[19rem]"></hr>
+
+                <a href="#" class=" block py-2 px-6 hover:bg-[#09AF37] text-center rounded-md mx-4 my-2 text-title-sm">
                 Cerrar sesión
                 </a>
             </div>
