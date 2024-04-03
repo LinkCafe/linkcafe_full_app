@@ -2,10 +2,11 @@ import { View, Text, ScrollView, StyleSheet, VirtualizedList } from "react-nativ
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useContext, useEffect, useState } from "react";
 import { Avatar, Button, Switch } from "@rneui/base";
-import Reviews from "../components/Reviews";
+import Reviews from "../components/organismos/Reviews";
 import ThemeContext from "../context/ThemeContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
+
 
 const Profile =  () => {
   const { theme, toggleTheme } = useContext(ThemeContext)
@@ -78,6 +79,9 @@ const Profile =  () => {
             >
               Editar {">"}
             </Button>
+            <Button onPress={()=>navigation.navigate('chat')}>chat</Button>
+
+
           </View>
         </View>
         <Reviews />

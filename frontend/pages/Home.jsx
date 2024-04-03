@@ -1,9 +1,9 @@
 import { ScrollView } from "react-native";
 import React, { useContext, useEffect } from "react";
-import Categories from "../components/Categories";
+import Categories from "../components/organismos/Categories";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Discussions from "../components/Discussions";
-import Articles from "../components/Articles";
+import Discussions from "../components/organismos/Discussions";
+import Articles from "../components/organismos/Articles";
 import ThemeContext from "../context/ThemeContext";
 
 const Home = () => {
