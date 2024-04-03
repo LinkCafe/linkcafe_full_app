@@ -5,7 +5,7 @@ import {
 } from "react-native";
 import React, { useContext } from "react";
 import { Button, Avatar } from "@rneui/base";
-import ThemeContext from "../context/ThemeContext";
+import ThemeContext from "../../context/ThemeContext";
 import { useNavigation } from "@react-navigation/native";
 
 const Categories = () => {

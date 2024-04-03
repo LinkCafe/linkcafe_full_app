@@ -1,5 +1,5 @@
 import React from 'react'
-import Sidebar from '../components/Sidebar'
+import Sidebar from '../components/organismos/Sidebar'
 import IMG from '../assets/img1.png'
 
 function Publicaciones() {

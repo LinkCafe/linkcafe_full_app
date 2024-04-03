@@ -9,11 +9,11 @@ import React, { useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Avatar, Card } from "@rneui/base";
 import { Button } from "@rneui/base";
-import ThemeContext from "../context/ThemeContext";
-import coffeImage from "../assets/coffe.webp"
+import ThemeContext from "../../context/ThemeContext";
+import coffeImage from "../../assets/coffe.webp"
 import { useNavigation } from '@react-navigation/native';
-import public1Image from '../assets/public1.png';
-import public2Image from '../assets/public2.png'
+import public1Image from '../../assets/public1.png';
+import public2Image from '../../assets/public2.png'
 
 const Discussions = () => {
   const data = [

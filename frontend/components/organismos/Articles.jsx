@@ -9,7 +9,7 @@ import React, { useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Avatar, Card } from "@rneui/base";
 import { Button } from "@rneui/base";
-import ThemeContext from "../context/ThemeContext";
+import ThemeContext from "../../context/ThemeContext";
 
 const Articles = () => {
   const data = [
