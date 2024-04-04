@@ -7,6 +7,6 @@ export const middlewaresCreateComentario =[
 ];
 export const middlewaresUpdateComentario=[
   check('comentario','comentario, campo oblogatorio').optional().isLength({ min: 2, max: 250 }).isString(),
-  check('id_usuario','usuario invalido').optional().isInt(),
-  check('id_publicacion', 'publicacion no encontrada').optional().isInt()
+  check('id_usuario','usuario invalido').not().isEmpty().optional().isInt(),
+  check('id_publicacion', 'publicacion no encontrada').not().isEmpty().optional().isInt()
 ];

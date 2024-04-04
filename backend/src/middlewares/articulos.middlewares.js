@@ -8,6 +8,6 @@ export const middlewaresShowArticles = [
 
 export const middlewaresUpdateArticles = [
     check('nombre','nombre, Necesario').not().isEmpty().isLength({ min: 3, max: 100 }).isString().optional(),
-    check('enlace','enlace Necesario').optional().isLength({min: 3, max: 225 }).optional(),
-    check('autor','autor Obligatorio').not().isEmpty().isLength({ min:3, max: 100 }).optional().optional(),
+    check('enlace','enlace Necesario').not().isEmpty().isLength({min: 3, max: 225 }).isString().optional(),
+    check('autor','autor Obligatorio').not().isEmpty().isLength({ min:3, max: 100 }).isString().optional()
 ]

@@ -6,7 +6,7 @@ export const middlewaresCreateUsers =[
     check('clave', 'la clave es de caracter obligatorio').not().isEmpty().isLength({ min: 3, max: 100 }),
 ];
 export const middlewaresUpdate=[
-  check('nombre_completo','falta el nombre').optional().isLength({ min: 3, max: 100 }).isString(),
-  check('correo','correo invalido').optional().isEmail().normalizeEmail(),
-  check('clave','clave').optional().isLength({ min: 3, max: 100 }).isString(),
+  check('nombre_completo','falta el nombre').optional().isLength({ min: 3, max: 100 }).isString().not().isEmpty(),
+  check('correo','correo invalido').optional().isEmail().normalizeEmail().not().isEmpty(),
+  check('clave','clave').optional().isLength({ min: 3, max: 100 }).isString().not().isEmpty(),
 ];

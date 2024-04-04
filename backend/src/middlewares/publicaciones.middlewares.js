@@ -10,10 +10,10 @@ export const middlewaresCreatePublics = [
 ];
 
 export const middlewaresUpdatePublics=[
-    check('nombre','Nombre invalido').optional().isLength({ min: 2, max: 50 }),
-    check('descripcion','Descripcion invalida').optional(),
-    check('imagen', 'Imagen opcional').optional().isLength({ max: 255 }),
-    check('fuentes', 'Fuentes invalida').optional().isLength({ max: 100 }),
-    check('tipo', 'Tipo invalido').optional(),
-    check('id_usuario', 'Id usuario invalido').optional().isInt({ max: 11 })
+    check('nombre','Nombre invalido').not().isEmpty().optional().isLength({ min: 2, max: 50 }),
+    check('descripcion','Descripcion invalida').not().isEmpty().optional(),
+    check('imagen', 'Imagen opcional').not().isEmpty().optional().isLength({ max: 255 }),
+    check('fuentes', 'Fuentes invalida').not().isEmpty().optional().isLength({ max: 100 }),
+    check('tipo', 'Tipo invalido').not().isEmpty().optional(),
+    check('id_usuario', 'Id usuario invalido').not().isEmpty().optional().isInt({ max: 11 })
 ];
