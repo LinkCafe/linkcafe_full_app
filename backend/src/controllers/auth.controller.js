@@ -5,13 +5,13 @@ export const login = async (req, res, next) => {
     try {
         const { correo, clave } = req.body
         
-        const [ resultado ] = await pool.query('select * from usuarios where correo=? and clave=?', [correo, clave])
-
+        const [ resultado ] = await pool.query('select nombre_completo, correo, tipo from usuarios where correo=? and clave=?', [correo, clave])
+        const user = resultado[0]
         if (resultado.length > 0) {
             const token = jwt.sign({ resultado }, process.env.AUTH_SECRET, {expiresIn: process.env.AUTH_EXPIRE})
             return res.status(200).json({
-                resultado,
-                token
+                token,
+                user
             })
         } else {
             return res.status(404).json({
@@ -20,7 +20,7 @@ export const login = async (req, res, next) => {
         }
 
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             "mensaje": error
         })
     }
