@@ -5,14 +5,14 @@ import LoginImage from '../../assets/img Login.png'
 function Login() {
   return (
     <>
-      <div className='bg-gray-200 flex min-h-screen'>
-          <div className='flex items-center'>
-              <div className='xl:w-1/2 '>
-                <img src={LoginImage} alt="" className='max-h-screen object-center ml-30'/>
+      <div className='bg-gray-200 w-full h-screen overflow-hidden flex justify-center items-center'>
+          <div className='flex items-center flex-row gap-10'>
+              <div className='xl:w-1/2 hidden lg:flex items-center justify-center'>
+                <img src={LoginImage} alt=""/>
               </div>
-              <div className='bg-whiten rounded-2xl border-stroke dark:border-whiten h-90 w-90 ml-40'>
-                <div className=' xl:p-9.5'>
-                  <h2 className='text-2xl text-center xl:h-15'>
+              <div className='bg-whiten rounded-2xl border-stroke dark:border-whiten h-90 w-[90%] lg:w-1/2'>
+                <div className='p-10'>
+                  <h2 className='text-2xl text-center py-5'>
                     Inicio De Sesión
                   </h2>
 
