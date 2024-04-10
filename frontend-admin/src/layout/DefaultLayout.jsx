@@ -6,7 +6,7 @@ export default function DefaultLayout({children}) {
     <div className='flex h-screen overflow-hidden'>
         <Sidebar />
 
-        <div className='relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden bg-gray-200'>
+        <div className='relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden bg-gray-200 '>
             <main>
                 <div className='p-6'>
                     {children}

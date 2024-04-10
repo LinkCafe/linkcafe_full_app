@@ -1,62 +1,103 @@
-import React from 'react';
-import Sidebar from '../components/organismos/Sidebar';
+import React, { useState, useEffect } from 'react';
+import DefaultLayout from '../layout/DefaultLayout';
+import axiosClient from '../utils/axiosClient';
+import { DataGrid, GridToolbar, GridActionsCellItem } from '@mui/x-data-grid';
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
+import EditComentariosModal from '../components/organismos/EditComentariosModal';
 
 function Comentarios() {
+  // constante de estado para almacenar los comentarios
+  const [comentarios, setComentarios] = useState([])
+  // constante de estado para abrir el modal de editar Comentarios
+  const [ openEditComentariosModal, setOpenEditComentariosModal ] = useState(false)
+  // constante de estado para almacenar la fila seleccionada
+  const [ row, setRow ] = useState({})
+
+
+  // funcion encargada de traer los comentarios de la base de datos
+  const getComentarios = async () => {
+    try {
+      const  response = await axiosClient.get('/comentarios')
+      if (response.status == 200) {
+        console.log(response.data)
+        setComentarios(response.data)
+      } else {
+        alert('No Se Encontro Ningun Comentario')
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  useEffect (() => {
+    getComentarios()
+  }, [openEditComentariosModal])
+
+  // función para eliminar un Comentario
+  const handleDelete = async (id) => {
+    try {
+      if (confirm('¿Estás Seguro De Eliminar Este Comenatario?')) {
+      const  response = await axiosClient.delete(`/comentarios/${id}`)
+        if(response.status === 200) {
+          getComentarios()
+        }
+      }else{
+        alert('Comenatario No Eliminado')
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return (
     <>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"></link>
-      <div className='bg-gray-200 flex min-h-screen'>
-        <Sidebar />
-        <div className='bg-gray-100 rounded-2xl border border-gray-100 dark:border-whiten fixed inset-y-0 left-5 w-[77rem] ml-67 my-4 mt-22 p-4 h-15'>
-          <div className="flex justify-between">
-            <div className="font-bold text-lg">Comentarios</div>
-            <div className="font-bold text-lg ml-[65%]">Actualizar</div>
-            <div className="font-bold text-lg mr-14">Eliminar</div>
-          </div>
+      <DefaultLayout>
+        <div className='w-full h-screen flex flex-col p-10 gap-5 bg-white rounded-2xl mt-15'>
+            <div className='flex flex-row justify-between '>
+              <h1 className='text-2xl'>Comentarios</h1>
+              <EditComentariosModal  open={openEditComentariosModal} onClose={() => setOpenEditComentariosModal(false)} row={row} />
+            </div>
+            <DataGrid 
+                disableColumnFilter
+                disableColumnSelector
+                disableDensitySelector
+                slots={{toolbar: GridToolbar}}
+                columns={[
+                  {
+                    field:'id', headerName: 'ID', flex: 1
+                  },
+                  {
+                    field: 'comentario', headerName: 'Comentario', flex: 1
+                  },
+                  {
+                    field: 'fecha', headerName: 'Fecha', flex: 1
+                  },
+                  { 
+                    field: 'actions',
+                    type: 'actions',
+                    getActions: ({ row }) => [
+                      <GridActionsCellItem label="Editar" title="Editar" icon={<EditIcon/>} onClick={() => {
+                        setRow(row)
+                        setOpenEditComentariosModal(true)
+                      }}/>,
+                      <GridActionsCellItem label="Eliminar" title="Eliminar" icon={<DeleteIcon/>} onClick={ () => handleDelete(row.id) } />
+                    ],
+                    flex: 1
+                  }
+                ]}
+                rows={comentarios}
+                slotProps={{
+                  toolbar: {
+                    showQuickFilter: true,
+                    printOptions: {
+                      disableToolbarButton: true,
+                    },
+                  }
+                }}
+            />   
         </div>
-
-        <hr className="h-px bg-gray-700 border-0 dark:bg-gray-700 mx-6 mt-14" />
-        <div className='bg-gray-100 rounded-2xl border border-gray-100 dark:border-whiten fixed inset-y-0 left-5 w-[77rem] ml-67 my-4 mt-44 p-4 h-lvh'>
-          <div className='flex flex-col'>
-            <div className='w-full h-27 border border-gray-100 bg-gray-200 p-4 my-4 flex flex-col items-start'>
-              <div className="font-bold text-xl">Titulo Comentario</div>
-              <p className="text-lg w-[38rem] font-bold rounded-2xl border ">Muy bien empaquetado, aroma intenso, pero no los he probado.</p>
-              <div className="flex justify-end mt-[-3.5%] ml-[77%] ">
-                <div className="bg-green-500 font-bold text-xl rounded-2xl border dark:border-white px-9 py-2 mr-8 ml-5 "><i class="fa-solid fa-pen-to-square"></i></div>
-                <div className="bg-red-600 font-bold text-xl rounded-2xl border dark:border-white px-9 py-2 "><i class="fa-solid fa-delete-left"></i></div>
-              </div>
-            </div>
-            <hr className="h-px bg-gray-500 border-0 dark:bg-gray-700 mx-2" />
-            <div className='w-full h-27 border border-gray-100 bg-gray-200 p-4 my-4 flex flex-col items-start'>
-              <div className="font-bold text-xl">Titulo Comentario</div>
-              <p className="text-lg w-[38rem] font-bold rounded-2xl border ">Muy bien empaquetado, aroma intenso, pero no los he probado.</p>
-              <div className="flex justify-end mt-[-3.5%] ml-[77%] ">
-                <div className="bg-green-500 font-bold text-xl rounded-2xl border dark:border-white px-9 py-2 mr-8 ml-5 "><i class="fa-solid fa-pen-to-square"></i></div>
-                <div className="bg-red-600 font-bold text-xl rounded-2xl border dark:border-white px-9 py-2"><i class="fa-solid fa-delete-left"></i></div>
-              </div>
-            </div>
-            <hr className="h-px bg-gray-400 border-0 dark:bg-gray-500 mx-2" />
-            <div className='w-full h-27 border border-gray-100 bg-gray-200 p-4 my-4 flex flex-col items-start'>
-              <div className="font-bold text-xl">Titulo Comentario</div>
-              <p className="text-lg w-[38rem] font-bold rounded-2xl border ">Muy bien empaquetado, aroma intenso, pero no los he probado.</p>
-              <div className="flex justify-end mt-[-3.5%] ml-[77%] ">
-                <div className="bg-green-500 font-bold text-xl rounded-2xl border dark:border-white px-9 py-2 mr-8 ml-5 "><i class="fa-solid fa-pen-to-square"></i></div>
-                <div className="bg-red-600 font-bold text-xl rounded-2xl border dark:border-white px-9 py-2"><i class="fa-solid fa-delete-left"></i></div>
-              </div>
-            </div>
-            <hr className="h-px bg-gray-700 border-0 dark:bg-gray-700 mx-2" />
-            <div className='w-full h-27 border border-gray-100 bg-gray-200 p-4 my-4 flex flex-col items-start'>
-              <div className="font-bold text-xl">Titulo Comentario</div>
-              <p className="text-lg w-[38rem] font-bold rounded-2xl border ">Muy bien empaquetado, aroma intenso, pero no los he probado.</p>
-              <div className="flex justify-end mt-[-3.5%] ml-[77%] ">
-                <div className="bg-green-500 font-bold text-xl rounded-2xl border dark:border-white px-9 py-2 mr-8 ml-5 "><i class="fa-solid fa-pen-to-square"></i></div>
-                <div className="bg-red-600 font-bold text-xl rounded-2xl border dark:border-white px-9 py-2"><i class="fa-solid fa-delete-left"></i></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
+      </DefaultLayout>
     </>
   );
 }

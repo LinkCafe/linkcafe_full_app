@@ -38,7 +38,7 @@ function Usuarios() {
     const handleDelete = async (id) => {
       try {
         if (confirm('¿Estás Seguro De Eliminar Este Usuario?')) {
-          response = await axiosClient.delete(`/usuarios/${id}`)
+        const  response = await axiosClient.delete(`/usuarios/${id}`)
           if(response.status === 200) {
             getUsuarios()
           }
@@ -53,8 +53,8 @@ function Usuarios() {
   return (
     <>
       <DefaultLayout>
-        <div className='w-full h-screen flex flex-col'>
-          <div className='flex flex-row justify-between p-5'>
+        <div className='w-full h-screen flex flex-col p-10 gap-5  bg-white rounded-2xl mt-15'>
+          <div className='flex flex-row justify-between'>
             <h1 className='text-2xl'>Usuarios</h1>
             <EditUsuariosModal open={openEditUsuariosModal} onClose={() => setOpenEditUsuariosModal(false)} row={row}/>
           </div>

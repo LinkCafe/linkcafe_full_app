@@ -16,7 +16,7 @@ function Sidebar() {
                 </div>
 
                     <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700 mx-2 "></hr>
-            
+
                 <Link to={'/inicio'} className="block py-2 px-6 hover:bg-[#09AF37]  rounded-md mx-2 text-title-sm mt-2">
                     Inicio
                 </Link>
@@ -37,7 +37,7 @@ function Sidebar() {
                 </Link>  
             </div>
             <div>
-            <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700 mx-2 mt-[19rem]"></hr>
+            <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700 mx-2 mt-[34rem]"></hr>
 
                 <a href="#" className=" block py-2 px-6 hover:bg-[#09AF37] text-center rounded-md mx-4 my-2 text-title-sm">
                 Cerrar sesión
