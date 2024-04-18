@@ -26,7 +26,7 @@ export default function CreatePublicacionesModal({open, onClose}) {
                     id_usuario: user.id
                 }
                 const response = await axiosClient.post(`/publicaciones`, data)
-                    if(response.status === 201){
+                    if(response.status === 200){
                         alert('Publicacion Creada Correctamente')
                         onClose()
                     }
