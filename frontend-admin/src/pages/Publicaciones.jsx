@@ -58,7 +58,7 @@ function Publicaciones() {
   <div className='flex flex-wrap gap-12 ml-25'>
     {publicaciones.map((d, index) => (
       <div key={index} className='w-[28%] bg-gray-200 rounded-xl p-5'>
-        <EditPublicacionesModal  open={openEditPublicacionesModal} onClose={() => setOpenEditPublicacionesModal(false)}/>
+        <EditPublicacionesModal  open={openEditPublicacionesModal} onClose={() => setOpenEditPublicacionesModal(false)} data={d}/>
         <div className='text-sm flex flex-row justify-between gap-5'>
           <span>Andres_España</span>
           <span className='bg-white rounded-xl p-1'>{d.tipo}</span>
