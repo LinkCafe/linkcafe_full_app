@@ -8,5 +8,8 @@ export const publications = [
         title: "", 
         description: "El proceso de producción de los granos de café más preciados.",
         type: "" 
+    },
+    {
+        
     }
 ];
