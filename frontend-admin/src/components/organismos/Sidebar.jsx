@@ -20,9 +20,6 @@ function Sidebar() {
                 <Link to={'/inicio'} className="block py-2 px-6 hover:bg-[#09AF37]  rounded-md mx-2 text-title-sm mt-2">
                     Inicio
                 </Link>
-                <Link to={'/Chat'} className="block py-2 px-6 hover:bg-[#09AF37]  rounded-md mx-2 text-title-sm">
-                    Chat
-                </Link>
                 <Link to={'/usuarios'} className="block py-2 px-6 hover:bg-[#09AF37]  rounded-md mx-2 text-title-sm">
                     Usuarios
                 </Link>
