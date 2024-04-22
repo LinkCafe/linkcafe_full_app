@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router-dom"
 import Login from "./pages/auth/Login"
 import Inicio from "./pages/Inicio"
-import Chat from "./pages/Chat"
 import Usuarios from "./pages/Usuarios"
 import Articulos from "./pages/Articulos"
 import Publicaciones from "./pages/Publicaciones"
@@ -16,7 +15,6 @@ function App() {
       <Route path="/logout" Component={Logout} />
       <Route element={<PrivateRoutes />}>
         <Route path="/inicio" Component={Inicio} />
-        <Route path="/chat" Component={Chat} />
         <Route path="/usuarios" Component={Usuarios} />
         <Route path="/articulos" Component={Articulos} />
         <Route path="/publicaciones" Component={Publicaciones} />

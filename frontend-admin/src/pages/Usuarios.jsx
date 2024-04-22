@@ -38,7 +38,7 @@ function Usuarios() {
     const handleDelete = async (id) => {
       try {
         if (confirm('¿Estás Seguro De Eliminar Este Usuario?')) {
-          response = await axiosClient.delete(`/usuarios/${id}`)
+          const response = await axiosClient.delete(`/usuarios/${id}`)
           if(response.status === 200) {
             getUsuarios()
           }

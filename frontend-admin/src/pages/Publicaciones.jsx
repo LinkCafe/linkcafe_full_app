@@ -1,14 +1,14 @@
 import React from 'react'
 import Sidebar from '../components/organismos/Sidebar'
 import IMG from '../assets/img1.png'
+import DefaultLayout from '../layout/DefaultLayout'
 
 function Publicaciones() {
   return (
     <>
-      <div className='bg-gray-200 flex min-h-screen'>
-        <div>
-          < Sidebar />
-        </div>
+
+    <DefaultLayout>
+    <div className='bg-gray-200 flex min-h-screen'>
           <div className='mt-4 '>
             <a href="#" class="block py-3 px-8 bg-[#09AF37] hover:bg-emerald-500 text-center rounded-md mx-4 my-2 text-title-sm text-white">
                 Nuevo
@@ -224,6 +224,9 @@ function Publicaciones() {
             </div>
           </div>
       </div>
+      
+    </DefaultLayout>
+      
     </>
   )
 }

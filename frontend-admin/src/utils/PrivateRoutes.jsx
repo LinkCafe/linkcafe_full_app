@@ -7,6 +7,7 @@ function PrivateRoutes() {
     return (
         auth ? <Outlet/> : <Navigate to="/logout" />
     )
+
 }
 
 export default PrivateRoutes
