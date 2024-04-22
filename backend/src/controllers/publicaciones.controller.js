@@ -120,7 +120,7 @@ export const actualizarUnaPublicacion = async (req, res) => {
         return res.status(500).json({
             "mensaje": error
         });
-    }//comentario
+    }
 }
 // Mostrar solo una publicación
 export const mostrarSoloUnaPublicacion = async (req, res) => {
