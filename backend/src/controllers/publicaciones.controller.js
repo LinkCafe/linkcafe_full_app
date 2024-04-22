@@ -92,10 +92,10 @@ export const actualizarUnaPublicacion = async (req, res) => {
         const [oldPost] = await pool.query("SELECT * FROM publicaciones WHERE id=?", [id]);
         if (!oldPost || oldPost.length === 0) {
             return res.status(401).json({
-                "mensaje": "No se encontró la publicación"
+                "mensaje": " No se encontró la publicación"
             });
         }
-
+        	
         const [resultado] = await pool.query(`
             UPDATE publicaciones 
             SET nombre='${nombre ? nombre : oldPost[0].nombre}',
@@ -120,7 +120,7 @@ export const actualizarUnaPublicacion = async (req, res) => {
         return res.status(500).json({
             "mensaje": error
         });
-    }
+    }//comentario
 }
 // Mostrar solo una publicación
 export const mostrarSoloUnaPublicacion = async (req, res) => {
