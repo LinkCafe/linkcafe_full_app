@@ -95,7 +95,7 @@ export const actualizarUnaPublicacion = async (req, res) => {
                 "mensaje": " No se encontró la publicación"
             });
         }
-        	
+        
         const [resultado] = await pool.query(`
             UPDATE publicaciones 
             SET nombre='${nombre ? nombre : oldPost[0].nombre}',
@@ -112,7 +112,7 @@ export const actualizarUnaPublicacion = async (req, res) => {
             });
         } else {
             return res.status(404).json({
-                
+                "mensaje": "No se pudo actualizar la publicación, ¡intente de nuevo!"
             });
         }
 
