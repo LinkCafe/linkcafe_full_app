@@ -5,9 +5,9 @@ export const login = async (req, res, next) => {
     try {
         const { correo, clave } = req.body
         
-        const [ resultado ] = await pool.query('select id, nombre_completo, correo, tipo from usuarios where correo=? and clave=?', [correo, clave])
+        const [ resultado ] = await pool.query('select nombre_completo, correo, tipo from usuarios where correo=? and clave=?', [correo, clave])
         const user = resultado[0]
-        if (resultado.length > 0 && user.tipo == 'admin') {
+        if (resultado.length > 0) {
             const token = jwt.sign({ resultado }, process.env.AUTH_SECRET, {expiresIn: process.env.AUTH_EXPIRE})
             return res.status(200).json({
                 token,
