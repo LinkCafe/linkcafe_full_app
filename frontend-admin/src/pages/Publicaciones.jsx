@@ -11,7 +11,7 @@ function Publicaciones() {
   // Estado Encargado de Mostrar el Modal de Crear Publicaciones
   const [openCreatePublicacionesModal, setOpenCreatePublicacionesModal] = useState(false)
   //Estado Encargado De Mostrar El Modal De Editar
-  const  [openEditPublicacionesModal, setOpenEditPublicacionesModal] = useState(false)
+  const [openEditPublicacionesModal, setOpenEditPublicacionesModal] = useState(false)
   // Ejecutar la funciones que tiene dentro cada vez que alla un cambio en el componente
 
   const getPublicaciones = async () => {
@@ -19,13 +19,14 @@ function Publicaciones() {
       const response = await axiosClient.get('/publicaciones')
       if (response.status === 200) {
         setPublicaciones(response.data)
-      }else{
+      } else {
         alert('No Se Encontraron Publicaciones')
       }
     } catch (error) {
       console.error(error)
     }
   }
+
   useEffect(() => {
     getPublicaciones()
   }, [openCreatePublicacionesModal, openEditPublicacionesModal])
@@ -34,11 +35,11 @@ function Publicaciones() {
   const handleDelete = async (id) => {
     try {
       if (confirm('¿Estás Seguro De Eliminar Esta Publicacion?')) {
-      const  response = await axiosClient.delete(`/Publicaciones/${id}`)
-        if(response.status === 200) {
+        const response = await axiosClient.delete(`/Publicaciones/${id}`)
+        if (response.status === 200) {
           getPublicaciones()
         }
-      }else{
+      } else {
         alert('Publicacion No Eliminada')
       }
     } catch (error) {
@@ -48,46 +49,47 @@ function Publicaciones() {
 
   return (
     <>
-    <DefaultLayout>
-    <div className='w-full h-full flex flex-col p-10 gap-5 bg-white rounded-2xl mt-15'>
-  <div className='flex flex-row justify-between'>
-    <h1 className='text-2xl'>Publicaciones</h1>
-    <button className='text-white bg-primary p-2 rounded transition-all hover:scale-[105%]' onClick={() => setOpenCreatePublicacionesModal(true)}>Crear Publicacion</button>
-    <CreatePublicacionesModal open={openCreatePublicacionesModal} onClose={() => setOpenCreatePublicacionesModal(false)}/>
-  </div>
-  <div className='flex flex-wrap gap-12 ml-25'>
-    {publicaciones.map((d, index) => (
-      <div key={index} className='w-[28%] bg-gray-200 rounded-xl p-5'>
-        <EditPublicacionesModal  open={openEditPublicacionesModal} onClose={() => setOpenEditPublicacionesModal(false)} data={d}/>
-        <div className='text-sm flex flex-row justify-between gap-5'>
-          <span>Andres_España</span>
-          <span className='bg-white rounded-xl p-1'>{d.tipo}</span>
+      <DefaultLayout>
+        <div className='w-full h-full flex flex-col p-10 gap-5 bg-white rounded-2xl mt-15'>
+          <div className='flex flex-row justify-between'>
+            <h1 className='text-2xl'>Publicaciones</h1>
+            <button className='text-white bg-primary p-2 rounded transition-all hover:scale-[105%]' onClick={() => setOpenCreatePublicacionesModal(true)}>Crear Publicacion</button>
+            <CreatePublicacionesModal open={openCreatePublicacionesModal} onClose={() => setOpenCreatePublicacionesModal(false)} />
+          </div>
+          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4'>
+            {publicaciones.map((d, index) => (
+              <div key={index} className='w-full bg-gray-200 rounded-xl p-5'>
+                <EditPublicacionesModal open={openEditPublicacionesModal} onClose={() => setOpenEditPublicacionesModal(false)} data={d} />
+                <div className='text-sm flex flex-row justify-between gap-5'>
+                  <span>Andres_España</span>
+                  <span className='bg-white rounded-xl p-1'>{d.tipo}</span>
+                </div>
+                <div className='bg-white rounded-xl p-2 mt-2'>
+                  <p className='text-xs'>{d.fuentes}</p>
+                  <div className='text-sm flex flex-row justify-between gap-5 pt-2'>
+                    <p className='text-xl'>{d.nombre}</p>
+                    <p>{d.fecha}</p>
+                  </div>
+                  <div className='p-2'>
+                    <p className='text-center text-base'>{d.descripcion}</p>
+                  </div>
+                  <div>
+                    <img src={IMG} alt='' className='w-full p-1' />
+                  </div>
+                  <div className='text-sm flex flex-row gap-2 justify-center mt-2'>
+                    <button className='bg-primary w-10 rounded-xl' onClick={() => setOpenEditPublicacionesModal(true)}>.</button>
+                    <button className='bg-red-600 w-10 rounded-xl' onClick={() => handleDelete(d.id)}>.</button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-        <div className='bg-white rounded-xl p-2 mt-2'>
-          <p className='text-xs'>{d.fuentes}</p>
-          <div className='text-sm flex flex-row justify-between gap-5 pt-2'>
-            <p className='text-xl'>{d.nombre}</p>
-            <p>{d.fecha}</p>
-          </div>
-          <div className='p-2'>
-            <p className='text-center text-base'>{d.descripcion}</p>
-          </div>
-          <div>
-            <img src={IMG} alt='' className='w-full p-1' />
-          </div>
-          <div className='text-sm flex flex-row gap-2 justify-center mt-2'>
-            <button className='bg-primary w-10 rounded-xl' onClick={() => setOpenEditPublicacionesModal(true)}>.</button>
-            <button className='bg-red-600 w-10 rounded-xl' onClick={() => handleDelete(d.id)}>.</button>
-          </div>
-        </div>
-      </div>
-    ))}
-  </div>
-</div>
 
-    </DefaultLayout>
+      </DefaultLayout>
     </>
   )
 }
 
 export default Publicaciones
+
