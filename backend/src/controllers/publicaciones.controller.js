@@ -81,30 +81,43 @@ export const crearUnaPublicacion = async (req, res) => {
 // Actualizar una publicación
 export const actualizarUnaPublicacion = async (req, res) => {
     try {
-
-        const error = validationResult(req)
-        if (!error.isEmpty()) {
-            res.status(404).json({error})
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
         }
-
 
         const { id } = req.params;
         const { nombre, descripcion, imagen, fuentes, tipo } = req.body;
-        const [oldPost] = await pool.query("select * from publicaciones where id=?", [id]);
-        const [resultado] = await pool.query(`update publicaciones set nombre='${nombre ? nombre : oldPost[0].nombre}', descripcion='${descripcion ? descripcion : oldPost[0].descripcion}', imagen='${imagen ? imagen : oldPost[0].imagen}', fuentes='${fuentes ? fuentes : oldPost[0].fuentes}', tipo='${tipo ? tipo : oldPost[0].tipo}' where id=${parseInt(id)}`);
+
+        const [oldPost] = await pool.query("SELECT * FROM publicaciones WHERE id=?", [id]);
+        if (!oldPost || oldPost.length === 0) {
+            return res.status(401).json({
+                "mensaje": " No se encontró la publicación"
+            });
+        }
+        
+        const [resultado] = await pool.query(`
+            UPDATE publicaciones 
+            SET nombre='${nombre ? nombre : oldPost[0].nombre}',
+                descripcion='${descripcion ? descripcion : oldPost[0].descripcion}',
+                imagen='${imagen ? imagen : oldPost[0].imagen}',
+                fuentes='${fuentes ? fuentes : oldPost[0].fuentes}',
+                tipo='${tipo ? tipo : oldPost[0].tipo}'
+            WHERE id=${parseInt(id)}
+        `);
 
         if (resultado.affectedRows > 0) {
-            res.status(200).json({
+            return res.status(200).json({
                 "mensaje": "La publicación ha sido actualizada"
             });
         } else {
-            res.status(404).json({
+            return res.status(404).json({
                 "mensaje": "No se pudo actualizar la publicación, ¡intente de nuevo!"
             });
         }
 
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             "mensaje": error
         });
     }
