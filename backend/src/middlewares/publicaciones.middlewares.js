@@ -1,19 +1,19 @@
 import { check } from 'express-validator';
 
 export const middlewaresCreatePublics = [
-    check('nombre', 'nombre, campo obligatorio').not().isEmpty().isLength({ min: 2, max: 50 }),
-    check('descripcion', 'Ingrese alguna descripcion').not().isEmpty(),
-    check('imagen', 'Imagen opcional').optional().isLength({ max: 255 }),
-    check('fuentes', 'Ingrese alguna fuente suministrada').not().isEmpty().isLength({ max: 100 }),
-    check('tipo', 'Obligatorio registrar un tipo').not().isEmpty(),
-    check('id_usuario', 'Id usuario obligatorio').not().isEmpty().isInt()
+    check('nombre', 'El nombre es obligatorio y debe tener entre 2 y 50 caracteres').not().isEmpty().isLength({ min: 2, max: 50 }),
+    check('descripcion', 'La descripción es obligatoria').not().isEmpty(),
+    check('imagen', 'La imagen debe ser opcional y tener una longitud máxima de 255 caracteres').optional(),
+    check('fuentes', 'Las fuentes son obligatorias y deben tener una longitud máxima de 100 caracteres').not().isEmpty().isLength({ max: 100 }),
+    check('tipo', 'El tipo es obligatorio').not().isEmpty(),
+    check('id_usuario', 'El ID de usuario es obligatorio y debe ser un número entero').not().isEmpty().isInt()
 ];
 
-export const middlewaresUpdatePublics=[
-    check('nombre','Nombre invalido').not().isEmpty().optional().isLength({ min: 2, max: 50 }),
-    check('descripcion','Descripcion invalida').not().isEmpty().optional(),
-    check('imagen', 'Imagen opcional').not().isEmpty().optional().isLength({ max: 255 }),
-    check('fuentes', 'Fuentes invalida').not().isEmpty().optional().isLength({ max: 100 }),
-    check('tipo', 'Tipo invalido').not().isEmpty().optional(),
-    check('id_usuario', 'Id usuario invalido').not().isEmpty().optional().isInt()
+export const middlewaresUpdatePublics = [
+    check('nombre', 'El nombre debe tener entre 2 y 50 caracteres').optional().isLength({ min: 2, max: 50 }),
+    check('descripcion', 'La descripción es inválida').optional().not().isEmpty(),
+    check('imagen', 'La imagen debe tener una longitud máxima de 255 caracteres').optional(),
+    check('fuentes', 'Las fuentes deben tener una longitud máxima de 100 caracteres').optional().isLength({ max: 100 }),
+    check('tipo', 'El tipo es inválido').optional().not().isEmpty(),
+    check('id_usuario', 'El ID de usuario debe ser un número entero').optional().isInt()
 ];
