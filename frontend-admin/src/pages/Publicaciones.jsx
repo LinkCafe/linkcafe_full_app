@@ -1,51 +1,50 @@
-import React, { useEffect, useState } from 'react'
-import DefaultLayout from '../layout/DefaultLayout'
-import CreatePublicacionesModal from '../components/organismos/CreatePublicacionesModal'
-import axiosClient from '../utils/axiosClient'
-import IMG from '../assets/img1.png'
-import EditPublicacionesModal from '../components/organismos/EditPublicacionesModal'
+import React, { useEffect, useState } from 'react';
+import DefaultLayout from '../layout/DefaultLayout';
+import CreatePublicacionesModal from '../components/organismos/CreatePublicacionesModal';
+import axiosClient from '../utils/axiosClient';
+import IMG from '../assets/img1.png';
+import EditPublicacionesModal from '../components/organismos/EditPublicacionesModal';
 
 function Publicaciones() {
-  // Estado Encargado de Mostrar las Publicaciones
-  const [publicaciones, setPublicaciones] = useState([])
-  // Estado Encargado de Mostrar el Modal de Crear Publicaciones
-  const [openCreatePublicacionesModal, setOpenCreatePublicacionesModal] = useState(false)
-  //Estado Encargado De Mostrar El Modal De Editar
-  const [openEditPublicacionesModal, setOpenEditPublicacionesModal] = useState(false)
-  // Ejecutar la funciones que tiene dentro cada vez que alla un cambio en el componente
+  const [publicaciones, setPublicaciones] = useState([]);
+  const [openCreatePublicacionesModal, setOpenCreatePublicacionesModal] = useState(false); // Estado para el modal de creación de publicaciones
+  const [selectedPublicacion, setSelectedPublicacion] = useState(null);
 
   const getPublicaciones = async () => {
     try {
-      const response = await axiosClient.get('/publicaciones')
+      const response = await axiosClient.get('/publicaciones');
       if (response.status === 200) {
-        setPublicaciones(response.data)
+        setPublicaciones(response.data);
       } else {
-        alert('No Se Encontraron Publicaciones')
+        alert('No Se Encontraron Publicaciones');
       }
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
+  };
 
   useEffect(() => {
-    getPublicaciones()
-  }, [openCreatePublicacionesModal, openEditPublicacionesModal])
+    getPublicaciones();
+  }, [openCreatePublicacionesModal]);
 
-  // función para eliminar una Publicacion
   const handleDelete = async (id) => {
     try {
       if (confirm('¿Estás Seguro De Eliminar Esta Publicacion?')) {
-        const response = await axiosClient.delete(`/Publicaciones/${id}`)
+        const response = await axiosClient.delete(`/Publicaciones/${id}`);
         if (response.status === 200) {
-          getPublicaciones()
+          getPublicaciones();
         }
       } else {
-        alert('Publicacion No Eliminada')
+        alert('Publicacion No Eliminada');
       }
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
+  };
+
+  const handleEdit = () => {
+    getPublicaciones(); 
+  };
 
   return (
     <>
@@ -54,12 +53,13 @@ function Publicaciones() {
           <div className='flex flex-row justify-between'>
             <h1 className='text-2xl'>Publicaciones</h1>
             <button className='text-white bg-primary p-2 rounded transition-all hover:scale-[105%]' onClick={() => setOpenCreatePublicacionesModal(true)}>Crear Publicacion</button>
+            {/* Utiliza el estado openCreatePublicacionesModal para controlar la apertura del modal de creación */}
             <CreatePublicacionesModal open={openCreatePublicacionesModal} onClose={() => setOpenCreatePublicacionesModal(false)} />
           </div>
           <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4'>
             {publicaciones.map((d, index) => (
               <div key={index} className='w-full bg-gray-200 rounded-xl p-5'>
-                <EditPublicacionesModal open={openEditPublicacionesModal} onClose={() => setOpenEditPublicacionesModal(false)} data={d} />
+                <EditPublicacionesModal open={selectedPublicacion === d.id} onClose={() => { setSelectedPublicacion(null); handleEdit(); }} data={d} />
                 <div className='text-sm flex flex-row justify-between gap-5'>
                   <span>Andres_España</span>
                   <span className='bg-white rounded-xl p-1'>{d.tipo}</span>
@@ -77,7 +77,7 @@ function Publicaciones() {
                     <img src={IMG} alt='' className='w-full p-1' />
                   </div>
                   <div className='text-sm flex flex-row gap-2 justify-center mt-2'>
-                    <button className='bg-primary w-10 rounded-xl' onClick={() => setOpenEditPublicacionesModal(true)}>.</button>
+                    <button className='bg-primary w-10 rounded-xl' onClick={() => setSelectedPublicacion(d.id)}>.</button>
                     <button className='bg-red-600 w-10 rounded-xl' onClick={() => handleDelete(d.id)}>.</button>
                   </div>
                 </div>
@@ -85,11 +85,9 @@ function Publicaciones() {
             ))}
           </div>
         </div>
-
       </DefaultLayout>
     </>
-  )
+  );
 }
 
-export default Publicaciones
-
+export default Publicaciones;

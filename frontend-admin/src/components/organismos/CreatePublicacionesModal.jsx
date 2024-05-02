@@ -9,32 +9,41 @@ export default function CreatePublicacionesModal({open, onClose}) {
     const descripcion = useRef(null)
     const fuentes = useRef(null)
     const tipo = useRef(null)
+    const imagenRef = useRef(null);
 
     useEffect(() => {
         setUser(JSON.parse(localStorage.getItem('user')))
     }, [])
 
     const handleSubmit = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
         try {
-            if(confirm('¿Estas seguro de crear esta publicacion?')){
-                const data = {
-                    nombre: nombre.current.value,
-                    descripcion: descripcion.current.value,
-                    fuentes: fuentes.current.value,
-                    tipo: parseInt(tipo.current.value),
-                    id_usuario: user.id
-                }
-                const response = await axiosClient.post(`/publicaciones`, data)
-                    if(response.status === 200){
-                        alert('Publicacion Creada Correctamente')
-                        onClose()
+            if (confirm('¿Estás seguro de crear esta publicación?')) {
+                const Data = new FormData();
+                Data.append('nombre', nombre.current.value);
+                Data.append('descripcion', descripcion.current.value);
+                Data.append('fuentes', fuentes.current.value);
+                Data.append('tipo', tipo.current.value);
+                Data.append('id_usuario', user.id);
+                Data.append('imagen', imagenRef.current.files[0]);
+
+                const response = await axiosClient.post(`/publicaciones`, Data, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
                     }
+                });
+
+                if (response && response.status === 200) {
+                    alert('Publicación Creada Correctamente');
+                    onClose();
+                } else {
+                    alert('Error al crear la publicación');
+                }
             }
-        }catch (error) {
-            console.error(error)
+        } catch (error) {
+            console.error(error);
         }
-    }
+    };
 
   return (
     <Modal open={open} onClose={onClose} className='flex justify-center items-center'>
@@ -65,6 +74,10 @@ export default function CreatePublicacionesModal({open, onClose}) {
                             <option value="2">Barismo</option>
                             <option value="3">Otros</option>
                         </select>
+                    </div>
+                    <div className='flex flex-col gap-2'>
+                        <label>Seleccionar Imagen</label>
+                        <input type="file" className='border border-gray-400 p-1 rounded' accept="image/*" ref={imagenRef} required />
                     </div>
                     <button type='submit' className='w-full p-1 text-white bg-primary rounded hover:scale-[101%] text-xl'>Crear</button>
                 </form>

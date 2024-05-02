@@ -7,6 +7,7 @@
 
 */
 
+import multer from 'multer';
 import { pool } from '../database/conexion.js';
 import {validationResult} from  "express-validator";
 
@@ -29,6 +30,20 @@ export const listarPublicaciones = async (req, res) => {
         });
     }
 }
+
+const storage = multer.diskStorage(
+    {
+        destination: function(req,img,cb){
+            cb(null,"public/img")
+        },
+        filename: function(req,img,cb){
+            cb(null,img.originalname)
+        }
+    }
+);
+const upload = multer({storage:storage});
+export const cargarImagen = upload.single('imagen');
+
 // Crear una nueva publicación
 export const crearUnaPublicacion = async (req, res) => {
     try {
@@ -39,13 +54,8 @@ export const crearUnaPublicacion = async (req, res) => {
         }
 
         const { nombre, descripcion, fuentes, tipo, id_usuario } = req.body;
-        
-        // Verificar si se proporcionó una imagen en la solicitud
-        if (!req.file) {
-            return res.status(400).json({ mensaje: "Debe proporcionar una imagen" });
-        }
-
-        const imagen = req.file.filename; 
+    
+        const imagen = req.file.originalname; 
 
         // Asegurarse de que id_usuario sea un número
         if (isNaN(id_usuario)) {
@@ -158,17 +168,3 @@ export const eliminarUnaPublicacion = async (req, res) => {
         });
     }
 }
-
-// export const ImagenesPublicaciones = async (req, res) => {
-//     try {
-//         // Verifica si se proporcionó una imagen en la solicitud
-//         if (!req.file) {
-//             return res.status(400).json({ mensaje: "Debe proporcionar una imagen" });
-//         }
-//         return res.status(200).json({ mensaje: "Imagen de publicación recibida y procesada con éxito" });
-//     } catch (error) {
-//         return res.status(500).json({ mensaje: error.message });
-//     }
-// }
-
-
