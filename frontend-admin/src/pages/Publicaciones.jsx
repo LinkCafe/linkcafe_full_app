@@ -68,13 +68,13 @@ function Publicaciones() {
                   <p className='text-xs'>{d.fuentes}</p>
                   <div className='text-sm flex flex-row justify-between gap-5 pt-2'>
                     <p className='text-xl'>{d.nombre}</p>
-                    <p>{d.fecha}</p>
+                    <p>{new Date(d.fecha).toLocaleDateString()}</p>
                   </div>
                   <div className='p-2'>
                     <p className='text-center text-base'>{d.descripcion}</p>
                   </div>
                   <div>
-                    <img src={IMG} alt='' className='w-full p-1' />
+                    <img src={`http://localhost:3333/public/img/${d.imagen}`} alt='' className='w-full p-1' />
                   </div>
                   <div className='text-sm flex flex-row gap-2 justify-center mt-2'>
                     <button className='bg-primary w-10 rounded-xl' onClick={() => setSelectedPublicacion(d.id)}>.</button>

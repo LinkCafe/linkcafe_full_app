@@ -19,7 +19,7 @@ server.use(cors())
 // Ejs
 server.set('view engine', 'ejs')
 server.set('views', './views')
-server.use(express.static('./public'))
+server.use('/public', express.static('./public'))
 server.get('/document', (req, res) => {
     res.render('document.ejs')
 })
