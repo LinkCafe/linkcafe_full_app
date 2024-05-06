@@ -68,7 +68,7 @@ export default function CreatePublicacionesModal({open, onClose}) {
                     </div>
                     {/* <div className='flex flex-col gap-2'>
                         <label>Seleccionar Imagen</label>
-                        <input type="file" className='border border-gray-400 p-1 rounded' accept="image/*" ref={imagenRef} required />
+                        <input type="file" className='border border-gray-400 p-1 rounded' accept="image/*" required ref={imagen} />
                     </div> */}
                     <button type='submit' className='w-full p-1 text-white bg-primary rounded hover:scale-[101%] text-xl'>Crear</button>
                 </form>
