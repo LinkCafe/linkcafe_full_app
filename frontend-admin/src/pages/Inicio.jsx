@@ -1,5 +1,4 @@
 import React from 'react';
-import Sidebar from '../components/organismos/Sidebar';
 import sampleImage from '../assets/grafica.png';
 import DefaultLayout from '../layout/DefaultLayout';
 

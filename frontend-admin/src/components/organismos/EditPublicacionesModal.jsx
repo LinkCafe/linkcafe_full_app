@@ -3,11 +3,12 @@ import { Modal } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import axiosClient from '../../utils/axiosClient';
 
-export default function EditPublicacionesModal({ open, onClose, data }) {
+export default function EditPublicacionesModal({ open, onClose, data, handleEditSuccess }) {
   const nombre = useRef(null);
   const descripcion = useRef(null);
   const fuentes = useRef(null);
   const tipo = useRef(null);
+  const imagen = useRef(null); // Referencia al campo de entrada de la imagen
 
   const tipos = [
     {
@@ -27,7 +28,7 @@ export default function EditPublicacionesModal({ open, onClose, data }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (confirm('¿Estas seguro de editar esta Publicacion?')) {
+      if (confirm('¿Estás seguro de editar esta Publicación?')) {
         const Data = {
           nombre: nombre.current.value,
           descripcion: descripcion.current.value,
@@ -36,7 +37,8 @@ export default function EditPublicacionesModal({ open, onClose, data }) {
         };
         const response = await axiosClient.put(`/publicaciones/${data.id}`, Data);
         if (response.status === 200) {
-          alert('Publicacion Editada Correctamente');
+          alert('Publicación Editada Correctamente');
+          handleEditSuccess(); // Llamar a la función para manejar el éxito de la edición
           onClose();
         }
       }
@@ -52,15 +54,15 @@ export default function EditPublicacionesModal({ open, onClose, data }) {
           <CloseIcon className='hover:text-gray-200 transition-all' onClick={() => onClose()} />
         </div>
         <div className='w-full flex flex-col gap-5'>
-          <h1 className='text-2xl'>Editar Publicacion</h1>
+          <h1 className='text-2xl'>Editar Publicación</h1>
           <form className='flex flex-col gap-5' onSubmit={handleSubmit}>
             <div className='flex flex-col gap-2'>
               <label>Nombre</label>
               <input type="text" placeholder='Nombre' className='border border-gray-400 p-1 rounded' required ref={nombre} defaultValue={data.nombre} />
             </div>
             <div className='flex flex-col gap-2'>
-              <label>Descripcion</label>
-              <input type="text" placeholder='Descripcion' className='border border-gray-400 p-1 rounded' required ref={descripcion} defaultValue={data.descripcion} />
+              <label>Descripción</label>
+              <input type="text" placeholder='Descripción' className='border border-gray-400 p-1 rounded' required ref={descripcion} defaultValue={data.descripcion} />
             </div>
             <div className='flex flex-col gap-2'>
               <label>Fuentes</label>
@@ -75,7 +77,11 @@ export default function EditPublicacionesModal({ open, onClose, data }) {
                 ))}
               </select>
             </div>
-            <button type='submit' className='w-full p-1 text-white bg-primary rounded hover:scale-[101%] text-xl'>Editar Publicacion</button>
+            <div className='flex flex-col gap-2'>
+              <label>Seleccionar Nueva Imagen</label>
+              <input type="file" className='border border-gray-400 p-1 rounded' accept="image/*" ref={imagen} />
+            </div>
+            <button type='submit' className='w-full p-1 text-white bg-primary rounded hover:scale-[101%] text-xl'>Editar Publicación</button>
           </form>
         </div>
       </div>
