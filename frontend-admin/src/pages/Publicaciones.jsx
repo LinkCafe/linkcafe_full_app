@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import DefaultLayout from '../layout/DefaultLayout';
 import CreatePublicacionesModal from '../components/organismos/CreatePublicacionesModal';
 import axiosClient from '../utils/axiosClient';
-import IMG from '../assets/img1.png';
 import EditPublicacionesModal from '../components/organismos/EditPublicacionesModal';
 
 function Publicaciones() {
@@ -27,25 +26,30 @@ function Publicaciones() {
     getPublicaciones();
   }, [openCreatePublicacionesModal]);
 
+  // Definir función para manejar el éxito de la edición
+  const handleEditSuccess = () => {
+    getPublicaciones(); // Actualizar la lista de publicaciones después de editar con éxito
+  };
+
   const handleDelete = async (id) => {
-    try {
-      if (confirm('¿Estás Seguro De Eliminar Esta Publicacion?')) {
-        const response = await axiosClient.delete(`/Publicaciones/${id}`);
-        if (response.status === 200) {
-          getPublicaciones();
-        }
-      } else {
-        alert('Publicacion No Eliminada');
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
+         try {
+           if (confirm('¿Estás Seguro De Eliminar Esta Publicacion?')) {
+             const response = await axiosClient.delete(`/Publicaciones/${id}`);
+             if (response.status === 200) {
+               getPublicaciones();
+             }
+           } else {
+             alert('Publicacion No Eliminada');
+           }
+         } catch (error) {
+           console.error(error);
+         }
+       };
 
-  const handleEdit = () => {
-    getPublicaciones(); 
-  };
 
+       const handleEdit = () => {
+        getPublicaciones(); 
+      };
   return (
     <>
       <DefaultLayout>
@@ -59,7 +63,12 @@ function Publicaciones() {
           <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4'>
             {publicaciones.map((d, index) => (
               <div key={index} className='w-full bg-gray-200 rounded-xl p-5'>
-                <EditPublicacionesModal open={selectedPublicacion === d.id} onClose={() => { setSelectedPublicacion(null); handleEdit(); }} data={d} />
+                <EditPublicacionesModal
+                  open={selectedPublicacion === d.id}
+                  onClose={() => { setSelectedPublicacion(null); }}
+                  data={d}
+                  handleEditSuccess={handleEditSuccess} // Pasar la función para manejar el éxito de la edición
+                />
                 <div className='text-sm flex flex-row justify-between gap-5'>
                   <span>Andres_España</span>
                   <span className='bg-white rounded-xl p-1'>{d.tipo}</span>
