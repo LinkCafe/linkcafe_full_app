@@ -9,7 +9,19 @@
 
 import multer from 'multer';
 import { pool } from '../database/conexion.js';
-import {validationResult} from  "express-validator";
+import { validationResult } from "express-validator";
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public/img');
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname);
+    }
+});
+const upload = multer({ storage: storage });
+
+export const cargarImagen = upload.single('imagen');
 
 // Listar todas las publicaciones
 export const listarPublicaciones = async (req, res) => {
@@ -31,19 +43,6 @@ export const listarPublicaciones = async (req, res) => {
     }
 }
 
-const storage = multer.diskStorage(
-    {
-        destination: function(req,img,cb){
-            cb(null,"public/img")
-        },
-        filename: function(req,img,cb){
-            cb(null,img.originalname)
-        }
-    }
-);
-const upload = multer({storage:storage});
-export const cargarImagen = upload.single('imagen');
-
 // Crear una nueva publicación
 export const crearUnaPublicacion = async (req, res) => {
     try {
@@ -54,8 +53,8 @@ export const crearUnaPublicacion = async (req, res) => {
         }
 
         const { nombre, descripcion, fuentes, tipo, id_usuario } = req.body;
-    
-        const imagen = req.file.originalname; 
+
+        const imagen = req.file.originalname;
 
         // Asegurarse de que id_usuario sea un número
         if (isNaN(id_usuario)) {
@@ -71,14 +70,13 @@ export const crearUnaPublicacion = async (req, res) => {
 
         // Insertar la nueva publicación en la base de datos
         await pool.query("INSERT INTO publicaciones (nombre, descripcion, imagen, fuentes, tipo, id_usuario) VALUES (?, ?, ?, ?, ?, ?)", [nombre, descripcion, imagen, fuentes, tipo, id_usuario]);
-        
+
         return res.status(200).json({ mensaje: "Publicación creada y procesada con éxito" });
 
     } catch (error) {
         return res.status(500).json({ mensaje: error.message });
     }
 }
-
 
 // Actualizar una publicación
 export const actualizarUnaPublicacion = async (req, res) => {
@@ -89,20 +87,27 @@ export const actualizarUnaPublicacion = async (req, res) => {
         }
 
         const { id } = req.params;
-        const { nombre, descripcion, imagen, fuentes, tipo } = req.body;
+        const { nombre, descripcion, fuentes, tipo } = req.body;
+
+        let imagen = req.file ? req.file.originalname : null; 
 
         const [oldPost] = await pool.query("SELECT * FROM publicaciones WHERE id=?", [id]);
         if (!oldPost || oldPost.length === 0) {
             return res.status(401).json({
-                "mensaje": " No se encontró la publicación"
+                "mensaje": "No se encontró la publicación"
             });
         }
-        
+
+      
+        if (!imagen) {
+            imagen = oldPost[0].imagen;
+        }
+
         const [resultado] = await pool.query(`
             UPDATE publicaciones 
             SET nombre='${nombre ? nombre : oldPost[0].nombre}',
                 descripcion='${descripcion ? descripcion : oldPost[0].descripcion}',
-                imagen='${imagen ? imagen : oldPost[0].imagen}',
+                imagen='${imagen}',
                 fuentes='${fuentes ? fuentes : oldPost[0].fuentes}',
                 tipo='${tipo ? tipo : oldPost[0].tipo}'
             WHERE id=${parseInt(id)}
