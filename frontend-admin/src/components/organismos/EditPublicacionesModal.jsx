@@ -1,3 +1,5 @@
+// En el componente EditPublicacionesModal
+
 import React, { useRef } from 'react';
 import { Modal } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
@@ -29,13 +31,19 @@ export default function EditPublicacionesModal({ open, onClose, data, handleEdit
     e.preventDefault();
     try {
       if (confirm('¿Estás seguro de editar esta Publicación?')) {
-        const Data = {
-          nombre: nombre.current.value,
-          descripcion: descripcion.current.value,
-          fuentes: fuentes.current.value,
-          tipo: tipo.current.value
-        };
-        const response = await axiosClient.put(`/publicaciones/${data.id}`, Data);
+        const formData = new FormData(); // Utilizar FormData para enviar archivos
+        formData.append('nombre', nombre.current.value);
+        formData.append('descripcion', descripcion.current.value);
+        formData.append('fuentes', fuentes.current.value);
+        formData.append('tipo', tipo.current.value);
+        formData.append('imagen', imagen.current.files[0]); 
+
+        const response = await axiosClient.put(`/publicaciones/${data.id}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+
         if (response.status === 200) {
           alert('Publicación Editada Correctamente');
           handleEditSuccess(); // Llamar a la función para manejar el éxito de la edición
