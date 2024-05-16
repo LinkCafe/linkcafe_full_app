@@ -2,6 +2,10 @@ import React, { useRef } from 'react'
 import { Modal } from '@mui/material';
 import axiosClient from '../../utils/axiosClient';
 import CloseIcon from '@mui/icons-material/Close';
+import Input from '../moleculas/Input';
+import Label from '../moleculas/Label';
+import Select from '../moleculas/Select';
+import Button from '../moleculas/Button';
 
 export default function EditArticulosModal({ open, onClose, data }) {
 
@@ -53,28 +57,28 @@ export default function EditArticulosModal({ open, onClose, data }) {
                     <h1 className='text-2xl'>Editar Articulo</h1>
                     <form className='flex flex-col gap-5' onSubmit={handleSubmit}>
                         <div className='flex flex-col gap-2'>
-                            <label>Nombre</label>
-                            <input type="text" placeholder='Nombre' className='border border-gray-400 p-1 rounded' required ref={nombre} defaultValue={data.nombre} />
+                            <Label>Nombre</Label>
+                            <Input type="text" placeholder='Nombre' required ref={nombre} defaultValue={data.nombre} />
                         </div>
                         <div className='flex flex-col gap-2'>
-                            <label>Tipo</label>
-                            <select className='border border-gray-400 p-1 rounded' required ref={tipo} defaultValue={data.tipo}>
+                            <Label>Tipo</Label>
+                            <Select required ref={tipo} defaultValue={data.tipo}>
                                 <option value="">Seleccionar...</option>
                                 {tipos.map(tipo => (
                                     <option key={tipo.id} value={tipo.nombre}>{tipo.nombre}</option>
                                 ))}
-                            </select>
+                            </Select>
                         </div>
                         <div className='flex flex-col gap-2'>
-                            <label>Enlace</label>
-                            <input type="text" placeholder='Enlace' className='border border-gray-400 p-1 rounded' required ref={enlace} defaultValue={data.enlace}/>
+                            <Label>Enlace</Label>
+                            <Input type="text" placeholder='Enlace' required ref={enlace} defaultValue={data.enlace}/>
                         </div>
                         <div className='flex flex-col gap-2'>
-                            <label>Autor</label>
-                            <input type="text" placeholder='Autor' className='border border-gray-400 p-1 rounded' required ref={autor} defaultValue={data.autor}/>
+                            <Label>Autor</Label>
+                            <Input type="text" placeholder='Autor' required ref={autor} defaultValue={data.autor}/>
                         </div>
 
-                        <button type='submit' className='w-full p-1 text-white bg-primary rounded hover:scale-[101%] text-xl'>Editar</button>
+                        <Button type='submit' variant="success" >Editar</Button>
                     </form>
                 </div>
             </div>

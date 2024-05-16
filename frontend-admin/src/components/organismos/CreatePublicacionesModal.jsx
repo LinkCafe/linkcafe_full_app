@@ -2,6 +2,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Modal } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import axiosClient from '../../utils/axiosClient';
+import Input from '../moleculas/Input';
+import InputFile from '../moleculas/InputFile';
+import Label from '../moleculas/Label';
+import Select from '../moleculas/Select';
+import Button from '../moleculas/Button';
 
 export default function CreatePublicacionesModal({ open, onClose }) {
     const [user, setUser] = useState({});
@@ -49,33 +54,33 @@ export default function CreatePublicacionesModal({ open, onClose }) {
                 </div>
                 <div className='w-full flex flex-col gap-5'>
                     <h1 className='text-2xl'>Crear Publicación</h1>
-                    <form className='flex flex-col gap-5' onSubmit={handleSubmit}>
+                    <form className='flex flex-col gap-3' onSubmit={handleSubmit}>
                         <div className='flex flex-col gap-2'>
-                            <label>Nombre</label>
-                            <input type="text" placeholder='Nombre' className='border border-gray-400 p-1 rounded' required ref={nombreRef} />
+                            <Label>Nombre</Label>
+                            <Input type="text" placeholder='Nombre' required ref={nombreRef} />
                         </div>
                         <div className='flex flex-col gap-2'>
-                            <label>Descripción</label>
-                            <input type="text" placeholder='Descripción' className='border border-gray-400 p-1 rounded' required ref={descripcionRef} />
+                            <Label>Descripción</Label>
+                            <Input type="text" placeholder='Descripción' required ref={descripcionRef} />
                         </div>
                         <div className='flex flex-col gap-2'>
-                            <label>Fuentes</label>
-                            <input type="text" placeholder='Fuentes' className='border border-gray-400 p-1 rounded' required ref={fuentesRef} />
+                            <Label>Fuentes</Label>
+                            <Input type="text" placeholder='Fuentes' required ref={fuentesRef} />
                         </div>
                         <div className='flex flex-col gap-2'>
-                            <label>Tipo</label>
-                            <select className='border border-gray-400 p-1 rounded' required ref={tipoRef}>
+                            <Label>Tipo</Label>
+                            <Select required ref={tipoRef}>
                                 <option value="">Seleccionar...</option>
                                 <option value="1">Producción</option>
                                 <option value="2">Barismo</option>
                                 <option value="3">Otros</option>
-                            </select>
+                            </Select>
                         </div>
                         <div className='flex flex-col gap-2'>
-                            <label>Seleccionar Imagen</label>
-                            <input type="file" className='border border-gray-400 p-1 rounded' accept="image/*" ref={imagenRef} required />
+                            <Label>Seleccionar Imagen</Label>
+                            <InputFile accept="image/*" ref={imagenRef} required />
                         </div>
-                        <button type='submit' className='w-full p-1 text-white bg-primary rounded hover:scale-[101%] text-xl'>Crear</button>
+                        <Button variant="success">Crear</Button>
                     </form>
                 </div>
             </div>

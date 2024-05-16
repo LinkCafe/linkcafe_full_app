@@ -3,6 +3,7 @@ import DefaultLayout from '../layout/DefaultLayout'
 import axiosClient from '../utils/axiosClient'
 import CreateArticulosModal from '../components/organismos/CreateArticulosModal'
 import EditArticulosModal from '../components/organismos/EditArticulosModal'
+import Button from '../components/moleculas/Button'
 
 function Articulos() {
 
@@ -59,32 +60,27 @@ function Articulos() {
         <div className='w-full h-full flex flex-col p-10 gap-5 bg-white rounded-2xl mt-15'>
           <div className='flex flex-row justify-between'>
             <h1 className='text-2xl'>Articulos</h1>
-            <button className='text-white bg-primary p-2 rounded transition-all hover:scale-[105%]' onClick={() => setOpenCreateArticulosModal(true)}>Crear Articulo</button>
+            <Button variant="success" onClick={() => setOpenCreateArticulosModal(true)}>Crear Articulo</Button>
             <CreateArticulosModal open={openCreateArticulosModal} onClose={() => setOpenCreateArticulosModal(false)} />
           </div>
           <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4'>
             {articulos.map((a, index) => (
-              <div key={index} className='w-full bg-gray-200 rounded-xl p-5'>
+              <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow" key={index}>
                 <EditArticulosModal open={selectedArticulo === a.id} onClose={() => { setSelectedArticulo(null); handleEdit(); }} data={a} />
-                <div className='text-sm flex flex-row justify-between gap-5'>
-                  <span>Andres_España</span>
-                  <span className='bg-white rounded-xl p-1'>{a.tipo}</span>
+                <a href="#">
+                  <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">{a.nombre}</h5>
+                </a>
+                <p className="mb-3 font-normal text-gray-700 ">{a.enlace}</p>
+                <div className="flex items-center justify-between">
+                  <p className="mb-3 font-normal text-sm text-gray-700 dark:text-gray-400">{a.tipo}</p>
+                  <p className="mb-3 font-normal text-sm text-gray-700 dark:text-gray-400">{a.autor}</p>
                 </div>
-                <div className='bg-white rounded-xl p-2 mt-2'>
-                  <p className='text-xs'>{a.enlace}</p>
-                  <div className='text-sm flex flex-row justify-between gap-5 pt-2'>
-                    <p className='text-xl'>{a.nombre}</p>
-                    <p>{new Date(a.fecha).toLocaleDateString()}</p>
-                  </div>
-                  <div className='p-2'>
-                    <p className='text-center text-base'>{a.autor}</p>
-                  </div>
-                  <div className='text-sm flex flex-row gap-2 justify-center mt-2'>
-                  <button className='bg-primary w-10 rounded-xl' onClick={() => setSelectedArticulo(a.id)}>.</button>
-                    <button className='bg-red-600 w-10 rounded-xl' onClick={() => handleDelete(a.id)}>.</button>
-                  </div>
+                <div className='flex flex-row gap-2 items-center justify-center'>
+                  <Button variant="success" onClick={() => setSelectedArticulo(a.id)}>Editar</Button>
+                  <Button variant="danger" onClick={() => handleDelete(a.id)}>Eliminar</Button>
                 </div>
               </div>
+
             ))}
           </div>
         </div>

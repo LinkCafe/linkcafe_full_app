@@ -2,6 +2,9 @@ import React, { useRef } from 'react'
 import { Modal } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import axiosClient from '../../utils/axiosClient'
+import { Input } from '@mui/icons-material'
+import Button from '../moleculas/Button'
+import Label from '../moleculas/Label'
 
 
 export default function EditComentariosModal({open, onClose, row}) {
@@ -37,10 +40,10 @@ export default function EditComentariosModal({open, onClose, row}) {
                 <h1 className='text-2xl'>Editar Comentario</h1>
                 <form className='flex flex-col gap-5' onSubmit={handleSubmit}>
                     <div className='flex flex-col gap-2'>
-                        <label>Comentario</label>
-                        <input type="text" placeholder='Comentario' className='border border-gray-200 p-1 rounded' required ref={comentario} defaultValue={row.comentario}/>
+                        <Label>Comentario</Label>
+                        <Input type="text" placeholder='Comentario' className='border border-gray-200 p-1 rounded' required ref={comentario} defaultValue={row.comentario}/>
                     </div>
-                    <button type="submit" className='w-full p-1 text-white bg-primary rounded hover:scale-[101%]'>Guardar</button>
+                    <Button type="submit" variant="success">Guardar</Button>
                 </form>
             </div>
         </div>

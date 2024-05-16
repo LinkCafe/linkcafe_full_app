@@ -1,9 +1,12 @@
-// En el componente EditPublicacionesModal
-
 import React, { useRef } from 'react';
 import { Modal } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import axiosClient from '../../utils/axiosClient';
+import Input from '../moleculas/Input';
+import InputFile from '../moleculas/InputFile';
+import Label from '../moleculas/Label';
+import Select from '../moleculas/Select';
+import Button from '../moleculas/Button';
 
 export default function EditPublicacionesModal({ open, onClose, data, handleEditSuccess }) {
   const nombre = useRef(null);
@@ -65,31 +68,31 @@ export default function EditPublicacionesModal({ open, onClose, data, handleEdit
           <h1 className='text-2xl'>Editar Publicación</h1>
           <form className='flex flex-col gap-5' onSubmit={handleSubmit}>
             <div className='flex flex-col gap-2'>
-              <label>Nombre</label>
-              <input type="text" placeholder='Nombre' className='border border-gray-400 p-1 rounded' required ref={nombre} defaultValue={data.nombre} />
+              <Label>Nombre</Label>
+              <Input type="text" placeholder='Nombre' required ref={nombre} defaultValue={data.nombre} />
             </div>
             <div className='flex flex-col gap-2'>
-              <label>Descripción</label>
-              <input type="text" placeholder='Descripción' className='border border-gray-400 p-1 rounded' required ref={descripcion} defaultValue={data.descripcion} />
+              <Label>Descripción</Label>
+              <Input type="text" placeholder='Descripción' required ref={descripcion} defaultValue={data.descripcion} />
             </div>
             <div className='flex flex-col gap-2'>
-              <label>Fuentes</label>
-              <input type="text" placeholder='Fuentes' className='border border-gray-400 p-1 rounded' required ref={fuentes} defaultValue={data.fuentes} />
+              <Label>Fuentes</Label>
+              <Input type="text" placeholder='Fuentes' required ref={fuentes} defaultValue={data.fuentes} />
             </div>
             <div className='flex flex-col gap-2'>
-              <label>Tipo</label>
-              <select className='border border-gray-400 p-1 rounded' required ref={tipo} defaultValue={data.tipo}>
+              <Label>Tipo</Label>
+              <Select required ref={tipo} defaultValue={data.tipo}>
                 <option value="">Seleccionar...</option>
                 {tipos.map(tipo => (
                   <option key={tipo.id} value={tipo.nombre}>{tipo.nombre}</option>
                 ))}
-              </select>
+              </Select>
             </div>
             <div className='flex flex-col gap-2'>
-              <label>Seleccionar Nueva Imagen</label>
-              <input type="file" className='border border-gray-400 p-1 rounded' accept="image/*" ref={imagen} />
+              <Label>Seleccionar Nueva Imagen</Label>
+              <InputFile accept="image/*" ref={imagen} />
             </div>
-            <button type='submit' className='w-full p-1 text-white bg-primary rounded hover:scale-[101%] text-xl'>Editar Publicación</button>
+            <Button type='submit' variant="success">Editar Publicación</Button>
           </form>
         </div>
       </div>

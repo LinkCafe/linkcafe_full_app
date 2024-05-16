@@ -2,6 +2,11 @@ import React, { useRef } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 import { Modal } from '@mui/material'
 import axiosClient from '../../utils/axiosClient'
+import InputFile from '../moleculas/InputFile';
+import Label from '../moleculas/Label';
+import Select from '../moleculas/Select';
+import Button from '../moleculas/Button';
+import Input from '../moleculas/Input';
 
 
 export default function EditUsuariosModal({open, onClose, row}) {
@@ -56,23 +61,23 @@ export default function EditUsuariosModal({open, onClose, row}) {
                 <h1 className='text-2xl'>Editar Usuario</h1>
                 <form className='flex flex-col gap-5' onSubmit={handleSubmit}>
                     <div className='flex flex-col gap-2'>
-                        <label>Nombre</label>
-                        <input type="text" placeholder='Nombre Usuario' className='border border-gray-200 p-1 rounded' required ref={nombre_completo} defaultValue={row.nombre_completo}/>
+                        <Label>Nombre</Label>
+                        <Input type="text" placeholder='Nombre Usuario' required ref={nombre_completo} defaultValue={row.nombre_completo}/>
                     </div>
                     <div className='flex flex-col gap-2'>
-                        <label>Correo</label>
-                        <input type="text" placeholder='Correo' className='border border-gray-200 p-1 rounded' required ref={Correo} defaultValue={row.correo}/>
+                        <Label>Correo</Label>
+                        <Input type="text" placeholder='Correo' required ref={Correo} defaultValue={row.correo}/>
                     </div>
                     <div className='flex flex-col gap-2'>
-                        <label>Tipo</label>
-                        <select className='border border-gray-200 p-1 rounded' required ref={tipo}>
+                        <Label>Tipo</Label>
+                        <Select required ref={tipo}>
                             <option value="">Seleccionar...</option>
                             {tipos.map(tipo => (
                                 <option key={tipo.id} value={tipo.id} selected={row.tipo === tipo.nombre.toLocaleLowerCase() ? true : false}>{tipo.nombre}</option>
                             ))}
-                        </select>
+                        </Select>
                     </div>
-                    <button type="submit" className='w-full p-1 text-white bg-primary rounded hover:scale-[101%]'>Guardar</button>
+                    <Button type="submit" variant="success">Editar</Button>
                 </form>
             </div>
         </div>
