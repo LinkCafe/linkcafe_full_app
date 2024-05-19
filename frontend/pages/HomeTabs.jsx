@@ -1,22 +1,38 @@
-import { Text } from "react-native";
-import React, { useContext } from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Profile from "./Profile";
-import Home from "./Home";
-import { Icon } from "@rneui/base";
-import Create from "./Create";
-import { useNavigation } from "@react-navigation/native";
-import ThemeContext from "../context/ThemeContext";
+import React, { useContext } from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Profile from '../pages/Profile';
+import Home from '../pages/Home';
+import Create from './Create';
+import { useNavigation } from '@react-navigation/native';
+import ThemeContext from '../context/ThemeContext';
+import UserIcon from '../components/organismos/UserIcon';
+import TabBarIcon from '../components/organismos/TabBarIcon.jsx';
+import IconComponent from '../components/organismos/IconComponent';
+import ProfileTabIcon from '../components/organismos/ProfileTabIcon';
+import TituloPersonalizado from '../components/organismos/TitlePersonaliced';
+import { Text } from 'react-native';
+import { Icon } from '@rneui/base';
 
 const Tab = createBottomTabNavigator();
 const HomeTabs = () => {
-  const navigation = useNavigation()
-  const { theme } = useContext(ThemeContext)
+  const navigation = useNavigation();
+  const { theme } = useContext(ThemeContext);
   const optionsBase = {
-    headerTitle: "",
-    tabBarStyle: { paddingBottom: 5, height: 60, backgroundColor: theme == 'light' ? 'white' : '#202020' },
+    headerTitle: '',
+    tabBarStyle: {
+      paddingBottom: 5,
+      height: 60,
+      backgroundColor: theme === 'light' ? 'white' : '#202020',
+    },
     tabBarLabelStyle: { fontSize: 15 },
   };
+
+  // const renderUserIcon = () => (
+  //   <UserIcon theme={theme} navigation={navigation} />
+  // );
+  // const renderTabBarIcon = () => <TabBarIcon theme={theme} name="home" />;
+  // const renderHeaderText = () => <TituloPersonalizado nombre="prueba" />;
+
   return (
     <Tab.Navigator>
       <Tab.Screen
@@ -45,11 +61,11 @@ const HomeTabs = () => {
                 alignItems: "center",
                 borderRadius: 100,
               }}
-              iconStyle={{ color: theme == 'light' ? "#5c3d21" : 'white'}}
+              iconStyle={{ color: theme == 'light' ? "#5c3d21" : 'white' }}
               onPress={() => navigation.navigate("Profile")}
             />
           ),
-          tabBarIcon: () => <Icon style={{ fontSize: 20 }} color={theme == 'light' ? "#5c3d21" : 'white'} type="font-awesome" name="home"/>,
+          tabBarIcon: () => <Icon style={{ fontSize: 20 }} color={theme == 'light' ? "#5c3d21" : 'white'} type="font-awesome" name="home" />,
           ...optionsBase,
         }}
       />
@@ -62,7 +78,7 @@ const HomeTabs = () => {
           headerTitleStyle: {
             color: theme == 'light' ? 'black' : 'white'
           },
-          tabBarIcon: () => <Icon style={{ fontSize: 20 }} color={theme == 'light' ? "#5c3d21" : 'white'} type="font-awesome" name="plus"/>,
+          tabBarIcon: () => <Icon style={{ fontSize: 20 }} color={theme == 'light' ? "#5c3d21" : 'white'} type="font-awesome" name="plus" />,
           tabBarStyle: { paddingBottom: 5, height: 60, backgroundColor: theme == 'light' ? 'white' : '#202020' },
           tabBarLabelStyle: { fontSize: 15 },
           headerStyle: {
@@ -73,10 +89,10 @@ const HomeTabs = () => {
       <Tab.Screen
         name="Profile"
         component={Profile}
-        options={{ 
+        options={{
           title: 'Perfil',
           headerTitle: 'Perfil personal',
-          tabBarIcon: () => <Icon style={{ fontSize: 20 }} color={theme == 'light' ? "#5c3d21" : 'white'}  type="font-awesome" name="user"/>,
+          tabBarIcon: () => <Icon style={{ fontSize: 20 }} color={theme == 'light' ? "#5c3d21" : 'white'} type="font-awesome" name="user" />,
           tabBarStyle: { paddingBottom: 5, height: 60, backgroundColor: theme == 'light' ? 'white' : '#202020' },
           tabBarLabelStyle: { fontSize: 15 },
           headerStyle: {

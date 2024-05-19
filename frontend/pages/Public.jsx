@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, Dimensions, TextInput, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Avatar } from 'react-native-elements';
-import public1Image from '../assets/public1.png';
+import public1Image from '../img/public1.png';
 
 const PublicationView = ({ route }) => {
     const { publication } = route.params;

@@ -50,7 +50,7 @@ const Profile =  () => {
           >
             <Avatar
               size={40}
-              rounded
+              roundedb
               title="🌱"
               containerStyle={style.containerAvatar}
             />
@@ -109,6 +109,8 @@ const Profile =  () => {
   );
 };
 
+export default Profile;
+
 const style = StyleSheet.create({
   containerAvatar: {
     backgroundColor: "#e9e9e9",
@@ -116,5 +118,3 @@ const style = StyleSheet.create({
     justifyContent: "center",
   },
 });
-
-export default Profile;
