@@ -5,7 +5,7 @@ import DefaultLayout from '../layout/DefaultLayout';
 function Inicio() {
   return (
     <DefaultLayout>
-      <div className='w-full h-full flex flex-col p-10 gap-5 bg-white rounded-2xl mt-15'>
+      <div className='w-full h-[91%] flex flex-col p-10 gap-5 bg-white rounded-2xl mt-15'>
 
         <div className='flex flex-col justify-between h-full gap-10'>
           <div className='flex justify-between'>

@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { Modal } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import axiosClient from '../../utils/axiosClient'
-import { Input } from '@mui/icons-material'
+import Input from '../moleculas/Input'
 import Button from '../moleculas/Button'
 import Label from '../moleculas/Label'
 
