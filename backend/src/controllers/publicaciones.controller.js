@@ -1,12 +1,11 @@
 /*
-    * X Listar Todos
-    * X Crear Uno
-    * X Actualizar Uno
-    * X Mostrar Solo Uno
-    * X Eliminar Uno
-
+    * Listar Todos Los articulos x
+    * Crear Un articulos x
+    * Actualizar Un articulos x
+    * Mostrar Un articulos x
+    * Eliminar Un articulos x
+    * Contar publicaciones x
 */
-
 import multer from 'multer';
 import { pool } from '../database/conexion.js';
 import { validationResult } from "express-validator";
@@ -26,7 +25,7 @@ export const cargarImagen = upload.single('imagen');
 // Listar todas las publicaciones
 export const listarPublicaciones = async (req, res) => {
     try {
-        const [resultado] = await pool.query("select * from publicaciones");
+        const [resultado] = await pool.query("SELECT * FROM publicaciones");
 
         if (resultado.length > 0) {
             res.status(200).json(resultado);
@@ -37,8 +36,8 @@ export const listarPublicaciones = async (req, res) => {
         }
 
     } catch (error) {
-        res.status(500).json({
-            "mensaje": error
+        res.status500().json({
+            "mensaje": error.message
         });
     }
 }
@@ -98,7 +97,6 @@ export const actualizarUnaPublicacion = async (req, res) => {
             });
         }
 
-      
         if (!imagen) {
             imagen = oldPost[0].imagen;
         }
@@ -125,7 +123,7 @@ export const actualizarUnaPublicacion = async (req, res) => {
 
     } catch (error) {
         return res.status(500).json({
-            "mensaje": error
+            "mensaje": error.message
         });
     }
 }
@@ -134,7 +132,7 @@ export const actualizarUnaPublicacion = async (req, res) => {
 export const mostrarSoloUnaPublicacion = async (req, res) => {
     try {
         const { id } = req.params;
-        const [resultado] = await pool.query("select * from publicaciones where id=?", [id]);
+        const [resultado] = await pool.query("SELECT * FROM publicaciones WHERE id=?", [id]);
 
         if (resultado.length > 0) {
             res.status(200).json(resultado);
@@ -146,7 +144,7 @@ export const mostrarSoloUnaPublicacion = async (req, res) => {
 
     } catch (error) {
         res.status(500).json({
-            "mensaje": error
+            "mensaje": error.message
         });
     }
 }
@@ -155,7 +153,7 @@ export const mostrarSoloUnaPublicacion = async (req, res) => {
 export const eliminarUnaPublicacion = async (req, res) => {
     try {
         const { id } = req.params;
-        const [resultado] = await pool.query("delete from publicaciones where id=?", [id]);
+        const [resultado] = await pool.query("DELETE FROM publicaciones WHERE id=?", [id]);
 
         if (resultado.affectedRows > 0) {
             res.status(200).json({
@@ -169,7 +167,40 @@ export const eliminarUnaPublicacion = async (req, res) => {
 
     } catch (error) {
         res.status(500).json({
-            "mensaje": error
+            "mensaje": error.message
+        });
+    }
+}
+
+// Contar todas las publicaciones
+export const contarPublicaciones = async (req, res) => {
+    try {
+        const [resultado] = await pool.query("SELECT COUNT(*) as total FROM publicaciones");
+        res.status(200).json({ total: resultado[0].total });
+    } catch (error) {
+        res.status(500).json({
+            "mensaje": error.message
+        });
+    }
+}
+
+// Listar publicaciones por fecha
+export const listarPublicacionesPorFecha = async (req, res) => {
+    try {
+        const { fecha } = req.params;
+        const [publicaciones] = await pool.query("SELECT * FROM publicaciones WHERE DATE(fecha) = ?", [fecha]);
+        const [count] = await pool.query("SELECT COUNT(*) as total FROM publicaciones WHERE DATE(fecha) = ?", [fecha]);
+
+        if (publicaciones.length > 0) {
+            res.status(200).json({ publicaciones, total: count[0].total });
+        } else {
+            res.status(404).json({
+                "mensaje": "No se encontraron publicaciones para la fecha proporcionada"
+            });
+        }
+    } catch (error) {
+        res.status(500).json({
+            "mensaje": error.message
         });
     }
 }
