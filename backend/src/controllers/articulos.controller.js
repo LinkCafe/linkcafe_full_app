@@ -139,7 +139,7 @@ export const contarArticulos = async (req, res) => {
     }
 };
 
-// Listar los artículos por fecha
+// Listar los artículos por fechas
 export const listarArticulosPorFecha = async (req, res) => {
     try {
         const { fecha } = req.params;
