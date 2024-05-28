@@ -53,7 +53,7 @@ function Usuarios() {
   return (
     <>
       <DefaultLayout>
-        <div className='w-full h-screen flex flex-col p-10 gap-5  bg-white rounded-2xl mt-15'>
+        <div className='w-full h-[91%] flex flex-col p-10 gap-5  bg-white rounded-2xl mt-15'>
           <div className='flex flex-row justify-between'>
             <h1 className='text-2xl'>Usuarios</h1>
             <EditUsuariosModal open={openEditUsuariosModal} onClose={() => setOpenEditUsuariosModal(false)} row={row}/>
