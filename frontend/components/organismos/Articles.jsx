@@ -1,11 +1,12 @@
+import React, { useContext } from "react";
 import {
   View,
   Text,
   ScrollView,
   StyleSheet,
-  Image
+  Image,
+  TouchableOpacity,
 } from "react-native";
-import React, { useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Avatar, Card } from "@rneui/base";
 import { Button } from "react-native";
@@ -24,25 +25,41 @@ const Articles = () => {
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6U0IIzs_1vCo98DWEMa81gAhQNlI-13986A&usqp=CAU",
       titulo: "El café sube un 10,2% su precio actual ",
       categoria: "Noticia",
-    }
+    },
   ];
 
-  const { theme } = useContext(ThemeContext)
+  const { theme } = useContext(ThemeContext);
+  const navigation = useNavigation();
+
+  const goToArticle = () => {
+    navigation.navigate("article");
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={style.moreCategories}>
-        <Text style={[style.moreCategoriesText, { color: theme == 'light' ? 'black' : 'white' }]}>Artículos recomendados</Text>
-        <Button
-          type="outline"
-          title="Ver todos >"
-          buttonStyle={{ padding: 1, borderColor: theme == 'light' ? 'black' : 'white', borderWidth: 1 }}
-          titleStyle={{ color: theme == 'light' ? 'black' : 'white' }}
-        />
+      <View style={styles.moreCategories}>
+        <Text
+          style={[
+            styles.moreCategoriesText,
+            { color: theme == "light" ? "black" : "white" },
+          ]}
+        >
+          Artículos recomendados
+        </Text>
+        <TouchableOpacity onPress={goToArticle} style={styles.all_articles}>
+          <Text style={styles.text}>Ver todos > </Text>
+        </TouchableOpacity>
       </View>
       <ScrollView horizontal={true}>
-        <View style={style.containerCard}>
+        <View style={styles.containerCard}>
           {data.map((d, index) => (
-            <Card key={index} containerStyle={[style.card, { backgroundColor: theme == 'light' ? 'white' : '#434343' }]}>
+            <Card
+              key={index}
+              containerStyle={[
+                styles.card,
+                { backgroundColor: theme == "light" ? "white" : "#434343" },
+              ]}
+            >
               <Image
                 source={{
                   uri: d.imagen,
@@ -50,7 +67,9 @@ const Articles = () => {
                   height: 150,
                 }}
               />
-              <Text style={{ paddingTop: 12, color: theme == 'light' ? 'black' : 'white' }}>{d.titulo}</Text>
+              <Text style={{ paddingTop: 12, color: theme == "light" ? "black" : "white" }}>
+                {d.titulo}
+              </Text>
               <View
                 style={{
                   display: "flex",
@@ -60,13 +79,12 @@ const Articles = () => {
                   paddingTop: 10,
                 }}
               >
-                
                 <Text
                   style={{
                     padding: 5,
                     borderRadius: 5,
-                    backgroundColor: theme == 'light' ? "#3e3e3e26" : 'gray',
-                    color: theme == 'light' ? 'black' : 'white'
+                    backgroundColor: theme == "light" ? "#3e3e3e26" : "gray",
+                    color: theme == "light" ? "black" : "white",
                   }}
                 >
                   {d.categoria}
@@ -81,7 +99,9 @@ const Articles = () => {
                   paddingTop: 10,
                 }}
               >
-                <Text style={{ textDecorationLine: 'underline', color: '#35d4f0' }}>Mas información</Text>
+                <Text style={{ textDecorationLine: "underline", color: "#35d4f0" }}>
+                  Más información
+                </Text>
               </View>
             </Card>
           ))}
@@ -91,7 +111,7 @@ const Articles = () => {
   );
 };
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
   containerCard: {
     width: "100%",
     display: "flex",
@@ -120,6 +140,15 @@ const style = StyleSheet.create({
     fontSize: 18,
     fontWeight: "600",
   },
+  all_articles:{
+    borderWidth:1,
+    borderRadius:5,
+    width:100
+  },
+  text:{
+    paddingRight:3,
+    paddingLeft:12,
+  }
 });
 
 export default Articles;

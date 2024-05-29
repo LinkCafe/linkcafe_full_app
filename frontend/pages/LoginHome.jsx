@@ -71,6 +71,7 @@ const style = StyleSheet.create({
   },
   fullWidthImage: {
     width: '100%',
+    
   },
   boldText: {
     color: '#E39B5A',
@@ -79,15 +80,19 @@ const style = StyleSheet.create({
   guestText: {
     textDecorationLine: 'underline',
     textAlign: 'center',
+    color:'black',
+    paddingBottom:'12',
   },
   expertosText: {
     textTransform: 'capitalize',
     fontWeight: 'bold',
+    color:'black',
   },
   lemaText: {
     fontSize: 20,
     textAlign: 'center',
     marginBottom: 30,
+    color:'black',
   },
   interaccion: {
     width: '100%',

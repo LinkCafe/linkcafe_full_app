@@ -113,6 +113,7 @@ const style = StyleSheet.create({
     paddingVertical: 15,
     textAlign: 'left',
     fontSize: 25,
+    color:'black',
     fontWeight: "500",
   },
   inputStyle: {

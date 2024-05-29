@@ -14,6 +14,8 @@ import PublicationView from './pages/Public';
 import {Chat} from './pages/Cha.jsx';
 import TituloPersonalizado from './components/organismos/TitlePersonaliced.jsx';
 
+import AllActicles from './pages/AllArticles.jsx';
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -91,6 +93,11 @@ export default function App() {
             name="Public"
             component={PublicationView}
             options={{title: 'Porqué se debería sembrar en luna llena?'}}
+          />
+          <Stack.Screen
+            name="All_articles"
+            component={AllActicles}
+            options={{title: 'Articulos'}}
           />
         </Stack.Navigator>
       </ThemeProvider>

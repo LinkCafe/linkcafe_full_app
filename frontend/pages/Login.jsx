@@ -93,9 +93,10 @@ const style = StyleSheet.create({
   },
   loginTitleStyle: {
     width: '100%',
-    paddingVertical: 15,
+    paddingVertical: 55,
     textAlign: 'left',
     fontSize: 25,
+    color:'black',
     fontWeight: "500"
   },
   forgotPasswordStyle: {
