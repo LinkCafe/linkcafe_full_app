@@ -11,6 +11,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Avatar, Card } from "@rneui/base";
 import { Button } from "react-native";
 import ThemeContext from "../../context/ThemeContext";
+import { useNavigation } from '@react-navigation/native';
 
 const Articles = () => {
   const data = [
@@ -32,7 +33,7 @@ const Articles = () => {
   const navigation = useNavigation();
 
   const goToArticle = () => {
-    navigation.navigate("article");
+    navigation.navigate("All_articles");
   };
 
   return (
@@ -47,7 +48,7 @@ const Articles = () => {
           Artículos recomendados
         </Text>
         <TouchableOpacity onPress={goToArticle} style={styles.all_articles}>
-          <Text style={styles.text}>Ver todos > </Text>
+          <Text style={styles.text}>Ver todos  </Text>
         </TouchableOpacity>
       </View>
       <ScrollView horizontal={true}>

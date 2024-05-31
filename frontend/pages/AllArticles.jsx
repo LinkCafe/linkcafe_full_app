@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Text, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { Text, SafeAreaView, ScrollView } from 'react-native';
 import { StyleSheet } from 'react-native';
-import axios from 'axios';
+
 
 
 const AllArticles = () => {
@@ -24,7 +24,8 @@ const style = StyleSheet.create({
     },
     texto:{
         marginTop:126,
-        fontSize:26
+        fontSize:26,
+        color:'black'
     }
 })
 
