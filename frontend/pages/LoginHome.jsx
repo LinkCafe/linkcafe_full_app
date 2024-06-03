@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   View,
   Text,
@@ -12,23 +12,30 @@ import {styleConstants} from '../constants/style';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ThemeContext from '../context/ThemeContext';
 
 const LoginHome = () => {
   const navigation = useNavigation();
+  const { theme, toggleTheme } = useContext(ThemeContext);
   const handleGuest = async () => {
-    await AsyncStorage.setItem('name', 'Invitado');
-    await AsyncStorage.setItem('email', 'invitado@gmail.com');
-    await AsyncStorage.setItem('password', 'invitado');
-
-    navigation.navigate('HomeTabs');
-    ToastAndroid.showWithGravity(
-      'Sesión como invitado',
-      ToastAndroid.LONG,
-      ToastAndroid.BOTTOM,
-    );
+    try {
+      await AsyncStorage.setItem('name', 'Invitado');
+      await AsyncStorage.setItem('email', 'invitado@gmail.com');
+      await AsyncStorage.setItem('password', 'invitado');
+      console.log("Datos de invitado guardados");
+      navigation.navigate('HomeTabs');
+      ToastAndroid.showWithGravity(
+        'Sesión como invitado',
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+      );
+    } catch (error) {
+      console.error("Error al iniciar sesión como invitado:", error);
+    }
   };
+  
   return (
-    <SafeAreaView style={styleConstants.container}>
+    <SafeAreaView style={[styleConstants.container, { backgroundColor: theme === 'light'? 'white' : '#202020' }]}>
       <ScrollView style={style.contentCard}>
         <Image
           source={require('../img/loginImage.jpg')}
@@ -43,12 +50,12 @@ const LoginHome = () => {
         </Text>
         <View style={style.interaccion}>
           <Button
-            buttonStyle={[style.button, style.btnLogin]}
+            buttonStyle={[style.button, style.btnLogin, { backgroundColor: theme === 'light'? '#E39B5A' : 'gray' }]}
             onPress={() => navigation.navigate('Login')}>
             Iniciar Sesión
           </Button>
           <Button
-            buttonStyle={[style.button, style.btnSignUp]}
+            buttonStyle={[style.button, style.btnSignUp, { borderColor: theme === 'light'? '#E39B5A' : 'gray' }]}
             titleStyle={style.btnSignUpTitleStyle}
             onPress={() => navigation.navigate('SignUp')}>
             Registrarse

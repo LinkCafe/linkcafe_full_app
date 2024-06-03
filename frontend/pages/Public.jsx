@@ -1,18 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, StyleSheet, Image, Dimensions, TextInput, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Avatar } from 'react-native-elements';
-import public1Image from '../img/public1.png';
+import ThemeContext  from '../context/ThemeContext';
+
+const public1Image = require('../img/public1.png');
 
 const PublicationView = ({ route }) => {
     const { publication } = route.params;
+    const { theme } = useContext(ThemeContext);
 
     const description = "Las fases de la luna han sido consideradas como parte de las actividades agrícolas del cultivo de café, por su marcada influencia en cada una de las etapas fenológicas de éste cultivo.";
 
     return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-            </View>
+        <View style={{ flex: 1, padding: 16, backgroundColor: theme === 'dark'? '#121212' : '#ffffff' }}>
+            <View style={styles.header}></View>
             <View style={styles.userInfo}>
                 <Avatar
                     rounded
@@ -50,11 +52,8 @@ const PublicationView = ({ route }) => {
     );
 };
 
+
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 16,
-    },
     header: {
         flexDirection: 'row',
         alignItems: 'center',

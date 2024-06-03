@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {Icon} from '@rneui/base';
+import ThemeContext from '../../context/ThemeContext';
 
-const TabBarIcon = ({theme, name}) => {
+const TabBarIcon = ({ name }) => {
+  const { theme } = useContext(ThemeContext);
+  const iconColor = theme === 'dark'? 'white' : 'black';
   return (
     <View>
-      <Icon name={name} theme={theme} />
-      <Text style={styles.icon}>
-        Icon for {name} with theme {theme}
-      </Text>
+      <Icon name={name} color={iconColor} /> 
     </View>
   );
 };
