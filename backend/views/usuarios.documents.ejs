@@ -332,3 +332,64 @@
         <td>Darwin Alexis Guerrero Baos</td>
     </tr>
 </table>
+<hr>
+<h3>Requerimiento 6 Documentación Del ENDPOINT USUARIOS</h3>
+<hr>
+<table>
+    <tr>
+        <td>NUMERO</td>
+        <td>6</td>
+    </tr>
+    <tr>
+        <td>NOMBRE DEL SERVICIO</td>
+        <td>Mostrar cantidad de usuarios</td>
+    </tr>
+    <tr>
+        <td>URL</td>
+        <td>/usuarios/contarr</td>
+    </tr>
+    <tr>
+        <td>DESCRIPCIÓN</td>
+        <td>Permite ver la cantidad de usuarios registrados en la base de datos</td>
+    </tr>
+    <tr>
+        <td>VERBO HTTP</td>
+        <td>GET</td>
+    </tr>
+    <tr>
+        <td>HEADER</td>
+        <td>token: "token"</td>
+    </tr>
+    <tr>
+        <td>USUARIOS</td>
+        <td>Administrador</td>
+    </tr>
+    <tr>
+        <td>PETICIÓN body</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>RESPUESTA JSON</td>
+        <td>
+            Correcto:
+            Status: 200
+            JSON{
+                "total": "3"
+            } <br>
+            Incorrecto:
+            Status: 404
+            JSON{
+                "mensaje": "No se encontraron usuarios"
+            } <br>
+            Error:
+            Status: 500
+            JSON{
+                "Mensaje": "error"
+            }
+        </td>
+    </tr>
+    <tr>
+        <td>Autor</td>
+        <td>Darwin Alexis Guerrero Baos</td>
+    </tr>
+</table>

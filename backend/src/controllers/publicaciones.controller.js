@@ -5,6 +5,7 @@
     * Mostrar Un articulos x
     * Eliminar Un articulos x
     * Contar publicaciones x
+    * Listar publicaciones por fechas x
 */
 import multer from 'multer';
 import { pool } from '../database/conexion.js';
@@ -176,26 +177,47 @@ export const eliminarUnaPublicacion = async (req, res) => {
 export const contarPublicaciones = async (req, res) => {
     try {
         const [resultado] = await pool.query("SELECT COUNT(*) as total FROM publicaciones");
-        res.status(200).json({ total: resultado[0].total });
+        if (resultado[0].total === 0) {
+            res.status(404).json({ mensaje: "No se encontraron publicaciones" });
+        } else {
+            res.status(200).json({ total: resultado[0].total });
+        }
     } catch (error) {
-        res.status(500).json({
-            "mensaje": error.message
-        });
+        res.status(500).json({ mensaje: error.message });
     }
 }
+
 
 // Listar publicaciones por fecha
 export const listarPublicacionesPorFecha = async (req, res) => {
     try {
-        const { fecha } = req.params;
-        const [publicaciones] = await pool.query("SELECT * FROM publicaciones WHERE DATE(fecha) = ?", [fecha]);
-        const [count] = await pool.query("SELECT COUNT(*) as total FROM publicaciones WHERE DATE(fecha) = ?", [fecha]);
+        const { fechaInicio, fechaFin } = req.params;
+
+        let query;
+        let params;
+
+        if (fechaInicio && fechaFin) {
+            // Query para rango de fechas
+            query = "SELECT * FROM publicaciones WHERE DATE(fecha) BETWEEN ? AND ?";
+            params = [fechaInicio, fechaFin];
+        } else if (fechaInicio) {
+            // Query para una sola fecha
+            query = "SELECT * FROM publicaciones WHERE DATE(fecha) = ?";
+            params = [fechaInicio];
+        } else {
+            return res.status(400).json({
+                "mensaje": "Debe proporcionar al menos una fecha"
+            });
+        }
+
+        const [publicaciones] = await pool.query(query, params);
+        const [count] = await pool.query(`SELECT COUNT(*) as total FROM (${query}) AS subquery`, params);
 
         if (publicaciones.length > 0) {
             res.status(200).json({ publicaciones, total: count[0].total });
         } else {
             res.status(404).json({
-                "mensaje": "No se encontraron publicaciones para la fecha proporcionada"
+                "mensaje": "No se encontraron publicaciones para las fechas proporcionadas"
             });
         }
     } catch (error) {
@@ -204,3 +226,4 @@ export const listarPublicacionesPorFecha = async (req, res) => {
         });
     }
 }
+ 

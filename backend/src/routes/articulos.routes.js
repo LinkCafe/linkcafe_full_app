@@ -6,6 +6,9 @@ const router = Router();
 
 router.get("/articulos/contar", contarArticulos);
 router.get("/articulos/fecha/:fecha", listarArticulosPorFecha);
+router.get('/articulos/:fechaInicio/:fechaFin?', listarArticulosPorFecha);
+
+
 router.get("/articulos", showArticles);
 router.post("/articulos", middlewaresShowArticles, createArticles);
 router.put("/articulos/:id", middlewaresUpdateArticles, updateArticles);
