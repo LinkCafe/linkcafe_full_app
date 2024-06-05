@@ -124,10 +124,13 @@ export const eliminarUnUsuario = async (req, res) => {
 export const contarUsuarios = async (req, res) => {
     try {
         const [resultado] = await pool.query("SELECT COUNT(*) as total FROM usuarios");
-        res.status(200).json({ total: resultado[0].total });
+        if (resultado[0].total === 0) {
+            res.status(404).json({ mensaje: "No se encontraron usuarios" });
+        } else {
+            res.status(200).json({ total: resultado[0].total });
+        }
     } catch (error) {
-        res.status(500).json({
-            "mensaje": error
-        });
+        res.status(500).json({ mensaje: error.message });
     }
 };
+

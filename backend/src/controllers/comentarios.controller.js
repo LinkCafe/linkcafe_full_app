@@ -5,10 +5,12 @@
     * Mostrar Un articulos x
     * Eliminar Un articulos x
     * Contar comentarios x
+    * Listar comentarios por fechas x
 */
 import { pool } from '../database/conexion.js'
 import { validationResult } from "express-validator";
 
+//Listar Comentarios
 export const listarComentarios = async (req, res) => {
     try {
         const [resultado] = await pool.query("select * from comentarios")
@@ -28,6 +30,7 @@ export const listarComentarios = async (req, res) => {
     }
 }
 
+//Crear Comentarios
 export const crearComentario = async (req, res) => {
     try {
         const error = validationResult(req)
@@ -56,6 +59,7 @@ export const crearComentario = async (req, res) => {
     }
 }
 
+//Actualizar Comentarios
 export const actualizarComentario = async (req, res) => {
     try {
         const error = validationResult(req)
@@ -88,6 +92,7 @@ export const actualizarComentario = async (req, res) => {
     }
 }
 
+//Mostrar Comentarios por ID
 export const mostrarUnComentario = async (req, res) => {
     try {
         const { id } = req.params; 
@@ -108,6 +113,7 @@ export const mostrarUnComentario = async (req, res) => {
     }
 }
 
+//Eliminar publicaciones
 export const eliminarComentario = async (req, res) => {
     try {
         const { id } = req.params; 
@@ -134,26 +140,47 @@ export const eliminarComentario = async (req, res) => {
 export const contarComentarios = async (req, res) => {
     try {
         const [resultado] = await pool.query("SELECT COUNT(*) as total FROM comentarios");
-        res.status(200).json({ total: resultado[0].total });
+        if (resultado[0].total === 0) {
+            res.status(404).json({ mensaje: "No se encontraron comentarios" });
+        } else {
+            res.status(200).json({ total: resultado[0].total });
+        }
     } catch (error) {
-        res.status(500).json({
-            "mensaje": error
-        })
+        res.status(500).json({ mensaje: error.message });
     }
 }
+
 
 // Listar comentarios por fecha
 export const listarComentariosPorFecha = async (req, res) => {
     try {
-        const { fecha } = req.params;
-        const [comentarios] = await pool.query("SELECT * FROM comentarios WHERE DATE(fecha) = ?", [fecha]);
-        const [count] = await pool.query("SELECT COUNT(*) as total FROM comentarios WHERE DATE(fecha) = ?", [fecha]);
+        const { fechaInicio, fechaFin } = req.params;
+
+        let query;
+        let params;
+
+        if (fechaInicio && fechaFin) {
+            // Query para rango de fechas
+            query = "SELECT * FROM comentarios WHERE DATE(fecha) BETWEEN ? AND ?";
+            params = [fechaInicio, fechaFin];
+        } else if (fechaInicio) {
+            // Query para una sola fecha
+            query = "SELECT * FROM comentarios WHERE DATE(fecha) = ?";
+            params = [fechaInicio];
+        } else {
+            return res.status(400).json({
+                "mensaje": "Debe proporcionar al menos una fecha"
+            });
+        }
+
+        const [comentarios] = await pool.query(query, params);
+        const [count] = await pool.query(`SELECT COUNT(*) as total FROM (${query}) AS subquery`, params);
 
         if (comentarios.length > 0) {
             res.status(200).json({ comentarios, total: count[0].total });
         } else {
             res.status(404).json({
-                "mensaje": "No se encontraron comentarios para la fecha proporcionada"
+                "mensaje": "No se encontraron comentarios para las fechas proporcionadas"
             });
         }
     } catch (error) {
@@ -161,4 +188,4 @@ export const listarComentariosPorFecha = async (req, res) => {
             "mensaje": error.message
         });
     }
-}
+};
