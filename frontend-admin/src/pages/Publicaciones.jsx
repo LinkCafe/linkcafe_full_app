@@ -60,7 +60,7 @@ function Publicaciones() {
             <Button variant="success" onClick={() => setOpenCreatePublicacionesModal(true)}>Crear Publicacion</Button>
             <CreatePublicacionesModal open={openCreatePublicacionesModal} onClose={() => setOpenCreatePublicacionesModal(false)} />
           </div>
-          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
+          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 overflow-y-auto h-[calc(100vh-200px)]'>
             {publicaciones.map((d, index) => (
               <div className="max-w-sm bg-gray-100 border border-gray-300 rounded-lg shadow-xl" key={index}>
                 <EditPublicacionesModal
@@ -84,7 +84,6 @@ function Publicaciones() {
                   </div>
                 </div>
               </div>
-
             ))}
           </div>
         </div>

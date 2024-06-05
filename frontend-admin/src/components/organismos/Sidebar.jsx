@@ -38,7 +38,7 @@ function Sidebar() {
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            className="h-8 w-8 cursor-pointer"
+            className="h-6 w-8 cursor-pointer"
             data-tip="Logo"
           >
             <path
