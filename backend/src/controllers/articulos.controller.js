@@ -5,11 +5,14 @@
     * Mostrar Un articulos x
     * Eliminar Un articulos x
     * Contar articulos x
+    * Listar Articulos por fechas x
 */
 
 import { validationResult } from "express-validator";
 import { pool } from "../database/conexion.js";
 
+
+//Listar Todos los articulos
 export const showArticles = async (req, res) => {
     try {
         const [resultado] = await pool.query("SELECT * FROM articulos");
@@ -28,6 +31,7 @@ export const showArticles = async (req, res) => {
     }
 };
 
+//Crear articulos
 export const createArticles = async (req, res) => {
     try {
         const error = validationResult(req);
@@ -54,6 +58,7 @@ export const createArticles = async (req, res) => {
     }
 };
 
+//Actualizar arituclos
 export const updateArticles = async (req, res) => {
     try {
         const error = validationResult(req);
@@ -87,6 +92,8 @@ export const updateArticles = async (req, res) => {
     }
 };
 
+
+//Listar articulos por id 
 export const showAArticles = async (req, res) => {
     try {
         const { id } = req.params;
@@ -106,6 +113,7 @@ export const showAArticles = async (req, res) => {
     }
 };
 
+//Eliminar articulos
 export const deleteArticles = async (req, res) => {
     try {
         const { id } = req.params;
@@ -131,26 +139,47 @@ export const deleteArticles = async (req, res) => {
 export const contarArticulos = async (req, res) => {
     try {
         const [resultado] = await pool.query("SELECT COUNT(*) as total FROM articulos");
-        res.status(200).json({ total: resultado[0].total });
+        if (resultado[0].total === 0) {
+            res.status(404).json({ mensaje: "No se encontraron artículos" });
+        } else {
+            res.status(200).json({ total: resultado[0].total });
+        }
     } catch (error) {
-        res.status(500).json({
-            "mensaje": error
-        });
+        res.status(500).json({ mensaje: error.message });
     }
 };
+
 
 // Listar los artículos por fechas
 export const listarArticulosPorFecha = async (req, res) => {
     try {
-        const { fecha } = req.params;
-        const [articulos] = await pool.query("SELECT * FROM articulos WHERE DATE(fecha) = ?", [fecha]);
-        const [count] = await pool.query("SELECT COUNT(*) as total FROM articulos WHERE DATE(fecha) = ?", [fecha]);
+        const { fechaInicio, fechaFin } = req.params;
+
+        let query;
+        let params;
+
+        if (fechaInicio && fechaFin) {
+            // Query para rango de fechas
+            query = "SELECT * FROM articulos WHERE DATE(fecha) BETWEEN ? AND ?";
+            params = [fechaInicio, fechaFin];
+        } else if (fechaInicio) {
+            // Query para una sola fecha
+            query = "SELECT * FROM articulos WHERE DATE(fecha) = ?";
+            params = [fechaInicio];
+        } else {
+            return res.status(400).json({
+                "mensaje": "Debe proporcionar al menos una fecha"
+            });
+        }
+
+        const [articulos] = await pool.query(query, params);
+        const [count] = await pool.query(`SELECT COUNT(*) as total FROM (${query}) AS subquery`, params);
 
         if (articulos.length > 0) {
             res.status(200).json({ articulos, total: count[0].total });
         } else {
             res.status(404).json({
-                "mensaje": "No se encontraron artículos para la fecha proporcionada"
+                "mensaje": "No se encontraron artículos para las fechas proporcionadas"
             });
         }
     } catch (error) {
@@ -158,5 +187,5 @@ export const listarArticulosPorFecha = async (req, res) => {
             "mensaje": error.message
         });
     }
-}
+};
 

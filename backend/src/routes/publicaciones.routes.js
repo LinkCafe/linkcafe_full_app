@@ -7,6 +7,7 @@ const router = Router();
 
 router.get("/publicaciones/contar", contarPublicaciones);
 router.get("/publicaciones/fecha/:fecha", listarPublicacionesPorFecha);
+router.get('/publicaciones/:fechaInicio/:fechaFin?', listarPublicacionesPorFecha);
 
 router.get("/publicaciones", listarPublicaciones);
 router.post("/publicaciones", cargarImagen, middlewaresCreatePublics, crearUnaPublicacion);

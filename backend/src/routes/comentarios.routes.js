@@ -6,6 +6,8 @@ const router = Router();
 
 router.get("/comentarios/contar", contarComentarios);
 router.get("/comentarios/fecha/:fecha", listarComentariosPorFecha);
+router.get('/comentarios/:fechaInicio/:fechaFin?', listarComentariosPorFecha);
+
 router.get("/comentarios", listarComentarios);
 router.post("/comentarios", middlewaresCreateComentario, crearComentario);
 router.put("/comentarios/:id", middlewaresUpdateComentario, actualizarComentario);
