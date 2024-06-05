@@ -21,11 +21,11 @@ const PublicationView = ({ route }) => {
                     size={40}
                 />
                 <View style={styles.userDetails}>
-                    <Text style={styles.userName}>Fernando</Text>
+                    <Text style={[styles.userName, { color: theme === 'dark'? 'white' : 'black' }]}>Fernando</Text>
                     <Text style={styles.subtitle}>Hace 20 min</Text>
                 </View>
             </View>
-            <Text style={styles.description}>{description}</Text>
+            <Text style={[styles.description, { color: theme === 'dark'? 'white' : 'black' }]}>{description}</Text>
             <Image
                 source={public1Image}
                 style={styles.image}
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
         lineHeight: 24,
         paddingLeft: 22,
         paddingRight: 22,
-        marginTop: 5
+        marginTop: 5,
     },
     image: {
         width: Dimensions.get('window').width - 36,

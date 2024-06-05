@@ -33,7 +33,7 @@ const Login = () => {
   return (
     <SafeAreaView style={[styleConstants.container, {backgroundColor: theme === 'dark'? '#333' : '#FFF'}]}>
       <ScrollView style={style.contentCard}>
-        <Text style={[style.loginTitleStyle, { color: theme === 'dark'? 'white' : 'black' }]}>Iniciar Sesión</Text>
+        <Text style={[style.loginTitleStyle, { color: theme === 'dark'? 'white' : 'black' }]}>Iniciar Sesión </Text>
         <Input
           placeholder="Correo"
           inputContainerStyle={style.inputStyle}

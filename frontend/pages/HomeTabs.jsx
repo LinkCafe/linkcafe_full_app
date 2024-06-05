@@ -9,7 +9,6 @@ import UserIcon from '../components/organismos/UserIcon';
 import TabBarIcon from '../components/organismos/TabBarIcon.jsx';
 import IconComponent from '../components/organismos/IconComponent';
 import ProfileTabIcon from '../components/organismos/ProfileTabIcon';
-import TituloPersonalizado from '../components/organismos/TitlePersonaliced';
 import { Text } from 'react-native';
 import { Icon } from "@rneui/base";
 

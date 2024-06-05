@@ -12,11 +12,9 @@ import {styleConstants} from '../constants/style';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import ThemeContext from '../context/ThemeContext';
 
 const LoginHome = () => {
   const navigation = useNavigation();
-  const { theme, toggleTheme } = useContext(ThemeContext);
   const handleGuest = async () => {
     try {
       await AsyncStorage.setItem('name', 'Invitado');
@@ -35,7 +33,7 @@ const LoginHome = () => {
   };
   
   return (
-    <SafeAreaView style={[styleConstants.container, { backgroundColor: theme === 'light'? 'white' : '#202020' }]}>
+    <SafeAreaView style={styleConstants.container}>
       <ScrollView style={style.contentCard}>
         <Image
           source={require('../img/loginImage.jpg')}
@@ -50,12 +48,12 @@ const LoginHome = () => {
         </Text>
         <View style={style.interaccion}>
           <Button
-            buttonStyle={[style.button, style.btnLogin, { backgroundColor: theme === 'light'? '#E39B5A' : 'gray' }]}
+            buttonStyle={[style.button, style.btnLogin]}
             onPress={() => navigation.navigate('Login')}>
             Iniciar Sesión
           </Button>
           <Button
-            buttonStyle={[style.button, style.btnSignUp, { borderColor: theme === 'light'? '#E39B5A' : 'gray' }]}
+            buttonStyle={[style.button, style.btnSignUp]}
             titleStyle={style.btnSignUpTitleStyle}
             onPress={() => navigation.navigate('SignUp')}>
             Registrarse
