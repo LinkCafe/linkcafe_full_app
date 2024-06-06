@@ -1,13 +1,15 @@
 import {View, Text, StyleSheet, ScrollView, ToastAndroid} from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {styleConstants} from '../constants/style';
 import {Button, Input} from '@rneui/base';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
+import ThemeContext from '../context/ThemeContext';
 
 const SignUp = () => {
   const navigation = useNavigation();
+  const { theme } = useContext(ThemeContext);
   const [visiblePassword, setVisiblePassword] = useState(true);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -38,9 +40,9 @@ const SignUp = () => {
   };
 
   return (
-    <SafeAreaView style={styleConstants.container}>
+    <SafeAreaView style={[styleConstants.container, { backgroundColor: theme === 'light'? 'white' : '#202020' }]}>
       <ScrollView style={style.contentCard}>
-        <Text style={style.titleStyle}>Registro</Text>
+        <Text style={[style.titleStyle, {color: theme === 'light'? 'black' : 'white'}]}>Registro</Text>
         <Input
           placeholder="Nombre"
           inputContainerStyle={style.inputStyle}

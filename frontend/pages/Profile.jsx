@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, StyleSheet, VirtualizedList } from "react-native";
+import { View, Text, ScrollView, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useContext, useEffect, useState } from "react";
 import { Avatar, Button, Switch } from "@rneui/base";
@@ -79,7 +79,7 @@ const Profile =  () => {
             >
               Editar {">"}
             </Button>
-            <Button onPress={()=>navigation.navigate('chat')}>chat</Button>
+            
 
 
           </View>
@@ -103,6 +103,9 @@ const Profile =  () => {
             onValueChange={() => handleToggleTheme()}
             color={ theme === 'dark' ? 'white' : '#2089dc'}
             />
+        </View>
+        <View>
+        <Button onPress={()=>navigation.navigate('chat')}>chat</Button>
         </View>
       </ScrollView>
     </SafeAreaView>

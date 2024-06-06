@@ -1,12 +1,14 @@
 import { View, Text, StyleSheet, ScrollView, ToastAndroid } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { styleConstants } from "../constants/style";
 import { Button, Input } from "@rneui/base";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ThemeContext from '../context/ThemeContext';
 
 const Login = () => {
+  const { theme } = useContext(ThemeContext);
   const [visiblePassword, setVisiblePassword] = useState(true);
   const navigation = useNavigation();
   const handleVisibilityPassword = () => {
@@ -29,9 +31,9 @@ const Login = () => {
   };
 
   return (
-    <SafeAreaView style={styleConstants.container}>
+    <SafeAreaView style={[styleConstants.container, {backgroundColor: theme === 'dark'? '#333' : '#FFF'}]}>
       <ScrollView style={style.contentCard}>
-        <Text style={style.loginTitleStyle}>Iniciar Sesión</Text>
+        <Text style={[style.loginTitleStyle, { color: theme === 'dark'? 'white' : 'black' }]}>Iniciar Sesión </Text>
         <Input
           placeholder="Correo"
           inputContainerStyle={style.inputStyle}

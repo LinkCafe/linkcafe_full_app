@@ -10,7 +10,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Avatar, Card } from "@rneui/base";
 import { Button } from "@rneui/base";
 import ThemeContext from "../../context/ThemeContext";
-/* import coffeImage from "../../img/coffe.webp" */
+import coffeImage from "../../img/coffe.webp";
 import { useNavigation } from '@react-navigation/native';
 import public1Image from '../../img/public1.png';
 import public2Image from '../../img/public2.png'
@@ -32,7 +32,7 @@ const Discussions = () => {
       persona: "Fernando",
     },
     {
-      imagen: public2Image,
+      imagen: coffeImage,
       titulo: "Por qué se debe sembrar en luna llena?",
       veridica: false,
       categoria: "Producción 🌱",

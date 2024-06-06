@@ -1,29 +1,31 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, StyleSheet, Image, Dimensions, TextInput, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Avatar } from 'react-native-elements';
-import public1Image from '../img/public1.png';
+import ThemeContext  from '../context/ThemeContext';
+
+const public1Image = require('../img/public1.png');
 
 const PublicationView = ({ route }) => {
     const { publication } = route.params;
+    const { theme } = useContext(ThemeContext);
 
     const description = "Las fases de la luna han sido consideradas como parte de las actividades agrícolas del cultivo de café, por su marcada influencia en cada una de las etapas fenológicas de éste cultivo.";
 
     return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-            </View>
+        <View style={{ flex: 1, padding: 16, backgroundColor: theme === 'dark'? '#121212' : '#ffffff' }}>
+            <View style={styles.header}></View>
             <View style={styles.userInfo}>
                 <Avatar
                     rounded
                     size={40}
                 />
                 <View style={styles.userDetails}>
-                    <Text style={styles.userName}>Fernando</Text>
+                    <Text style={[styles.userName, { color: theme === 'dark'? 'white' : 'black' }]}>Fernando</Text>
                     <Text style={styles.subtitle}>Hace 20 min</Text>
                 </View>
             </View>
-            <Text style={styles.description}>{description}</Text>
+            <Text style={[styles.description, { color: theme === 'dark'? 'white' : 'black' }]}>{description}</Text>
             <Image
                 source={public1Image}
                 style={styles.image}
@@ -50,11 +52,8 @@ const PublicationView = ({ route }) => {
     );
 };
 
+
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 16,
-    },
     header: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -89,7 +88,7 @@ const styles = StyleSheet.create({
         lineHeight: 24,
         paddingLeft: 22,
         paddingRight: 22,
-        marginTop: 5
+        marginTop: 5,
     },
     image: {
         width: Dimensions.get('window').width - 36,

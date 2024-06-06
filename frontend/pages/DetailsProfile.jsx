@@ -27,7 +27,7 @@ const DetailsProfile = () => {
             'Datos actualizados',
             ToastAndroid.LONG,
             ToastAndroid.BOTTOM,
-          );
+        );
         navigation.navigate("Profile")
     }
     return (
@@ -69,7 +69,6 @@ const DetailsProfile = () => {
                     defaultValue={email}
                     onChangeText={(text) => setEmail(text)}
                 />
-               
                 <Button
                     buttonStyle={[style.button, style.btnLogin]}
                     onPress={() => handleSubmit()}
@@ -124,10 +123,10 @@ const style = StyleSheet.create({
     button: {
         borderRadius: 10,
         padding: 12,
-      },
-      btnLogin: {
+    },
+    btnLogin: {
         backgroundColor: "#E39B5A",
-      },
+    },
 });
 
 export default DetailsProfile
