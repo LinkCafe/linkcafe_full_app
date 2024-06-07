@@ -27,7 +27,7 @@ function Header() {
       <nav className="bg-gray-800 border-primary px-4 lg:px-6 py-2.5 dark:bg-gray-800">
         <div className="flex flex-wrap justify-between items-center ">
           <a className="flex items-center">
-            <h2 className='self-center text-2xl font-semibold whitespace-nowrap -ml-2 dark:text-white'>
+            <h2 className='self-center text-2xl font-semibold whitespace-nowrap -ml-2 text-gray-300'>
               Link
             <span className="text-primary">Cafe</span>
             </h2>
