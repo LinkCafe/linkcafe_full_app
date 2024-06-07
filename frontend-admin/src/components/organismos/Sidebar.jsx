@@ -29,9 +29,9 @@ function Sidebar() {
   const { pathname } = useLocation();
 
   return (
-    <div className="bg-gray-100 h-screen flex justify-center">
+    <div className="bg-gray-800 h-screen flex justify-center">
       <div className="flex w-21 flex-col items-center space-y-3 py-2">
-        <div className="flex items-center justify-center rounded-md bg-white p-4 text-blue-600">
+        <div className="flex items-center justify-center rounded-md bg-gray-900 p-4 text-blue-600">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -49,7 +49,7 @@ function Sidebar() {
           </svg>
         </div>
 
-        <div className="space-y-35 rounded-md bg-white text-base">
+        <div className="space-y-35 rounded-md bg-gray-900 text-base h-full">
           <ul>
             <li className="p-5">
               <LightTooltip title="Inicio" placement="right" TransitionComponent={Zoom}>
@@ -87,13 +87,7 @@ function Sidebar() {
               </LightTooltip>
             </li>
           </ul>
-          <div className="flex items-center justify-center pb-5">
-            <LightTooltip title="Salir" placement="right" TransitionComponent={Zoom}>
-              <Link to={"/logout"} className="h-6 w-6 cursor-pointer text-gray-500 transition-all hover:text-primary" style={iconStyle}>
-                <FontAwesomeIcon icon={faDoorOpen} className="transition-transform hover:scale-150" />
-              </Link>
-            </LightTooltip>
-          </div>
+
         </div>
       </div>
     </div>
