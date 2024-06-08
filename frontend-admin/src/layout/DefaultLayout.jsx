@@ -10,7 +10,7 @@ export default function DefaultLayout({ children }) {
 
       <div className="relative flex flex-1 flex-col overflow-hidden bg-gray-200">
         
-        <main className='p-6'>
+        <main className='p-6 mt-2'>
           {children}
         </main>
 
