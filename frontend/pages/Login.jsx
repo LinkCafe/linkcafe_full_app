@@ -6,6 +6,10 @@ import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ThemeContext from '../context/ThemeContext';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
+
+
 
 const Login = () => {
   const { theme } = useContext(ThemeContext);
@@ -34,21 +38,21 @@ const Login = () => {
     <SafeAreaView style={[styleConstants.container, {backgroundColor: theme === 'dark'? '#333' : '#FFF'}]}>
       <ScrollView style={style.contentCard}>
         <Text style={[style.loginTitleStyle, { color: theme === 'dark'? 'white' : 'black' }]}>Iniciar Sesión </Text>
-        <Input
+       <View>
+       <Input
           placeholder="Correo"
           inputContainerStyle={style.inputStyle}
           label="Correo"
-          leftIcon={{
-            type: 'font-awesome',
-            name: 'envelope',
-            color: '#E39B5A',
-          }}
+          leftIcon={{type: 'font-awesome', name: 'lock', color: '#E39B5A'}}
           leftIconContainerStyle={style.inputContainerStyle}
           textContentType="emailAddress"
           keyboardType="email-address"
           labelStyle={style.labelStyle}
           onChangeText={text => setEmail(text)}
         />
+        <FontAwesomeIcon icon={faEnvelope} size={23} style={style.email}/>
+       </View>
+       <View>
         <Input
           placeholder="Contraseña"
           inputContainerStyle={style.inputStyle}
@@ -66,6 +70,8 @@ const Login = () => {
           rightIconContainerStyle={style.inputContainerStyle}
           onChangeText={text => setPassword(text)}
         />
+        <FontAwesomeIcon icon={faLock} size={23} style={style.password}  />
+       </View> 
         <Text style={style.forgotPasswordStyle}>¿Olvidaste la contraseña?</Text>
         <View style={style.interaction}>
           <Button
@@ -149,6 +155,20 @@ const style = StyleSheet.create({
     borderColor: '#E39B5A',
     borderWidth: 2,
   },
+  email:{
+    color:'#E39B5A',
+    position:'absolute',
+    top:49,
+    left:18
+
+  },
+  password:{
+    color:'#E39B5A',
+    position:'absolute',
+    top:49,
+    left:19
+  }
 });
+
 
 export default Login;
