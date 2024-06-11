@@ -9,7 +9,7 @@ import ThemeContext from "../context/ThemeContext";
 const Home = () => {
   const { theme } = useContext(ThemeContext);
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: theme == 'light' ? 'white' : '#202020'}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme == 'light' ? '#E8DCD1' : '#202020'}}>
       <ScrollView>
         <Categories />
         <Discussions />

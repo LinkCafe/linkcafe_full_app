@@ -42,13 +42,13 @@ const Articles = () => {
         <Text
           style={[
             styles.moreCategoriesText,
-            { color: theme == "light" ? "black" : "white" },
+            { color: theme == "light" ? "#6A4023" : "white" },
           ]}
         >
           Artículos recomendados
         </Text>
         <TouchableOpacity onPress={goToArticle} style={styles.all_articles}>
-          <Text style={styles.text}>Ver todos  </Text>
+          <Text style={[styles.text,{color: theme == "light" ? "black" : "white"}]}>Ver todos  </Text>
         </TouchableOpacity>
       </View>
       <ScrollView horizontal={true}>
@@ -58,7 +58,7 @@ const Articles = () => {
               key={index}
               containerStyle={[
                 styles.card,
-                { backgroundColor: theme == "light" ? "white" : "#434343" },
+                { backgroundColor: theme == "light" ? "#E8DCD1" : "#434343" },
               ]}
             >
               <Image
@@ -68,7 +68,7 @@ const Articles = () => {
                   height: 150,
                 }}
               />
-              <Text style={{ paddingTop: 12, color: theme == "light" ? "black" : "white" }}>
+              <Text style={{ paddingTop: 12, color: theme == "light" ? "#6A4023" : "white" }}>
                 {d.titulo}
               </Text>
               <View
@@ -85,7 +85,7 @@ const Articles = () => {
                     padding: 5,
                     borderRadius: 5,
                     backgroundColor: theme == "light" ? "#3e3e3e26" : "gray",
-                    color: theme == "light" ? "black" : "white",
+                    color: theme == "light" ? "#6A4023" : "white",
                   }}
                 >
                   {d.categoria}

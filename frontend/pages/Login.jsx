@@ -31,9 +31,9 @@ const Login = () => {
   };
 
   return (
-    <SafeAreaView style={[styleConstants.container, {backgroundColor: theme === 'dark'? '#333' : '#FFF'}]}>
+    <SafeAreaView style={[styleConstants.container, {backgroundColor: theme === 'dark'? '#333' : '#E8DCD1'}]}>
       <ScrollView style={style.contentCard}>
-        <Text style={[style.loginTitleStyle, { color: theme === 'dark'? 'white' : 'black' }]}>Iniciar Sesión </Text>
+        <Text style={[style.loginTitleStyle, { color: theme === 'dark'? 'white' : '#6A4023' }]}>Iniciar Sesión </Text>
         <Input
           placeholder="Correo"
           inputContainerStyle={style.inputStyle}
@@ -98,7 +98,6 @@ const style = StyleSheet.create({
     paddingVertical: 55,
     textAlign: 'left',
     fontSize: 25,
-    color:'black',
     fontWeight: "500"
   },
   forgotPasswordStyle: {
@@ -123,6 +122,7 @@ const style = StyleSheet.create({
   labelStyle: {
     fontWeight: 'normal',
     marginBottom: 10,
+    color: '#6A4023',
   },
   orTextStyle: {
     textAlign: 'center',

@@ -14,7 +14,7 @@ const Categories = () => {
   return (
     <View style={style.container}>
       <View style={style.moreCategories}>
-        <Text style={[style.moreCategoriesText, { color: theme == 'light' ? 'black' : 'white' }]}>Temas de conversación</Text>
+        <Text style={[style.moreCategoriesText, { color: theme == 'light' ? '#6A4023' : 'white' }]}>Temas de conversación</Text>
         <Button
           type="outline"
           title="Ver todo >"
@@ -26,7 +26,7 @@ const Categories = () => {
         />
       </View>
       <View style={style.categoriesContainer}>
-        <Button buttonStyle={[style.styleButton, { backgroundColor: theme == 'light' ? "#fafafa" : 'transparent' }]} onPress={() => navigation.navigate("CategoriesFull", {
+        <Button buttonStyle={[style.styleButton, { backgroundColor: theme == 'light' ? "#E8DCD1" : 'transparent' }]} onPress={() => navigation.navigate("CategoriesFull", {
           type: 'produccion'
         })}>
           <Avatar
@@ -36,9 +36,9 @@ const Categories = () => {
             titleStyle={style.styleButton.icon}
             containerStyle={{ backgroundColor: "#e9e9e9" }}
           />
-          <Text style={[style.styleButton.text, { color: theme == 'light' ? 'black' : 'white' }]}>Producción</Text>
+          <Text style={[style.styleButton.text, { color: theme == 'light' ? '#6A4023' : 'white' }]}>Producción</Text>
         </Button>
-        <Button buttonStyle={[style.styleButton, { backgroundColor: theme == 'light' ? "#fafafa" : 'transparent' }]} onPress={() => navigation.navigate("CategoriesFull", {
+        <Button buttonStyle={[style.styleButton, { backgroundColor: theme == 'light' ? "#E8DCD1" : 'transparent' }]} onPress={() => navigation.navigate("CategoriesFull", {
           type: 'barismo'
         })} >
           <Avatar
@@ -48,9 +48,9 @@ const Categories = () => {
             titleStyle={style.styleButton.icon}
             containerStyle={{ backgroundColor: "#e9e9e9" }}
           />
-          <Text style={[style.styleButton.text, { color: theme == 'light' ? 'black' : 'white' }]}>Barismo</Text>
+          <Text style={[style.styleButton.text, { color: theme == 'light' ? '#6A4023' : 'white' }]}>Barismo</Text>
         </Button>
-        <Button buttonStyle={[style.styleButton, { backgroundColor: theme == 'light' ? "#fafafa" : 'transparent' }]} onPress={() => navigation.navigate("CategoriesFull", {
+        <Button buttonStyle={[style.styleButton, { backgroundColor: theme == 'light' ? "#E8DCD1" : 'transparent' }]} onPress={() => navigation.navigate("CategoriesFull", {
           type: 'otros'
         })}>
           <Avatar
@@ -60,7 +60,7 @@ const Categories = () => {
             titleStyle={style.styleButton.icon}
             containerStyle={{ backgroundColor: "#e9e9e9" }}
           />
-          <Text style={[style.styleButton.text, { color: theme == 'light' ? 'black' : 'white' }]}>Entre Otros</Text>
+          <Text style={[style.styleButton.text, { color: theme == 'light' ? '#6A4023' : 'white' }]}>Entre Otros</Text>
         </Button>
       </View>
     </View>

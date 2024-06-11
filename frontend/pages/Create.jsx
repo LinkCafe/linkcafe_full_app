@@ -25,7 +25,7 @@ const Create = () => {
 
   const { theme } = useContext(ThemeContext)
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: theme == 'light' ? "white" : '#202020' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme == 'light' ? "#E8DCD1" : '#202020' }}>
       <ScrollView>
         <View
           style={{ width: "100%", paddingHorizontal: 16, marginBottom: 25 }}

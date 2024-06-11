@@ -13,7 +13,7 @@ const PublicationView = ({ route }) => {
     const description = "Las fases de la luna han sido consideradas como parte de las actividades agrícolas del cultivo de café, por su marcada influencia en cada una de las etapas fenológicas de éste cultivo.";
 
     return (
-        <View style={{ flex: 1, padding: 16, backgroundColor: theme === 'dark'? '#121212' : '#ffffff' }}>
+        <View style={{ flex: 1, padding: 16, backgroundColor: theme === 'dark'? '#121212' : '#E8DCD1' }}>
             <View style={styles.header}></View>
             <View style={styles.userInfo}>
                 <Avatar
@@ -21,11 +21,11 @@ const PublicationView = ({ route }) => {
                     size={40}
                 />
                 <View style={styles.userDetails}>
-                    <Text style={[styles.userName, { color: theme === 'dark'? 'white' : 'black' }]}>Fernando</Text>
+                    <Text style={[styles.userName, { color: theme === 'dark'? 'white' : '#6A4023' }]}>Fernando</Text>
                     <Text style={styles.subtitle}>Hace 20 min</Text>
                 </View>
             </View>
-            <Text style={[styles.description, { color: theme === 'dark'? 'white' : 'black' }]}>{description}</Text>
+            <Text style={[styles.description, { color: theme === 'dark'? 'white' : '#6A4023' }]}>{description}</Text>
             <Image
                 source={public1Image}
                 style={styles.image}
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     },
     urlLabel: {
         fontSize: 14,
-        color: '#333',
+        color: '#6A4023',
         marginBottom: 4,
     },
     url: {

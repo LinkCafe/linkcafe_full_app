@@ -52,7 +52,7 @@ const Discussions = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={style.moreCategories}>
-        <Text style={[style.moreCategoriesText, { color: theme == 'light' ? 'black' : 'white' }]}>Últimas discusiones</Text>
+        <Text style={[style.moreCategoriesText, { color: theme == 'light' ? '#6A4023' : 'white' }]}>Últimas discusiones</Text>
         <Button
           type="outline"
           title="Ver todas >"
@@ -66,13 +66,13 @@ const Discussions = () => {
           {data.map((d, index) => (
                 <Card
             key={index}
-            containerStyle={[style.card, { backgroundColor: theme == 'light' ? 'white' : '#464646' }]}
+            containerStyle={[style.card, { backgroundColor: theme == 'light' ? '#E8DCD1' : '#464646' }]}
                 >
                 <Image
               source={d.imagen}
               style={{ width: "100%", height: 150 }}
                 />
-              <Text style={{ paddingTop: 12, color: theme == 'light' ? 'black' : 'white' }}>{d.titulo}</Text>
+              <Text style={{ paddingTop: 12, color: theme == 'light' ? '#6A4023' : 'white' }}>{d.titulo}</Text>
               <View
                 style={{
                   display: "flex",
@@ -113,7 +113,7 @@ const Discussions = () => {
                 }}
               >
                 <Avatar />
-                <Text style={{ fontWeight: "bold", color: theme == 'light' ? 'black' : 'white' }}>{d.persona}</Text>
+                <Text style={{ fontWeight: "bold", color: theme == 'light' ? '#6A4023' : 'white' }}>{d.persona}</Text>
               </View>
             </Card>
           ))}

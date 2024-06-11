@@ -30,7 +30,7 @@ const Profile =  () => {
   }, [])
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: theme == 'light' ? 'white' : '#202020' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme == 'light' ? '#E8DCD1' : '#202020' }}>
       <ScrollView style={{ paddingHorizontal: 16}}>
         <View
           style={{
@@ -96,7 +96,7 @@ const Profile =  () => {
           <Text style={{
             fontSize: 20,
             fontWeight: 'bold',
-            color: theme == 'light' ? 'black' : 'white'
+            color: theme == 'light' ? 'black' : '#E8DCD1'
           }} >Tema: {theme == 'light' ? 'Claro' : 'Oscuro' }</Text>
           <Switch 
             value={ theme === 'light' ? false : true } 

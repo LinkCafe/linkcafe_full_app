@@ -36,7 +36,7 @@ const Reviews = () => {
       <ScrollView horizontal={true}>
         <View style={style.containerCard}>
           {data.map((d, index) => (
-            <Card key={index} containerStyle={{ backgroundColor: theme == 'light' ? 'white' : '#464646', borderRadius: 5, display: 'flex', gap: 10, margin: 0 }} >
+            <Card key={index} containerStyle={{ backgroundColor: theme == 'light' ? '#E8DCD1' : '#464646', borderRadius: 5, display: 'flex', gap: 10, margin: 0 }} >
               <View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row', gap: 20 }}>
                 <Avatar
                   size={40}

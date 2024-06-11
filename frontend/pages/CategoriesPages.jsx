@@ -7,7 +7,7 @@ import {Card} from '@rneui/base';
 
 const getCardStyle = theme => ({
   ...style.card,
-  backgroundColor: theme === 'light' ? 'white' : '#464646',
+  backgroundColor: theme === 'light' ? '#E8DCD1' : '#464646',
 });
 
 const CategoriesPages = ({route}) => {
@@ -25,7 +25,7 @@ const CategoriesPages = ({route}) => {
   
   const dynamicSafeAreaViewStyle = {
     ...style.safeAreaView,
-    backgroundColor: theme === 'light' ? 'white' : '#202020',
+    backgroundColor: theme === 'light' ? '#E8DCD1' : '#202020',
   };
 
   return (

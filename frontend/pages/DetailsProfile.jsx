@@ -31,7 +31,7 @@ const DetailsProfile = () => {
         navigation.navigate("Profile")
     }
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: theme == 'light' ? 'white' : '#202020' }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: theme == 'light' ? '#E8DCD1' : '#202020' }}>
             <ScrollView style={{ paddingHorizontal: 16 }}>
                 <Input
                     placeholder="Nombre de Usuario"
@@ -40,12 +40,12 @@ const DetailsProfile = () => {
                     label="Nombre (*)"
                     labelStyle={{
                         fontWeight: "bold",
-                        color: theme == 'light' ? "black" : 'white',
+                        color: theme == 'light' ? "#6A4023" : 'white',
                         marginBottom: 10,
                         fontSize: 15,
                     }}
                     style={{
-                        color: theme == 'light' ? 'black' : 'white'
+                        color: theme == 'light' ? '#6A4023' : 'white'
                     }}
                     defaultValue={name}
                     onChangeText={(text) => setName(text)}
@@ -57,12 +57,12 @@ const DetailsProfile = () => {
                     label="Email (*)"
                     labelStyle={{
                         fontWeight: "bold",
-                        color: theme == 'light' ? "black" : 'white',
+                        color: theme == 'light' ? "#6A4023" : 'white',
                         marginBottom: 10,
                         fontSize: 15,
                     }}
                     style={{
-                        color: theme == 'light' ? 'black' : 'white'
+                        color: theme == 'light' ? '#6A4023' : 'white'
                     }}
                     textContentType="emailAddress"
                     keyboardType="email-address"

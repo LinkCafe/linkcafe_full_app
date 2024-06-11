@@ -85,19 +85,19 @@ const style = StyleSheet.create({
   guestText: {
     textDecorationLine: 'underline',
     textAlign: 'center',
-    color:'black',
+    color:'#6A4023',
     paddingBottom:'12',
   },
   expertosText: {
     textTransform: 'capitalize',
     fontWeight: 'bold',
-    color:'black',
+    color:'#6A4023',
   },
   lemaText: {
     fontSize: 20,
     textAlign: 'center',
     marginBottom: 30,
-    color:'black',
+    color:'#6A4023',
   },
   interaccion: {
     width: '100%',

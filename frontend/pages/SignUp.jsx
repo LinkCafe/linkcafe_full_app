@@ -40,9 +40,9 @@ const SignUp = () => {
   };
 
   return (
-    <SafeAreaView style={[styleConstants.container, { backgroundColor: theme === 'light'? 'white' : '#202020' }]}>
+    <SafeAreaView style={[styleConstants.container, { backgroundColor: theme === 'light'? '#E8DCD1' : '#202020' }]}>
       <ScrollView style={style.contentCard}>
-        <Text style={[style.titleStyle, {color: theme === 'light'? 'black' : 'white'}]}>Registro</Text>
+        <Text style={[style.titleStyle, {color: theme === 'light'? '#6A4023' : 'white'}]}>Registro</Text>
         <Input
           placeholder="Nombre"
           inputContainerStyle={style.inputStyle}
@@ -115,7 +115,6 @@ const style = StyleSheet.create({
     paddingVertical: 15,
     textAlign: 'left',
     fontSize: 25,
-    color:'black',
     fontWeight: "500",
   },
   inputStyle: {
@@ -134,6 +133,7 @@ const style = StyleSheet.create({
   labelStyle: {
     fontWeight: 'normal',
     marginBottom: 10,
+    color: '#6A4023',
   },
   interaction: {
     paddingVertical: 50,

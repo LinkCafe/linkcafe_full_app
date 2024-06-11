@@ -21,11 +21,12 @@ const style = StyleSheet.create({
     safe:{
         flex:1,
         alignItems:"center",
+        color: "#E8DCD1",
     },
     texto:{
         marginTop:126,
         fontSize:26,
-        color:'black'
+        color:'#6A4023'
     }
 })
 
