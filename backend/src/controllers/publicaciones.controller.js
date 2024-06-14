@@ -226,4 +226,35 @@ export const listarPublicacionesPorFecha = async (req, res) => {
         });
     }
 }
+
+// Cambiar el estado de una publicación
+export const cambiarEstadoPublicacion = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { estado } = req.body;
+
+        // Verificar que el estado sea un número válido
+        const estadosValidos = [1, 2, 3];
+        if (!estadosValidos.includes(Number(estado))) {
+            return res.status(400).json({ mensaje: "Estado no válido" });
+        }
+
+        // Actualizar el estado en la base de datos
+        const [resultado] = await pool.query(`
+            UPDATE publicaciones 
+            SET estado = ?
+            WHERE id = ?
+        `, [estado, id]);
+
+        if (resultado.affectedRows > 0) {
+            return res.status(200).json({ mensaje: "Estado de la publicación actualizado con éxito" });
+        } else {
+            return res.status(404).json({ mensaje: "No se encontró la publicación" });
+        }
+    } catch (error) {
+        return res.status(500).json({ mensaje: error.message });
+    }
+}
+
+
  
