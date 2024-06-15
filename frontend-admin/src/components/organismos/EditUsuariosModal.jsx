@@ -7,6 +7,7 @@ import Label from '../moleculas/Label';
 import Select from '../moleculas/Select';
 import Button from '../moleculas/Button';
 import Input from '../moleculas/Input';
+import toast from 'react-hot-toast';
 
 
 export default function EditUsuariosModal({open, onClose, row}) {
@@ -41,7 +42,7 @@ export default function EditUsuariosModal({open, onClose, row}) {
                 }
                 const response = await axiosClient.put(`/usuarios/${row.id}`, data)
                     if(response.status === 200){
-                        alert('Usuario Editado Correctamente')
+                        toast.success('Usuario Editado Correctamente')
                         onClose()
                     }
             }

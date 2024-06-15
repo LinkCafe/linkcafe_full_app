@@ -4,6 +4,7 @@ import axiosClient from '../utils/axiosClient'
 import CreateArticulosModal from '../components/organismos/CreateArticulosModal'
 import EditArticulosModal from '../components/organismos/EditArticulosModal'
 import Button from '../components/moleculas/Button'
+import toast, { Toaster } from 'react-hot-toast';
 
 function Articulos() {
 
@@ -35,10 +36,11 @@ function Articulos() {
       if (confirm('¿Estás Seguro De Eliminar Este Articulo?')) {
         const response = await axiosClient.delete(`/articulos/${id}`);
         if (response.status === 200) {
+          toast.success('Articulo Eliminado')
           getArticulos();
         }
       } else {
-        alert('Articulo No Eliminado');
+        toast.error('Articulo No Eliminado');
       }
     } catch (error) {
       console.error(error);
@@ -58,6 +60,7 @@ function Articulos() {
     <>
       <DefaultLayout>
         <div className='w-full h-full flex flex-col p-10 gap-5 bg-white rounded-2xl mt-15'>
+          <Toaster />
           <div className='flex flex-row justify-between'>
             <h1 className='text-2xl'>Articulos</h1>
             <Button variant="success" onClick={() => setOpenCreateArticulosModal(true)}>Crear Articulo</Button>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Sidebar from '../components/organismos/Sidebar';
 import Header from '../components/organismos/Header';
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function DefaultLayout({ children }) {
 

@@ -2,6 +2,7 @@ import React, { useRef } from 'react'
 import LoginImage from '../../assets/cafetero.jpg'
 import axiosClient from '../../utils/axiosClient'
 import { useNavigate } from 'react-router-dom'
+import toast, { Toaster } from 'react-hot-toast'
 
 function Login() {
   const correo = useRef(null)
@@ -19,6 +20,7 @@ function Login() {
       if (response.status == 200) {
         localStorage.setItem('token', response.data.token)
         localStorage.setItem('user', JSON.stringify(response.data.user))
+        toast.success("Inicio de sesión exitoso" , { duration: 3000 })
         navigate('/inicio')
       } else if (response.status == 404 || response.status == 500) {
         alert('Credenciales erroneas')

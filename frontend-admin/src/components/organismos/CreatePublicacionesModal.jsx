@@ -7,6 +7,7 @@ import InputFile from '../moleculas/InputFile';
 import Label from '../moleculas/Label';
 import Select from '../moleculas/Select';
 import Button from '../moleculas/Button';
+import toast from 'react-hot-toast';
 
 export default function CreatePublicacionesModal({ open, onClose }) {
     const [user, setUser] = useState({});
@@ -35,10 +36,10 @@ export default function CreatePublicacionesModal({ open, onClose }) {
                 const response = await axiosClient.post('/publicaciones', formData, {});
 
                 if (response && response.status === 200) {
-                    alert('Publicación creada correctamente');
+                    toast.success('Publicación creada correctamente')
                     onClose();
                 } else {
-                    alert('Error al crear la publicación');
+                    toast.error('Error Al Crear La Publicación')
                 }
             }
         } catch (error) {

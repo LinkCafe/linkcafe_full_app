@@ -7,6 +7,7 @@ import InputFile from '../moleculas/InputFile';
 import Label from '../moleculas/Label';
 import Select from '../moleculas/Select';
 import Button from '../moleculas/Button';
+import toast from 'react-hot-toast';
 
 export default function EditPublicacionesModal({ open, onClose, data, handleEditSuccess }) {
   const nombre = useRef(null);
@@ -48,7 +49,7 @@ export default function EditPublicacionesModal({ open, onClose, data, handleEdit
         });
 
         if (response.status === 200) {
-          alert('Publicación Editada Correctamente');
+          toast.success('Publicación Editada Correctamente');
           handleEditSuccess(); // Llamar a la función para manejar el éxito de la edición
           onClose();
         }
