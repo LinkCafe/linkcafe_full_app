@@ -65,7 +65,7 @@ function Articulos() {
           </div>
           <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
             {articulos.map((a, index) => (
-              <div className="max-w-sm p-6 bg-gray-100 border border-gray-200 rounded-lg shadow" key={index}>
+              <div className="max-w-sm p-6 bg-[#f8f4f1] border border-gray-200 rounded-lg shadow" key={index}>
                 <EditArticulosModal open={selectedArticulo === a.id} onClose={() => { setSelectedArticulo(null); handleEdit(); }} data={a} />
                 <a href="#">
                   <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">{a.nombre}</h5>

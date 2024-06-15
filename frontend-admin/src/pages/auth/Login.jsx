@@ -30,19 +30,20 @@ function Login() {
 
   return (
     <>
-      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark w-full h-screen">
+      <div className="rounded-sm border border-stroke bg-[#E8DCD1] shadow-default dark:border-strokedark dark:bg-boxdark w-full h-screen">
         <div className="flex items-center">
           <div className="hidden xl:flex">
             <img src={LoginImage} alt="" className='max-h-screen object-cover w-full h-screen brightness-10' />
           </div>
-          <div className="w-full h-screen border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
-            <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
-              <h2 className="mb-8 text-4xl font-bold text-black dark:text-white sm:text-title-xxl mt-15 text-center">
-                Link <span className='text-primary'>Cafe</span>
-              </h2>
-
-              <form onSubmit={handleSubmit}>
-                <div className="mb-4">
+          <div className="w-full h-screen border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2 flex flex-col justify-center items-center">
+            <div className="w-full p-4 sm:p-12.5 xl:p-17.5 flex flex-col justify-center items-center">
+              <img
+                src="/logo_completo_cafe.svg"
+                alt=""
+                className='mb-8 mt-9 w-90'
+              />
+              <form onSubmit={handleSubmit} className="w-full flex flex-col justify-center items-center">
+                <div className="mb-4 w-full">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Correo
                   </label>
@@ -50,11 +51,10 @@ function Login() {
                     <input
                       type="email"
                       placeholder="Correo electronico"
-                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                      className="w-full rounded-lg border border-[#6A4023] bg-transparent py-4 pl-6 pr-10 outline-none focus:border-gray-500 focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                       ref={correo}
                       required
                     />
-
                     <span className="absolute right-4 top-4">
                       <svg
                         className="fill-current"
@@ -74,8 +74,7 @@ function Login() {
                     </span>
                   </div>
                 </div>
-
-                <div className="mb-6">
+                <div className="mb-6 w-full">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Contraseña
                   </label>
@@ -83,11 +82,10 @@ function Login() {
                     <input
                       type="password"
                       placeholder="Ingrese su contraseña"
-                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                      className="w-full rounded-lg border border-[#6A4023] bg-transparent py-4 pl-6 pr-10 outline-none focus:border-gray-500 focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                       ref={clave}
                       required
                     />
-
                     <span className="absolute right-4 top-4">
                       <svg
                         className="fill-current"
@@ -111,23 +109,13 @@ function Login() {
                     </span>
                   </div>
                 </div>
-
-                <div className="mb-5 mt-15">
+                <div className="mb-5 mt-15 w-full">
                   <input
                     type="submit"
                     value="Iniciar Sesión"
-                    className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
+                    className="w-full cursor-pointer rounded-lg border border-[#6A4023] bg-[#6A4023] p-4 text-white transition hover:bg-opacity-90"
                   />
                 </div>
-
-                {/* <div className="mt-6 text-center">
-                                    <p>
-                                        Aun no tienes una cuenta?{' '}
-                                        <Link to="/auth/signup" className="text-primary">
-                                            Registrate aquí
-                                        </Link>
-                                    </p>
-                                </div> */}
               </form>
             </div>
           </div>
