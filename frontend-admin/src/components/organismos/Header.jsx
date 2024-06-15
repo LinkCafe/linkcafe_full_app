@@ -24,25 +24,24 @@ function Header() {
 
   return (
     <header>
-      <nav className="bg-gray-800 border-primary px-4 lg:px-6 py-2.5 dark:bg-gray-800">
-        <div className="flex flex-wrap justify-between items-center ">
-          <a className="flex items-center">
-            <h2 className='self-center text-2xl font-semibold whitespace-nowrap -ml-2 text-gray-300'>
-              Link
-            <span className="text-primary">Cafe</span>
-            </h2>
-          </a>
+      <nav className="bg-[#352011] border-primary lg:px-6 py-2.5 dark:bg-gray-800">
+        <div className="flex flex-wrap justify-between items-center w-full">
+          <img 
+          src="/logo_completo_white.svg" 
+          alt="" 
+          className='h-13 w-28 ml-1'
+          />
           <div className="flex items-center lg:order-2 relative">
             <span
-              className='text-gray-300 dark:text-white hover:bg-gray-900 focus:ring-gray-300 rounded-lg text-lg px-5 py-2.5 cursor-pointer'
+              className='text-white dark:text-white hover:bg-[#6B4A33] focus:ring-gray-300 rounded-lg text-lg px-5 py-2.5 cursor-pointer'
               onClick={toggleDropdown}
             >
               {nombreCompleto}
             </span>
             {dropdownOpen && (
-              <div className="absolute right-0 mt-25 bg-gray-800 dark:bg-gray-700 rounded-md shadow-lg">
+              <div className="absolute right-0 mt-25 bg-[#352011] dark:bg-gray-700 rounded-md shadow-lg">
                 <button
-                  className="px-5 text-center w-46 py-2.5 rounded-md text-gray-300 dark:text-white hover:bg-gray-900 dark:hover:bg-gray-600"
+                  className="px-5 text-center w-46 py-2.5 rounded-md text-white dark:text-white hover:bg-[#6B4A33] dark:hover:bg-gray-600"
                   onClick={handleLogout}
                 >
                   Cerrar sesión

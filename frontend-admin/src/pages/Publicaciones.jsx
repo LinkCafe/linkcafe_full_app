@@ -62,7 +62,7 @@ function Publicaciones() {
           </div>
           <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 overflow-y-auto h-[calc(100vh-200px)]'>
             {publicaciones.map((d, index) => (
-              <div className="max-w-sm bg-gray-100 border border-gray-300 rounded-lg shadow-xl" key={index}>
+              <div className="max-w-sm bg-[#f8f4f1] border border-gray-300 rounded-lg shadow-xl" key={index}>
                 <EditPublicacionesModal
                   open={selectedPublicacion === d.id}
                   onClose={() => { setSelectedPublicacion(null); }}
