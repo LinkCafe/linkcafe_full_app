@@ -6,6 +6,7 @@ import Input from '../moleculas/Input';
 import Label from '../moleculas/Label';
 import Select from '../moleculas/Select';
 import Button from '../moleculas/Button';
+import toast from 'react-hot-toast';
 
 export default function EditArticulosModal({ open, onClose, data }) {
 
@@ -37,13 +38,14 @@ export default function EditArticulosModal({ open, onClose, data }) {
                 }
                 const response = await axiosClient.put(`/articulos/${data.id}`, Data)
                 if (response.status === 200) {
-                    alert('Articulo Creado Correctamente');
+                    toast.success('¡Artículo editado con éxito!');
                     onClose()
                 }
             }
 
         } catch (error) {
             console.error(error)
+            toast.error('Error al editar el articulo')
         }
     }
 

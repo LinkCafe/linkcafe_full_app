@@ -4,6 +4,7 @@ import CreatePublicacionesModal from '../components/organismos/CreatePublicacion
 import axiosClient from '../utils/axiosClient';
 import EditPublicacionesModal from '../components/organismos/EditPublicacionesModal';
 import Button from '../components/moleculas/Button';
+import toast, { Toaster } from 'react-hot-toast';
 
 function Publicaciones() {
   const [publicaciones, setPublicaciones] = useState([]);
@@ -37,10 +38,11 @@ function Publicaciones() {
       if (confirm('¿Estás Seguro De Eliminar Esta Publicacion?')) {
         const response = await axiosClient.delete(`/Publicaciones/${id}`);
         if (response.status === 200) {
+          toast.success('publicacion Eliminada')
           getPublicaciones();
         }
       } else {
-        alert('Publicacion No Eliminada');
+        toast.error('Publicacion No Eliminada')
       }
     } catch (error) {
       console.error(error);
@@ -55,6 +57,7 @@ function Publicaciones() {
     <>
       <DefaultLayout>
         <div className='w-full h-full flex flex-col p-10 gap-5 bg-white rounded-2xl mt-15'>
+          <Toaster />
           <div className='flex flex-row justify-between'>
             <h1 className='text-2xl'>Publicaciones</h1>
             <Button variant="success" onClick={() => setOpenCreatePublicacionesModal(true)}>Crear Publicacion</Button>

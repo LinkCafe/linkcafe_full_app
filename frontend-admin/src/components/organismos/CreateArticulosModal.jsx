@@ -7,6 +7,7 @@ import InputFile from '../moleculas/InputFile';
 import Label from '../moleculas/Label';
 import Select from '../moleculas/Select';
 import Button from '../moleculas/Button';
+import toast from 'react-hot-toast';
 
 export default function CreateArticulosModal({open, onClose}) {
 
@@ -33,12 +34,13 @@ export default function CreateArticulosModal({open, onClose}) {
             }
             const response = await axiosClient.post('/articulos', data)
                 if (response.status === 200) {
-                    alert('Articulo Creado Correctamente')
+                    toast.success('Articulo Creado Correctamente')
                     onClose()
                 }
             }
         } catch (error) {
             console.error(error)
+            toast.error('Surgio Un Error')
         }
     }
 
