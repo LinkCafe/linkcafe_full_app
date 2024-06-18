@@ -1,21 +1,24 @@
-import React, { useContext } from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import {Icon} from '@rneui/base';
-import ThemeContext from '../../context/ThemeContext';
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import {faHouse, faPlus, faUser } from '@fortawesome/free-solid-svg-icons';
 
-const TabBarIcon = ({ name }) => {
-  const { theme } = useContext(ThemeContext);
-  const iconColor = theme === 'dark'? 'white' : 'black';
-  return (
-    <View>
-      <Icon name={name} color={iconColor} /> 
-    </View>
-  );
+const TabBarIcon = ({ iconName }) => {
+  switch (iconName) {
+    case 'home':
+      return <FontAwesomeIcon icon={faHouse} size={23} style={styles.icon} />;
+    case 'plus':
+      return <FontAwesomeIcon icon={faPlus} size={23} style={styles.icon} />;
+    case 'user':
+      return <FontAwesomeIcon icon={faUser} size={23} style={styles.icon} />;
+    default:
+      return null;
+  }
 };
 
 const styles = StyleSheet.create({
   icon: {
-    fontSize: 20,
+    color: '#E39B5A'
   },
 });
 

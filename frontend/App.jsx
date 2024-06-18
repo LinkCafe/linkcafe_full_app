@@ -15,6 +15,7 @@ import {Chat} from './pages/Cha.jsx';
 import TituloPersonalizado from './components/organismos/TitlePersonaliced.jsx';
 
 import AllActicles from './pages/AllArticles.jsx';
+import Profile from './pages/Profile.jsx';
 
 const Stack = createNativeStackNavigator();
 
@@ -98,6 +99,11 @@ export default function App() {
             name="All_articles"
             component={AllActicles}
             options={{title: 'Articulos'}}
+          />
+          <Stack.Screen
+            name="Profile"
+            component={Profile}
+            options={{title:'Perfil Personal'}}
           />
         </Stack.Navigator>
       </ThemeProvider>
