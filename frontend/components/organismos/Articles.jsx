@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
   all_articles:{
     borderWidth:1,
     borderRadius:5,
-    width:100
+    width:100,
   },
   text:{
     paddingRight:3,

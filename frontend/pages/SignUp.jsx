@@ -6,6 +6,10 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import ThemeContext from '../context/ThemeContext';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faUser, faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
+import { icon } from '@fortawesome/fontawesome-svg-core';
+
 
 const SignUp = () => {
   const navigation = useNavigation();
@@ -43,6 +47,8 @@ const SignUp = () => {
     <SafeAreaView style={[styleConstants.container, { backgroundColor: theme === 'light'? 'white' : '#202020' }]}>
       <ScrollView style={style.contentCard}>
         <Text style={[style.titleStyle, {color: theme === 'light'? 'black' : 'white'}]}>Registro</Text>
+       
+        <View>
         <Input
           placeholder="Nombre"
           inputContainerStyle={style.inputStyle}
@@ -57,7 +63,12 @@ const SignUp = () => {
           labelStyle={style.labelStyle}
           onChangeText={text => setName(text)}
         />
-        <Input
+        <FontAwesomeIcon icon={faUser} size={23} style={style.icon}/>
+        </View>
+       
+       
+       <View>
+       <Input
           placeholder="Correo"
           inputContainerStyle={style.inputStyle}
           label="Correo"
@@ -71,6 +82,10 @@ const SignUp = () => {
           labelStyle={style.labelStyle}
           onChangeText={text => setEmail(text)}
         />
+         <FontAwesomeIcon icon={faEnvelope} size={23} style={{color:'#E39B5A', position:'absolute', top:49, left:17}}/>
+       </View>
+        
+        <View>
         <Input
           placeholder="Contraseña"
           inputContainerStyle={style.inputStyle}
@@ -88,6 +103,10 @@ const SignUp = () => {
           rightIconContainerStyle={style.inputContainerStyle}
           onChangeText={text => setPassword(text)}
         />
+        <FontAwesomeIcon icon={faLock} size={23} style={{color:'#E39B5A', position:'absolute', top:49, left:17}}/>
+        </View>
+       
+       
         <View style={style.interaction}>
           <Button
             buttonStyle={[style.button, style.btnSignUp]}
@@ -156,4 +175,10 @@ const style = StyleSheet.create({
     borderColor: '#E39B5A',
     borderWidth: 2,
   },
+  icon:{
+    position:'absolute',
+    top:48,
+    left:16,
+    color:'#E39B5A'
+  }
 });
