@@ -95,7 +95,7 @@ function Publicaciones() {
                   <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{d.descripcion}</p>
                   <div className='flex justify-between items-center mb-3'>
                     <p className="mb-3 font-normal text-sm text-gray-700 dark:text-gray-400">{d.fuentes}</p>
-                    <p className={`font-normal text-sm rounded-2xl p-1.5 ${getEstadoClass(d.estado)}`}>{d.estado}</p>
+                    <p className={`font-normal text-sm rounded p-1.5 ${getEstadoClass(d.estado)}`}>{d.estado}</p>
                   </div>
                   <div className='flex flex-row gap-2 items-center justify-center'>
                     <Button variant="success" onClick={() => setSelectedPublicacion(d.id)}>Editar</Button>
