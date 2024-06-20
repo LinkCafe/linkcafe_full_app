@@ -5,7 +5,7 @@ import { DataGrid, GridToolbar, GridActionsCellItem } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditComentariosModal from '../components/organismos/EditComentariosModal';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 function Comentarios() {
   // constante de estado para almacenar los comentarios
@@ -57,7 +57,6 @@ function Comentarios() {
     <>
       <DefaultLayout>
         <div className='w-full h-[91%] flex flex-col p-10 gap-5 bg-white rounded-2xl mt-15'>
-            <Toaster />
             <div className='flex flex-row justify-between '>
               <h1 className='text-2xl'>Comentarios</h1>
               <EditComentariosModal  open={openEditComentariosModal} onClose={() => setOpenEditComentariosModal(false)} row={row} />

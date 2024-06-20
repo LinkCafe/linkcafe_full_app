@@ -5,7 +5,7 @@ import { DataGrid,GridActionsCellItem,  GridToolbar} from '@mui/x-data-grid'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditUsuariosModal from '../components/organismos/EditUsuariosModal'
-import toast, { Toaster } from 'react-hot-toast'
+import toast from 'react-hot-toast'
 
 function Usuarios() {
   // constante de estado para almacenar los usuarios
@@ -56,7 +56,7 @@ function Usuarios() {
     <>
       <DefaultLayout>
         <div className='w-full h-[91%] flex flex-col p-10 gap-5  bg-white rounded-2xl mt-15'>
-          <Toaster />
+
           <div className='flex flex-row justify-between'>
             <h1 className='text-2xl'>Usuarios</h1>
             <EditUsuariosModal open={openEditUsuariosModal} onClose={() => setOpenEditUsuariosModal(false)} row={row}/>

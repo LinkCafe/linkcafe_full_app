@@ -4,7 +4,7 @@ import CreatePublicacionesModal from '../components/organismos/CreatePublicacion
 import axiosClient from '../utils/axiosClient';
 import EditPublicacionesModal from '../components/organismos/EditPublicacionesModal';
 import Button from '../components/moleculas/Button';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 function Publicaciones() {
   const [publicaciones, setPublicaciones] = useState([]);
@@ -16,6 +16,7 @@ function Publicaciones() {
       const response = await axiosClient.get('/publicaciones');
       if (response.status === 200) {
         setPublicaciones(response.data);
+        console.log(response.data);
       } else {
         alert('No Se Encontraron Publicaciones');
       }
@@ -36,28 +37,40 @@ function Publicaciones() {
   const handleDelete = async (id) => {
     try {
       if (confirm('¿Estás Seguro De Eliminar Esta Publicacion?')) {
-        const response = await axiosClient.delete(`/Publicaciones/${id}`);
+        const response = await axiosClient.delete(`/publicaciones/${id}`);
         if (response.status === 200) {
-          toast.success('publicacion Eliminada')
+          toast.success('publicacion Eliminada');
           getPublicaciones();
         }
       } else {
-        toast.error('Publicacion No Eliminada')
+        toast.error('Publicacion No Eliminada');
       }
     } catch (error) {
       console.error(error);
     }
   };
 
-
   const handleEdit = () => {
     getPublicaciones();
   };
+
+  const getEstadoClass = (estado) => {
+    switch (estado) {
+      case 'En proceso':
+        return 'bg-yellow-500 text-white';
+      case 'No Veridica':
+        return 'bg-red-500 text-white';
+      case 'Verídica':
+        return 'bg-green-500 text-white';
+      default:
+        return '';
+    }
+  };
+
   return (
     <>
       <DefaultLayout>
         <div className='w-full h-full flex flex-col p-10 gap-5 bg-white rounded-2xl mt-15'>
-          <Toaster />
           <div className='flex flex-row justify-between'>
             <h1 className='text-2xl'>Publicaciones</h1>
             <Button variant="success" onClick={() => setOpenCreatePublicacionesModal(true)}>Crear Publicacion</Button>
@@ -80,7 +93,10 @@ function Publicaciones() {
                     <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">{d.nombre}</h5>
                   </a>
                   <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{d.descripcion}</p>
-                  <p className="mb-3 font-normal text-sm text-gray-700 dark:text-gray-400">{d.fuentes}</p>
+                  <div className='flex justify-between items-center mb-3'>
+                    <p className="mb-3 font-normal text-sm text-gray-700 dark:text-gray-400">{d.fuentes}</p>
+                    <p className={`font-normal text-sm rounded-2xl p-1.5 ${getEstadoClass(d.estado)}`}>{d.estado}</p>
+                  </div>
                   <div className='flex flex-row gap-2 items-center justify-center'>
                     <Button variant="success" onClick={() => setSelectedPublicacion(d.id)}>Editar</Button>
                     <Button variant="danger" onClick={() => handleDelete(d.id)}>Eliminar</Button>
