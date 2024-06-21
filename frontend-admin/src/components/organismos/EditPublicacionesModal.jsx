@@ -14,6 +14,7 @@ export default function EditPublicacionesModal({ open, onClose, data, handleEdit
   const descripcion = useRef(null);
   const fuentes = useRef(null);
   const tipo = useRef(null);
+  const estado = useRef(null);
   const imagen = useRef(null); // Referencia al campo de entrada de la imagen
 
   const tipos = [
@@ -31,6 +32,21 @@ export default function EditPublicacionesModal({ open, onClose, data, handleEdit
     }
   ];
 
+  const estados = [
+    {
+      id: 1,
+      nombre: 'Veridica'
+    },
+    {
+      id: 2,
+      nombre: 'En proceso'
+    },
+    {
+      id: 3,
+      nombre: 'No Veridica'
+    }
+  ];
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -40,7 +56,8 @@ export default function EditPublicacionesModal({ open, onClose, data, handleEdit
         formData.append('descripcion', descripcion.current.value);
         formData.append('fuentes', fuentes.current.value);
         formData.append('tipo', tipo.current.value);
-        formData.append('imagen', imagen.current.files[0]); 
+        formData.append('estado', estado.current.value);
+        formData.append('imagen', imagen.current.files[0]);
 
         const response = await axiosClient.put(`/publicaciones/${data.id}`, formData, {
           headers: {
@@ -56,6 +73,7 @@ export default function EditPublicacionesModal({ open, onClose, data, handleEdit
       }
     } catch (error) {
       console.error(error);
+      toast.error('Ocurrió un error al editar la publicación');
     }
   };
 
@@ -86,6 +104,15 @@ export default function EditPublicacionesModal({ open, onClose, data, handleEdit
                 <option value="">Seleccionar...</option>
                 {tipos.map(tipo => (
                   <option key={tipo.id} value={tipo.nombre}>{tipo.nombre}</option>
+                ))}
+              </Select>
+            </div>
+            <div className='flex flex-col gap-2'>
+              <Label>Estado</Label>
+              <Select required ref={estado} defaultValue={data.estado}>
+                <option value="">Seleccionar...</option>
+                {estados.map(estado => (
+                  <option key={estado.id} value={estado.nombre}>{estado.nombre}</option>
                 ))}
               </Select>
             </div>

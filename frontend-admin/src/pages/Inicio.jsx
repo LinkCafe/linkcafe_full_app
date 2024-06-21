@@ -1,12 +1,10 @@
 import React from 'react';
 import sampleImage from '../assets/grafica.png';
 import DefaultLayout from '../layout/DefaultLayout';
-import toast, { Toaster } from 'react-hot-toast';
 function Inicio() {
   return (
     <DefaultLayout>
       <div className='w-full h-[91%] flex flex-col p-10 gap-5 bg-white rounded-2xl mt-15'>
-        <Toaster />
         <div className='flex flex-col justify-between h-full gap-10'>
           <div className='flex justify-between'>
             <div className='w-[24%] h-36 border rounded-2xl border-gray-100 bg-gray-200 p-4 mx-2 mt-4'>

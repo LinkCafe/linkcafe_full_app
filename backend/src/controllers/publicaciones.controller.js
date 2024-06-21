@@ -87,9 +87,9 @@ export const actualizarUnaPublicacion = async (req, res) => {
         }
 
         const { id } = req.params;
-        const { nombre, descripcion, fuentes, tipo } = req.body;
+        const { nombre, descripcion, fuentes, tipo, estado } = req.body; // Añadimos el estado
 
-        let imagen = req.file ? req.file.originalname : null; 
+        let imagen = req.file ? req.file.originalname : null;
 
         const [oldPost] = await pool.query("SELECT * FROM publicaciones WHERE id=?", [id]);
         if (!oldPost || oldPost.length === 0) {
@@ -102,15 +102,20 @@ export const actualizarUnaPublicacion = async (req, res) => {
             imagen = oldPost[0].imagen;
         }
 
+        const updateFields = {
+            nombre: nombre || oldPost[0].nombre,
+            descripcion: descripcion || oldPost[0].descripcion,
+            imagen: imagen,
+            fuentes: fuentes || oldPost[0].fuentes,
+            tipo: tipo || oldPost[0].tipo,
+            estado: estado || oldPost[0].estado // Añadimos el estado
+        };
+
         const [resultado] = await pool.query(`
             UPDATE publicaciones 
-            SET nombre='${nombre ? nombre : oldPost[0].nombre}',
-                descripcion='${descripcion ? descripcion : oldPost[0].descripcion}',
-                imagen='${imagen}',
-                fuentes='${fuentes ? fuentes : oldPost[0].fuentes}',
-                tipo='${tipo ? tipo : oldPost[0].tipo}'
-            WHERE id=${parseInt(id)}
-        `);
+            SET ? 
+            WHERE id=?
+        `, [updateFields, id]);
 
         if (resultado.affectedRows > 0) {
             return res.status(200).json({
@@ -127,7 +132,7 @@ export const actualizarUnaPublicacion = async (req, res) => {
             "mensaje": error.message
         });
     }
-}
+};
 
 // Mostrar solo una publicación
 export const mostrarSoloUnaPublicacion = async (req, res) => {
