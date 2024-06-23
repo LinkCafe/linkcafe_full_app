@@ -33,64 +33,101 @@ export const listarComentarios = async (req, res) => {
 //Crear Comentarios
 export const crearComentario = async (req, res) => {
     try {
-        const error = validationResult(req)
+        const errors = validationResult(req);
 
-        if (!error.isEmpty()) {
-            return res.status(404).json({error})
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
         }
 
-        const { comentario, id_usuario, id_publicacion } = req.body
-        const [resultado] = await pool.query("insert into comentarios(comentario, id_usuario, id_publicacion) values (?, ?, ?)", [comentario, id_usuario, id_publicacion])
+        const { comentario, id_usuario, id_publicacion } = req.body;
+
+        // Verificar si el usuario existe
+        const [usuario] = await pool.query("SELECT * FROM usuarios WHERE id = ?", [id_usuario]);
+        if (usuario.length === 0) {
+            return res.status(404).json({
+                "mensaje": "No se encontró el ID del usuario"
+            });
+        }
+
+        // Verificar si la publicacion existe
+        const [publicacion] = await pool.query("SELECT * FROM publicaciones WHERE id = ?", [id_publicacion]);
+        if (publicacion.length === 0) {
+            return res.status(404).json({
+                "mensaje": "No se encontró el ID de la publicacion"
+            });
+        }
+
+        const [resultado] = await pool.query("INSERT INTO comentarios(comentario, id_usuario, id_publicacion) VALUES (?, ?, ?)", [comentario, id_usuario, id_publicacion]);
 
         if (resultado.affectedRows > 0) {
             res.status(200).json({
                 "mensaje": "Comentario creado con exito"
-            })
+            });
         } else {
             res.status(404).json({
                 "mensaje": "No se pudo crear el Comentario"
-            })
+            });
         }
 
     } catch (error) {
         res.status(500).json({
-            "mensaje": error
-        })
+            "mensaje": error.message
+        });
     }
 }
 
+
 //Actualizar Comentarios
+// Actualizar Comentarios
 export const actualizarComentario = async (req, res) => {
     try {
-        const error = validationResult(req)
+        const errors = validationResult(req);
 
-        if (!error.isEmpty()) {
-            return res.status(404).json({error})
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
         }
 
-        const { id } = req.params
-        const { comentario, id_usuario, id_publicacion } = req.body
-        const [oldComment] = await pool.query("select * from comentarios where id=?", [id])
-        const [resultado] = await pool.query(`update comentarios set comentario='${comentario ? comentario : oldComment[0].comentario}', 
-        id_usuario='${id_usuario ? id_usuario : oldComment[0].id_usuario}', 
-        id_publicacion='${id_publicacion ? id_publicacion : oldComment[0].id_publicacion}' where id=${parseInt(id)}`)
+        const { id } = req.params;
+        const { comentario, id_usuario, id_publicacion } = req.body;
+
+        // Verificar si el comentario existe
+        const [oldComment] = await pool.query("SELECT * FROM comentarios WHERE id = ?", [id]);
+
+        if (oldComment.length === 0) {
+            return res.status(404).json({
+                "mensaje": "No se encontró un comentario con ese ID"
+            });
+        }
+
+        // Actualizar el comentario
+        const [resultado] = await pool.query(`
+            UPDATE comentarios SET 
+            comentario = ?, 
+            id_usuario = ?, 
+            id_publicacion = ? 
+            WHERE id = ?`, [
+            comentario || oldComment[0].comentario,
+            id_usuario || oldComment[0].id_usuario,
+            id_publicacion || oldComment[0].id_publicacion,
+            id
+        ]);
 
         if (resultado.affectedRows > 0) {
             res.status(200).json({
-                "mensaje": "Comentario actualizado"
-            })
+                "mensaje": "Comentario actualizado con éxito"
+            });
         } else {
             res.status(404).json({
-                "mensaje": "No se pudo actualizar el Comentario"
-            })
+                "mensaje": "No se pudo actualizar el comentario"
+            });
         }
-
     } catch (error) {
         res.status(500).json({
-            "mensaje": error
-        })
+            "mensaje": error.message
+        });
     }
-}
+};
+
 
 //Mostrar Comentarios por ID
 export const mostrarUnComentario = async (req, res) => {
@@ -189,3 +226,38 @@ export const listarComentariosPorFecha = async (req, res) => {
         });
     }
 };
+
+// Listar comentarios por ID de publicación
+export const listarComentariosPorPublicacion = async (req, res) => {
+    try {
+        const { idPublicacion } = req.params;
+
+        // Verificar si la publicacion existe
+        const [publicacion] = await pool.query("SELECT * FROM publicaciones WHERE id = ?", [idPublicacion]);
+        if (publicacion.length === 0) {
+            return res.status(400).json({
+                "mensaje": "No se encontró una publicación con ese ID"
+            });
+        }
+
+        // Obtener los comentarios de la publicación
+        const [resultado] = await pool.query("SELECT * FROM comentarios WHERE id_publicacion = ?", [idPublicacion]);
+        const totalComentarios = resultado.length;
+
+        if (totalComentarios > 0) {
+            res.status(200).json({
+                total: totalComentarios,
+                comentarios: resultado
+            });
+        } else {
+            res.status(404).json({
+                "mensaje": "No hay comentarios para esta publicación"
+            });
+        }
+    } catch (error) {
+        res.status(500).json({
+            "mensaje": error.message
+        });
+    }
+};
+

@@ -1,5 +1,12 @@
 import { Router } from "express";
-import { actualizarUnUsuario, crearUnUsuario, eliminarUnUsuario, listartodo, mostrarunusuario, contarUsuarios } from "../controllers/usuarios.controller.js";
+import { 
+    actualizarUnUsuario, 
+    crearUnUsuario, 
+    eliminarUnUsuario, 
+    listartodo, 
+    mostrarunusuario, 
+    contarUsuarios 
+} from "../controllers/usuarios.controller.js";
 import { middlewaresCreateUsers, middlewaresUpdate } from "../middlewares/usuarios.middlewares.js";
 
 const router = Router();
