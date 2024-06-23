@@ -46,7 +46,7 @@ const Discussions = () => {
   const handlePress = (publication) => {
     navigation.navigate('Public', {
       screen: 'Public',
-    });     
+    });
   };
 
   return (
@@ -55,23 +55,23 @@ const Discussions = () => {
         <Text style={[style.moreCategoriesText, { color: theme == 'light' ? 'black' : 'white' }]}>Últimas discusiones</Text>
         <Button
           type="outline"
-          title="Ver todas >"
-          onPress={handlePress}
-          buttonStyle={{ padding: 1, borderColor: theme == 'light' ? 'black' : 'white', borderWidth: 1 }}
+          title="Ver todo >"
+          buttonStyle={{ padding: 1, borderColor: theme == 'light' ? 'black' : '#a1a1a1', borderWidth: .7, backgroundColor: theme == 'light' ? 'white' : 'transparent' }}
           titleStyle={{ color: theme == 'light' ? 'black' : 'white' }}
+          onPress={handlePress}
         />
       </View>
       <ScrollView horizontal={true}>
         <View style={style.containerCard}>
           {data.map((d, index) => (
-                <Card
-            key={index}
-            containerStyle={[style.card, { backgroundColor: theme == 'light' ? 'white' : '#464646' }]}
-                >
-                <Image
-              source={d.imagen}
-              style={{ width: "100%", height: 150 }}
-                />
+            <Card
+              key={index}
+              containerStyle={[style.card, { backgroundColor: theme == 'light' ? 'white' : '#464646' }]}
+            >
+              <Image
+                source={d.imagen}
+                style={{ width: "100%", height: 150 }}
+              />
               <Text style={{ paddingTop: 12, color: theme == 'light' ? 'black' : 'white' }}>{d.titulo}</Text>
               <View
                 style={{
@@ -140,6 +140,8 @@ const style = StyleSheet.create({
     gap: 10,
     borderRadius: 10,
     margin: 0,
+    borderColor: '#a1a1a1',
+    borderWidth: .3
   },
   moreCategories: {
     width: "100%",

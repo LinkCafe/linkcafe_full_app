@@ -9,8 +9,9 @@ import TabBarIcon from '../components/organismos/TabBarIcon.jsx';
 import { StyleSheet } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, Image } from 'react-native';
 import { Text } from 'react-native';
+// import logo from '../img/logo_completo_cafe.svg'
 const Tab = createBottomTabNavigator();
 
 const HomeTabs = () => {
@@ -39,7 +40,7 @@ const HomeTabs = () => {
           title: "Inicio",
           headerLeftContainerStyle: { paddingLeft: 20 },
           headerLeft: () => (
-            <Text style={{ fontSize: 20, fontWeight: "bold", color: theme === 'light'? 'black' : 'white' }}>Link Café</Text>
+            <Image source={require('../img/logo_completo_cafe.png')} resizeMode='contain' style={{ display: 'flex', width: 110}} />
           ),
           headerRight: () => (
             <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
@@ -92,7 +93,7 @@ export default HomeTabs;
 
 const style = StyleSheet.create({
   iconcolor: {
-    color: '#E39B5A',
+    color: '#6a4023',
     marginRight: 24,
   },
 });
