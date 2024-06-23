@@ -25,7 +25,7 @@ const Create = () => {
 
   const { theme } = useContext(ThemeContext)
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: theme == 'light' ? "white" : '#202020' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme == 'light' ? "#f8f4f1" : '#202020' }}>
       <ScrollView>
         <View
           style={{ width: "100%", paddingHorizontal: 16, marginBottom: 25 }}
@@ -114,7 +114,7 @@ const Create = () => {
               }}
             />
           </View>
-          <Button buttonStyle={{ backgroundColor: "#E39B5A", borderRadius: 5 }}>
+          <Button buttonStyle={{ backgroundColor: "#6a4023", borderRadius: 5 }}>
             Subir imagen
           </Button>
         </View>
@@ -122,7 +122,8 @@ const Create = () => {
       <View style={style.interactionButton}>
         <Button
           containerStyle={{ width: "50%" }}
-          buttonStyle={{ borderRadius: 5, backgroundColor: "#E39B5A" }}
+          buttonStyle={{ borderRadius: 5, backgroundColor: "#6a4023", borderColor: "#6a4023",
+            borderWidth: 2}}
         >
           Subir
         </Button>
@@ -131,10 +132,10 @@ const Create = () => {
           buttonStyle={{
             borderRadius: 5,
             backgroundColor: "transparent",
-            borderColor: "#E39B5A",
+            borderColor: "#6a4023",
             borderWidth: 2,
           }}
-          titleStyle={{ color: theme == 'light' ? "#E39B5A" : 'white' }}
+          titleStyle={{ color: theme == 'light' ? "#6a4023" : 'white' }}
         >
           Cancelar
         </Button>
@@ -164,8 +165,8 @@ const style = StyleSheet.create({
   },
   inputStyle: {
     paddingLeft: 10,
-    borderColor: "#eeeeee",
-    borderWidth: 1,
+    borderColor: "#4a4a4a",
+    borderWidth: .4,
     borderRadius: 5
   },
   inputContainerStyle: {

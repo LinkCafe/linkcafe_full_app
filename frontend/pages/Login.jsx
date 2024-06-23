@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, ToastAndroid } from "react-native";
+import { View, Text, StyleSheet, ScrollView, ToastAndroid, TouchableOpacity} from "react-native";
 import React, { useState, useContext } from "react";
 import { styleConstants } from "../constants/style";
 import { Button, Input } from "@rneui/base";
@@ -7,7 +7,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ThemeContext from '../context/ThemeContext';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faEye, faEyeSlash, faLock } from '@fortawesome/free-solid-svg-icons';
 
 
 
@@ -43,14 +43,13 @@ const Login = () => {
           placeholder="Correo"
           inputContainerStyle={style.inputStyle}
           label="Correo"
-          leftIcon={{type: 'font-awesome', name: 'lock', color: '#E39B5A'}}
+          leftIcon={() => <FontAwesomeIcon icon={faEnvelope} size={20} style={style.email}/> }
           leftIconContainerStyle={style.inputContainerStyle}
           textContentType="emailAddress"
           keyboardType="email-address"
           labelStyle={style.labelStyle}
           onChangeText={text => setEmail(text)}
         />
-        <FontAwesomeIcon icon={faEnvelope} size={23} style={style.email}/>
        </View>
        <View>
         <Input
@@ -58,19 +57,13 @@ const Login = () => {
           inputContainerStyle={style.inputStyle}
           label="Contraseña"
           secureTextEntry={visiblePassword}
-          leftIcon={{type: 'font-awesome', name: 'lock', color: '#E39B5A'}}
+          leftIcon={() => <FontAwesomeIcon icon={faLock} size={20} style={style.password}  />  }
           leftIconContainerStyle={style.inputContainerStyle}
           labelStyle={style.labelStyle}
-          rightIcon={{
-            type: 'font-awesome',
-            name: visiblePassword === true ? 'eye' : 'eye-slash',
-            color: '#E39B5A',
-            onPress: () => handleVisibilityPassword(),
-          }}
+          rightIcon={() => <TouchableOpacity onPress={() => handleVisibilityPassword()}><Text><FontAwesomeIcon icon={visiblePassword ? faEye : faEyeSlash} size={20} style={style.password}  /></Text></TouchableOpacity> }
           rightIconContainerStyle={style.inputContainerStyle}
           onChangeText={text => setPassword(text)}
         />
-        <FontAwesomeIcon icon={faLock} size={23} style={style.password}  />
        </View> 
         <Text style={style.forgotPasswordStyle}>¿Olvidaste la contraseña?</Text>
         <View style={style.interaction}>
@@ -115,8 +108,8 @@ const style = StyleSheet.create({
   },
   inputStyle: {
     padding: 2,
-    borderColor: '#eeeeee',
-    borderWidth: 1,
+    borderColor: '#6a4023',
+    borderWidth: .2,
     borderRadius: 5,
   },
   inputContainerStyle: {
@@ -141,32 +134,25 @@ const style = StyleSheet.create({
     gap: 30,
   },
   btnSignUpTitle: {
-    color: '#E39B5A',
+    color: '#6a4023',
   },
   button: {
     borderRadius: 10,
     padding: 12,
   },
   btnLogin: {
-    backgroundColor: '#E39B5A',
+    backgroundColor: '#6a4023',
   },
   btnSignUp: {
     backgroundColor: 'transparent',
-    borderColor: '#E39B5A',
+    borderColor: '#6a4023',
     borderWidth: 2,
   },
   email:{
-    color:'#E39B5A',
-    position:'absolute',
-    top:49,
-    left:18
-
+    color:'#6a4023'
   },
   password:{
-    color:'#E39B5A',
-    position:'absolute',
-    top:49,
-    left:19
+    color:'#6a4023'
   }
 });
 

@@ -18,7 +18,7 @@ const Categories = () => {
         <Button
           type="outline"
           title="Ver todo >"
-          buttonStyle={{ padding: 1, borderColor: theme == 'light' ? 'black' : 'white', borderWidth: 1 }}
+          buttonStyle={{ padding: 1, borderColor: theme == 'light' ? 'black' : '#a1a1a1', borderWidth: .7, backgroundColor: theme == 'light' ? 'white' : 'transparent' }}
           titleStyle={{ color: theme == 'light' ? 'black' : 'white' }}
           onPress={() => navigation.navigate("CategoriesFull", {
             type: 'all'
@@ -99,9 +99,18 @@ const style = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     paddingVertical: 20,
-    borderColor: "#797979",
-    borderWidth: 1,
+    borderColor: "#a1a1a1",
+    borderWidth: .7,
     borderRadius: 7,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.34,
+    shadowRadius: 6.27,
+
+    elevation: 10,
     text: {
       fontSize: 15,
       marginTop: 5,

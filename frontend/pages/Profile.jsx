@@ -30,7 +30,7 @@ const Profile =  () => {
   }, [])
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: theme == 'light' ? 'white' : '#202020' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme == 'light' ? '#f8f4f1' : '#202020' }}>
       <ScrollView style={{ paddingHorizontal: 16}}>
         <View
           style={{
