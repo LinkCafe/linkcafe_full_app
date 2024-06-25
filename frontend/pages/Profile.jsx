@@ -6,10 +6,13 @@ import Reviews from "../components/organismos/Reviews";
 import ThemeContext from "../context/ThemeContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
+import UserContext from "../context/UserContext";
 
 
-const Profile =  () => {
+const Profile = () => {
   const { theme, toggleTheme } = useContext(ThemeContext)
+  const { user } = useContext(UserContext)
+  const [ storageUser, setStorageUser ] = useState({}) 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -18,7 +21,7 @@ const Profile =  () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     toggleTheme(newTheme);
   }
-  
+
   useEffect(() => {
     const getUser = async () => {
       setName(await AsyncStorage.getItem('name'))
@@ -27,11 +30,13 @@ const Profile =  () => {
     }
 
     setInterval(() => getUser(), 500)
+    setStorageUser(JSON.parse(user))
+    console.log(user);
   }, [])
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme == 'light' ? '#f8f4f1' : '#202020' }}>
-      <ScrollView style={{ paddingHorizontal: 16}}>
+      <ScrollView style={{ paddingHorizontal: 16 }}>
         <View
           style={{
             display: "flex",
@@ -56,7 +61,7 @@ const Profile =  () => {
             />
             <View>
               <Text style={{ fontSize: 20, fontWeight: "bold", color: theme == 'light' ? 'black' : 'white' }}>
-                {name}
+                {storageUser.nombre_completo}
               </Text>
               <Text style={{ color: theme == 'light' ? 'black' : 'white' }}>Caficultor</Text>
             </View>
@@ -75,13 +80,10 @@ const Profile =  () => {
                 name: name,
                 email: email,
                 password: password
-              }) } 
+              })}
             >
               Editar {">"}
             </Button>
-            
-
-
           </View>
         </View>
         <Reviews />
@@ -97,15 +99,15 @@ const Profile =  () => {
             fontSize: 20,
             fontWeight: 'bold',
             color: theme == 'light' ? 'black' : 'white'
-          }} >Tema: {theme == 'light' ? 'Claro' : 'Oscuro' }</Text>
-          <Switch 
-            value={ theme === 'light' ? false : true } 
+          }} >Tema: {theme == 'light' ? 'Claro' : 'Oscuro'}</Text>
+          <Switch
+            value={theme === 'light' ? false : true}
             onValueChange={() => handleToggleTheme()}
-            color={ theme === 'dark' ? 'white' : '#2089dc'}
-            />
+            color={theme === 'dark' ? 'white' : '#2089dc'}
+          />
         </View>
         <View>
-        <Button onPress={()=>navigation.navigate('chat')}>chat</Button>
+          <Button onPress={() => navigation.navigate('chat')}>chat</Button>
         </View>
       </ScrollView>
     </SafeAreaView>

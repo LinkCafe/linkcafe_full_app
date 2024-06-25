@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import ThemeContext from '../context/ThemeContext';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faUser, faEnvelope, faLock, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import axiosClient from '../utils/axiosClient';
 
 
 const SignUp = () => {
@@ -22,24 +23,41 @@ const SignUp = () => {
   };
 
   const handleSignUp = async () => {
-    if (!name || !email || !password) {
+    const data = {
+      nombre: name,
+      correo: email,
+      clave: password
+    }
+    
+    try {
+      if (!name || !email || !password) {
+        ToastAndroid.showWithGravity(
+          'Campos incompletos',
+          ToastAndroid.SHORT,
+          ToastAndroid.BOTTOM,
+        );
+        return;
+      } else {
+        const response = await axiosClient.post("/register", data)
+        if (response.status == 200) {
+          navigation.navigate('Login');
+          ToastAndroid.showWithGravity(
+            'Registro completado',
+            ToastAndroid.LONG,
+            ToastAndroid.BOTTOM,
+          );
+        }
+      }
+    } catch (error) {
+      console.log(error);
       ToastAndroid.showWithGravity(
-        'Campos incompletos',
+        'Error al registrarse',
         ToastAndroid.SHORT,
         ToastAndroid.BOTTOM,
       );
-      return;
-    } else {
-      await AsyncStorage.setItem('name', name);
-      await AsyncStorage.setItem('email', email);
-      await AsyncStorage.setItem('password', password);
-      ToastAndroid.showWithGravity(
-        'Registro completado',
-        ToastAndroid.LONG,
-        ToastAndroid.BOTTOM,
-      );
-      navigation.navigate('Login');
     }
+
+    
   };
 
   return (
@@ -68,6 +86,7 @@ const SignUp = () => {
             leftIcon={() => <FontAwesomeIcon icon={faEnvelope} size={20} style={{ color: '#6a4023' }} />}
             leftIconContainerStyle={style.inputContainerStyle}
             textContentType="emailAddress"
+            keyboardType="email-address"
             labelStyle={style.labelStyle}
             onChangeText={text => setEmail(text)}
           />

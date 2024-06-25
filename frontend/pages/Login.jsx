@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, ToastAndroid, TouchableOpacity} from "react-native";
+import { View, Text, StyleSheet, ScrollView, ToastAndroid, TouchableOpacity } from "react-native";
 import React, { useState, useContext } from "react";
 import { styleConstants } from "../constants/style";
 import { Button, Input } from "@rneui/base";
@@ -8,11 +8,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import ThemeContext from '../context/ThemeContext';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faEnvelope, faEye, faEyeSlash, faLock } from '@fortawesome/free-solid-svg-icons';
+import axiosClient from "../utils/axiosClient";
+import UserContext from "../context/UserContext";
 
 
 
 const Login = () => {
   const { theme } = useContext(ThemeContext);
+  const { setUser } = useContext(UserContext)
   const [visiblePassword, setVisiblePassword] = useState(true);
   const navigation = useNavigation();
   const handleVisibilityPassword = () => {
@@ -21,11 +24,21 @@ const Login = () => {
   const [password, setPassword] = useState(null);
   const [email, setEmail] = useState(null);
   const handleLogin = async () => {
-    const emailStorage = await AsyncStorage.getItem('email');
-    const passwordStorage = await AsyncStorage.getItem('password');
-    if (password === passwordStorage && email === emailStorage) {
-      navigation.navigate('HomeTabs');
-    } else {
+    const data = {
+      correo: email,
+      clave: password
+    }
+
+    try {
+      const response = await axiosClient.post("/login", data)
+      if (response.status == 200) {
+        console.log("Sesión iniciada");
+        await AsyncStorage.setItem('token', response.data.token)
+        await AsyncStorage.setItem('user', JSON.stringify(response.data.user))
+        setUser(JSON.stringify(response.data.user))
+        navigation.navigate('HomeTabs');
+      }
+    } catch (error) {
       ToastAndroid.showWithGravity(
         'Error al iniciar sesión',
         ToastAndroid.SHORT,
@@ -35,36 +48,36 @@ const Login = () => {
   };
 
   return (
-    <SafeAreaView style={[styleConstants.container, {backgroundColor: theme === 'dark'? '#333' : '#FFF'}]}>
+    <SafeAreaView style={[styleConstants.container, { backgroundColor: theme === 'dark' ? '#333' : '#FFF' }]}>
       <ScrollView style={style.contentCard}>
-        <Text style={[style.loginTitleStyle, { color: theme === 'dark'? 'white' : 'black' }]}>Iniciar Sesión </Text>
-       <View>
-       <Input
-          placeholder="Correo"
-          inputContainerStyle={style.inputStyle}
-          label="Correo"
-          leftIcon={() => <FontAwesomeIcon icon={faEnvelope} size={20} style={style.email}/> }
-          leftIconContainerStyle={style.inputContainerStyle}
-          textContentType="emailAddress"
-          keyboardType="email-address"
-          labelStyle={style.labelStyle}
-          onChangeText={text => setEmail(text)}
-        />
-       </View>
-       <View>
-        <Input
-          placeholder="Contraseña"
-          inputContainerStyle={style.inputStyle}
-          label="Contraseña"
-          secureTextEntry={visiblePassword}
-          leftIcon={() => <FontAwesomeIcon icon={faLock} size={20} style={style.password}  />  }
-          leftIconContainerStyle={style.inputContainerStyle}
-          labelStyle={style.labelStyle}
-          rightIcon={() => <TouchableOpacity onPress={() => handleVisibilityPassword()}><Text><FontAwesomeIcon icon={visiblePassword ? faEye : faEyeSlash} size={20} style={style.password}  /></Text></TouchableOpacity> }
-          rightIconContainerStyle={style.inputContainerStyle}
-          onChangeText={text => setPassword(text)}
-        />
-       </View> 
+        <Text style={[style.loginTitleStyle, { color: theme === 'dark' ? 'white' : 'black' }]}>Iniciar Sesión </Text>
+        <View>
+          <Input
+            placeholder="Correo"
+            inputContainerStyle={style.inputStyle}
+            label="Correo"
+            leftIcon={() => <FontAwesomeIcon icon={faEnvelope} size={20} style={style.email} />}
+            leftIconContainerStyle={style.inputContainerStyle}
+            textContentType="emailAddress"
+            keyboardType="email-address"
+            labelStyle={style.labelStyle}
+            onChangeText={text => setEmail(text)}
+          />
+        </View>
+        <View>
+          <Input
+            placeholder="Contraseña"
+            inputContainerStyle={style.inputStyle}
+            label="Contraseña"
+            secureTextEntry={visiblePassword}
+            leftIcon={() => <FontAwesomeIcon icon={faLock} size={20} style={style.password} />}
+            leftIconContainerStyle={style.inputContainerStyle}
+            labelStyle={style.labelStyle}
+            rightIcon={() => <TouchableOpacity onPress={() => handleVisibilityPassword()}><Text><FontAwesomeIcon icon={visiblePassword ? faEye : faEyeSlash} size={20} style={style.password} /></Text></TouchableOpacity>}
+            rightIconContainerStyle={style.inputContainerStyle}
+            onChangeText={text => setPassword(text)}
+          />
+        </View>
         <Text style={style.forgotPasswordStyle}>¿Olvidaste la contraseña?</Text>
         <View style={style.interaction}>
           <Button
@@ -97,7 +110,7 @@ const style = StyleSheet.create({
     paddingVertical: 55,
     textAlign: 'left',
     fontSize: 25,
-    color:'black',
+    color: 'black',
     fontWeight: "500"
   },
   forgotPasswordStyle: {
@@ -148,11 +161,11 @@ const style = StyleSheet.create({
     borderColor: '#6a4023',
     borderWidth: 2,
   },
-  email:{
-    color:'#6a4023'
+  email: {
+    color: '#6a4023'
   },
-  password:{
-    color:'#6a4023'
+  password: {
+    color: '#6a4023'
   }
 });
 
