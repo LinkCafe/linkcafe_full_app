@@ -26,22 +26,39 @@ export const cargarImagen = upload.single('imagen');
 // Listar todas las publicaciones
 export const listarPublicaciones = async (req, res) => {
     try {
-        const [resultado] = await pool.query("SELECT * FROM publicaciones");
+        const query = `
+            SELECT 
+                publicaciones.id,
+                publicaciones.nombre,
+                publicaciones.descripcion,
+                publicaciones.imagen,
+                publicaciones.fuentes,
+                publicaciones.tipo,
+                publicaciones.fecha,
+                publicaciones.estado,
+                publicaciones.id_usuario,
+                usuarios.nombre_completo AS nombre_usuario
+            FROM publicaciones
+            JOIN usuarios ON publicaciones.id_usuario = usuarios.id
+        `;
+
+        const [resultado] = await pool.query(query);
 
         if (resultado.length > 0) {
             res.status(200).json(resultado);
         } else {
             res.status(404).json({
-                "mensaje": "No encontramos publicaciones "
+                "mensaje": "No encontramos publicaciones"
             });
         }
 
     } catch (error) {
-        res.status500().json({
+        res.status(500).json({
             "mensaje": error.message
         });
     }
-}
+};
+
 
 // Crear una nueva publicación
 export const crearUnaPublicacion = async (req, res) => {
@@ -138,10 +155,28 @@ export const actualizarUnaPublicacion = async (req, res) => {
 export const mostrarSoloUnaPublicacion = async (req, res) => {
     try {
         const { id } = req.params;
-        const [resultado] = await pool.query("SELECT * FROM publicaciones WHERE id=?", [id]);
+
+        const query = `
+            SELECT 
+                publicaciones.id,
+                publicaciones.nombre,
+                publicaciones.descripcion,
+                publicaciones.imagen,
+                publicaciones.fuentes,
+                publicaciones.tipo,
+                publicaciones.fecha,
+                publicaciones.estado,
+                publicaciones.id_usuario,
+                usuarios.nombre_completo AS nombre_usuario
+            FROM publicaciones
+            JOIN usuarios ON publicaciones.id_usuario = usuarios.id
+            WHERE publicaciones.id = ?
+        `;
+
+        const [resultado] = await pool.query(query, [id]);
 
         if (resultado.length > 0) {
-            res.status(200).json(resultado);
+            res.status(200).json(resultado[0]);
         } else {
             res.status(404).json({
                 "mensaje": "No se encontró esa publicación con ese ID"
@@ -153,7 +188,8 @@ export const mostrarSoloUnaPublicacion = async (req, res) => {
             "mensaje": error.message
         });
     }
-}
+};
+
 
 // Eliminar una publicación
 export const eliminarUnaPublicacion = async (req, res) => {
@@ -203,11 +239,41 @@ export const listarPublicacionesPorFecha = async (req, res) => {
 
         if (fechaInicio && fechaFin) {
             // Query para rango de fechas
-            query = "SELECT * FROM publicaciones WHERE DATE(fecha) BETWEEN ? AND ?";
+            query = `
+                SELECT 
+                    publicaciones.id,
+                    publicaciones.nombre,
+                    publicaciones.descripcion,
+                    publicaciones.imagen,
+                    publicaciones.fuentes,
+                    publicaciones.tipo,
+                    publicaciones.fecha,
+                    publicaciones.estado,
+                    publicaciones.id_usuario,
+                    usuarios.nombre_completo AS nombre_usuario
+                FROM publicaciones
+                JOIN usuarios ON publicaciones.id_usuario = usuarios.id
+                WHERE DATE(publicaciones.fecha) BETWEEN ? AND ?
+            `;
             params = [fechaInicio, fechaFin];
         } else if (fechaInicio) {
             // Query para una sola fecha
-            query = "SELECT * FROM publicaciones WHERE DATE(fecha) = ?";
+            query = `
+                SELECT 
+                    publicaciones.id,
+                    publicaciones.nombre,
+                    publicaciones.descripcion,
+                    publicaciones.imagen,
+                    publicaciones.fuentes,
+                    publicaciones.tipo,
+                    publicaciones.fecha,
+                    publicaciones.estado,
+                    publicaciones.id_usuario,
+                    usuarios.nombre_completo AS nombre_usuario
+                FROM publicaciones
+                JOIN usuarios ON publicaciones.id_usuario = usuarios.id
+                WHERE DATE(publicaciones.fecha) = ?
+            `;
             params = [fechaInicio];
         } else {
             return res.status(400).json({
@@ -230,7 +296,8 @@ export const listarPublicacionesPorFecha = async (req, res) => {
             "mensaje": error.message
         });
     }
-}
+};
+
 
 // Cambiar el estado de una publicación
 export const cambiarEstadoPublicacion = async (req, res) => {

@@ -15,7 +15,21 @@ import { pool } from "../database/conexion.js";
 //Listar Todos los articulos
 export const showArticles = async (req, res) => {
     try {
-        const [resultado] = await pool.query("SELECT * FROM articulos");
+        const query = `
+            SELECT 
+                articulos.id,
+                articulos.nombre,
+                articulos.tipo,
+                articulos.enlace,
+                articulos.fecha,
+                articulos.autor,
+                articulos.id_usuario,
+                usuarios.nombre_completo AS nombre_usuario
+            FROM articulos
+            JOIN usuarios ON articulos.id_usuario = usuarios.id
+        `;
+
+        const [resultado] = await pool.query(query);
 
         if (resultado.length > 0) {
             res.status(200).json(resultado);
@@ -26,12 +40,13 @@ export const showArticles = async (req, res) => {
         }
     } catch (error) {
         res.status(500).json({
-            "Mensaje": error
+            "Mensaje": error.message
         });
     }
 };
 
-//Crear articulos
+
+
 //Crear articulos
 export const createArticles = async (req, res) => {
     try {
@@ -71,7 +86,6 @@ export const createArticles = async (req, res) => {
 };
 
 
-//Actualizar arituclos
 // Actualizar artículos
 export const updateArticles = async (req, res) => {
     try {
@@ -129,10 +143,26 @@ export const updateArticles = async (req, res) => {
 export const showAArticles = async (req, res) => {
     try {
         const { id } = req.params;
-        const [resultado] = await pool.query("SELECT * FROM articulos WHERE id=?", [id]);
+
+        const query = `
+            SELECT 
+                articulos.id,
+                articulos.nombre,
+                articulos.tipo,
+                articulos.enlace,
+                articulos.fecha,
+                articulos.autor,
+                articulos.id_usuario,
+                usuarios.nombre_completo AS nombre_usuario
+            FROM articulos
+            JOIN usuarios ON articulos.id_usuario = usuarios.id
+            WHERE articulos.id = ?
+        `;
+
+        const [resultado] = await pool.query(query, [id]);
 
         if (resultado.length > 0) {
-            res.status(200).json(resultado);
+            res.status(200).json(resultado[0]);
         } else {
             res.status(404).json({
                 "mensaje": "No se encontró Ningun articulo con ese ID"
@@ -140,10 +170,11 @@ export const showAArticles = async (req, res) => {
         }
     } catch (error) {
         res.status(500).json({
-            "mensaje": error
+            "mensaje": error.message
         });
     }
 };
+
 
 //Eliminar articulos
 export const deleteArticles = async (req, res) => {
@@ -192,11 +223,37 @@ export const listarArticulosPorFecha = async (req, res) => {
 
         if (fechaInicio && fechaFin) {
             // Query para rango de fechas
-            query = "SELECT * FROM articulos WHERE DATE(fecha) BETWEEN ? AND ?";
+            query = `
+                SELECT 
+                    articulos.id,
+                    articulos.nombre,
+                    articulos.tipo,
+                    articulos.enlace,
+                    articulos.fecha,
+                    articulos.autor,
+                    articulos.id_usuario,
+                    usuarios.nombre_completo AS nombre_usuario
+                FROM articulos
+                JOIN usuarios ON articulos.id_usuario = usuarios.id
+                WHERE DATE(articulos.fecha) BETWEEN ? AND ?
+            `;
             params = [fechaInicio, fechaFin];
         } else if (fechaInicio) {
             // Query para una sola fecha
-            query = "SELECT * FROM articulos WHERE DATE(fecha) = ?";
+            query = `
+                SELECT 
+                    articulos.id,
+                    articulos.nombre,
+                    articulos.tipo,
+                    articulos.enlace,
+                    articulos.fecha,
+                    articulos.autor,
+                    articulos.id_usuario,
+                    usuarios.nombre_completo AS nombre_usuario
+                FROM articulos
+                JOIN usuarios ON articulos.id_usuario = usuarios.id
+                WHERE DATE(articulos.fecha) = ?
+            `;
             params = [fechaInicio];
         } else {
             return res.status(400).json({
