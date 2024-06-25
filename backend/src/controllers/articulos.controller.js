@@ -32,14 +32,26 @@ export const showArticles = async (req, res) => {
 };
 
 //Crear articulos
+//Crear articulos
 export const createArticles = async (req, res) => {
     try {
-        const error = validationResult(req);
+        const errors = validationResult(req);
 
-        if (!error.isEmpty()) {
-            return res.status(400).json(error.array());
+        if (!errors.isEmpty()) {
+            return res.status(400).json(errors.array());
         }
+
         const { nombre, enlace, autor, id_usuario } = req.body;
+
+        // Verificar si el usuario existe
+        const [usuario] = await pool.query("SELECT * FROM usuarios WHERE id = ?", [id_usuario]);
+
+        if (usuario.length === 0) {
+            return res.status(404).json({
+                "Mensaje": "No se encontró el ID del usuario"
+            });
+        }
+
         const [resultado] = await pool.query("INSERT INTO articulos(nombre, enlace, autor, id_usuario) VALUES(?, ?, ?, ?)", [nombre, enlace, autor, id_usuario]);
 
         if (resultado.affectedRows > 0) {
@@ -53,44 +65,64 @@ export const createArticles = async (req, res) => {
         }
     } catch (error) {
         res.status(500).json({
-            "Mensaje": error
+            "Mensaje": error.message
         });
     }
 };
 
+
 //Actualizar arituclos
+// Actualizar artículos
 export const updateArticles = async (req, res) => {
     try {
-        const error = validationResult(req);
+        const errors = validationResult(req);
 
-        if (!error.isEmpty()) {
-            return res.status(400).json(error.array());
+        if (!errors.isEmpty()) {
+            return res.status(400).json(errors.array());
         }
+
         const { id } = req.params;
         const { nombre, enlace, autor, id_usuario } = req.body;
-        const [oldUser] = await pool.query("SELECT * FROM articulos WHERE id=?", [id]);
-        const [resultado] = await pool.query(`UPDATE articulos SET 
-        nombre='${nombre ? nombre : oldUser[0].nombre}',
-        enlace='${enlace ? enlace : oldUser[0].enlace}', 
-        autor='${autor ? autor : oldUser[0].autor}',
-        id_usuario='${id_usuario ? id_usuario : oldUser[0].id_usuario}'
-        WHERE id=${parseInt(id)}`);
+
+        // Verificar si el artículo existe
+        const [oldUser] = await pool.query("SELECT * FROM articulos WHERE id = ?", [id]);
+
+        if (oldUser.length === 0) {
+            return res.status(404).json({
+                "mensaje": "No se encontró un artículo con ese ID"
+            });
+        }
+
+        const [resultado] = await pool.query(`
+            UPDATE articulos SET 
+            nombre = ?, 
+            enlace = ?, 
+            autor = ?, 
+            id_usuario = ? 
+            WHERE id = ?`, [
+            nombre || oldUser[0].nombre,
+            enlace || oldUser[0].enlace,
+            autor || oldUser[0].autor,
+            id_usuario || oldUser[0].id_usuario,
+            id
+        ]);
 
         if (resultado.affectedRows > 0) {
             res.status(200).json({
-                "mensaje": "El Articulo A Sido Modificado Con Exito"
+                "mensaje": "El artículo ha sido modificado con éxito"
             });
         } else {
             res.status(404).json({
-                "mensaje": "No Se Pudo Modificar El Articulo"
+                "mensaje": "No se pudo modificar el artículo"
             });
         }
     } catch (error) {
         res.status(500).json({
-            "mensaje": error
+            "mensaje": error.message
         });
     }
 };
+
 
 
 //Listar articulos por id 

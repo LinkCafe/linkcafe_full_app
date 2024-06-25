@@ -15,6 +15,8 @@ import { middlewaresCreatePublics, middlewaresUpdatePublics } from '../middlewar
 const router = Router();
 
 router.get("/publicaciones/contar", contarPublicaciones);
+router.get("/publicaciones/listar/:id", mostrarSoloUnaPublicacion);
+
 router.get("/publicaciones/fecha/:fecha", listarPublicacionesPorFecha);
 router.get('/publicaciones/:fechaInicio/:fechaFin?', listarPublicacionesPorFecha);
 
@@ -23,7 +25,7 @@ router.post("/publicaciones", cargarImagen, middlewaresCreatePublics, crearUnaPu
 
 router.put("/publicaciones/:id", cargarImagen, middlewaresUpdatePublics, actualizarUnaPublicacion);
 router.put("/publicaciones/estado/:id", cambiarEstadoPublicacion); // Nueva ruta para cambiar el estado
-router.get("/publicaciones/:id", mostrarSoloUnaPublicacion);
+
 router.delete("/publicaciones/:id", eliminarUnaPublicacion);
 
 export default router;
