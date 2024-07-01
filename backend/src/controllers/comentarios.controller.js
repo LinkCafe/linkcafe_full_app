@@ -10,25 +10,40 @@
 import { pool } from '../database/conexion.js'
 import { validationResult } from "express-validator";
 
-//Listar Comentarios
+//listar comentarios
 export const listarComentarios = async (req, res) => {
     try {
-        const [resultado] = await pool.query("select * from comentarios")
+        const query = `
+            SELECT 
+                comentarios.id,
+                comentarios.comentario,
+                comentarios.fecha,
+                comentarios.id_usuario,
+                usuarios.nombre_completo AS nombre_usuario,  -- Utilizo 'nombre_completo' para obtener el nombre del usuario
+                comentarios.id_publicacion,
+                publicaciones.nombre AS nombre_publicacion  -- Utilizo 'nombre' para obtener el nombre de la publicación
+            FROM comentarios
+            JOIN usuarios ON comentarios.id_usuario = usuarios.id
+            JOIN publicaciones ON comentarios.id_publicacion = publicaciones.id
+        `;
+
+        const [resultado] = await pool.query(query);
 
         if (resultado.length > 0) {
-            res.status(200).json(resultado)
+            res.status(200).json(resultado);
         } else {
             res.status(404).json({
                 "mensaje": "No hay comentarios"
-            })
+            });
         }
 
     } catch (error) {
         res.status(500).json({
-            "mensaje": error
-        })
+            "mensaje": error.message
+        });
     }
-}
+};
+
 
 //Crear Comentarios
 export const crearComentario = async (req, res) => {
@@ -77,7 +92,6 @@ export const crearComentario = async (req, res) => {
 }
 
 
-//Actualizar Comentarios
 // Actualizar Comentarios
 export const actualizarComentario = async (req, res) => {
     try {
@@ -132,23 +146,40 @@ export const actualizarComentario = async (req, res) => {
 //Mostrar Comentarios por ID
 export const mostrarUnComentario = async (req, res) => {
     try {
-        const { id } = req.params; 
-        const [resultado] = await pool.query("select * from comentarios where id=?", [id])
+        const { id } = req.params;
+
+        const query = `
+            SELECT 
+                comentarios.id,
+                comentarios.comentario,
+                comentarios.fecha,
+                comentarios.id_usuario,
+                usuarios.nombre_completo AS nombre_usuario,  -- Utilizo 'nombre_completo' para obtener el nombre del usuario
+                comentarios.id_publicacion,
+                publicaciones.nombre AS nombre_publicacion  -- Utilizo 'nombre' para obtener el nombre de la publicación
+            FROM comentarios
+            JOIN usuarios ON comentarios.id_usuario = usuarios.id
+            JOIN publicaciones ON comentarios.id_publicacion = publicaciones.id
+            WHERE comentarios.id = ?
+        `;
+
+        const [resultado] = await pool.query(query, [id]);
 
         if (resultado.length > 0) {
-            res.status(200).json(resultado)
+            res.status(200).json(resultado[0]);
         } else {
             res.status(404).json({
                 "mensaje": "No se encontró el Comentario"
-            })
+            });
         }
 
     } catch (error) {
         res.status(500).json({
-            "mensaje": error
-        })
+            "mensaje": error.message
+        });
     }
-}
+};
+
 
 //Eliminar publicaciones
 export const eliminarComentario = async (req, res) => {
@@ -197,12 +228,36 @@ export const listarComentariosPorFecha = async (req, res) => {
         let params;
 
         if (fechaInicio && fechaFin) {
-            // Query para rango de fechas
-            query = "SELECT * FROM comentarios WHERE DATE(fecha) BETWEEN ? AND ?";
+            query = `
+                SELECT 
+                    comentarios.id,
+                    comentarios.comentario,
+                    comentarios.fecha,
+                    comentarios.id_usuario,
+                    usuarios.nombre_completo AS nombre_usuario,  -- Utilizo 'nombre_completo' para obtener el nombre del usuario
+                    comentarios.id_publicacion,
+                    publicaciones.nombre AS nombre_publicacion  -- Utilizo 'nombre' para obtener el nombre de la publicación
+                FROM comentarios
+                JOIN usuarios ON comentarios.id_usuario = usuarios.id
+                JOIN publicaciones ON comentarios.id_publicacion = publicaciones.id
+                WHERE DATE(comentarios.fecha) BETWEEN ? AND ?
+            `;
             params = [fechaInicio, fechaFin];
         } else if (fechaInicio) {
-            // Query para una sola fecha
-            query = "SELECT * FROM comentarios WHERE DATE(fecha) = ?";
+            query = `
+                SELECT 
+                    comentarios.id,
+                    comentarios.comentario,
+                    comentarios.fecha,
+                    comentarios.id_usuario,
+                    usuarios.nombre_completo AS nombre_usuario,  -- Utilizo 'nombre_completo' para obtener el nombre del usuario
+                    comentarios.id_publicacion,
+                    publicaciones.nombre AS nombre_publicacion  -- Utilizo 'nombre' para obtener el nombre de la publicación
+                FROM comentarios
+                JOIN usuarios ON comentarios.id_usuario = usuarios.id
+                JOIN publicaciones ON comentarios.id_publicacion = publicaciones.id
+                WHERE DATE(comentarios.fecha) = ?
+            `;
             params = [fechaInicio];
         } else {
             return res.status(400).json({
@@ -211,10 +266,9 @@ export const listarComentariosPorFecha = async (req, res) => {
         }
 
         const [comentarios] = await pool.query(query, params);
-        const [count] = await pool.query(`SELECT COUNT(*) as total FROM (${query}) AS subquery`, params);
 
         if (comentarios.length > 0) {
-            res.status(200).json({ comentarios, total: count[0].total });
+            res.status(200).json({ comentarios });
         } else {
             res.status(404).json({
                 "mensaje": "No se encontraron comentarios para las fechas proporcionadas"
@@ -227,21 +281,34 @@ export const listarComentariosPorFecha = async (req, res) => {
     }
 };
 
-// Listar comentarios por ID de publicación
+
 export const listarComentariosPorPublicacion = async (req, res) => {
     try {
         const { idPublicacion } = req.params;
 
-        // Verificar si la publicacion existe
-        const [publicacion] = await pool.query("SELECT * FROM publicaciones WHERE id = ?", [idPublicacion]);
+        const [publicacion] = await pool.query("SELECT nombre FROM publicaciones WHERE id = ?", [idPublicacion]);
         if (publicacion.length === 0) {
             return res.status(400).json({
                 "mensaje": "No se encontró una publicación con ese ID"
             });
         }
 
-        // Obtener los comentarios de la publicación
-        const [resultado] = await pool.query("SELECT * FROM comentarios WHERE id_publicacion = ?", [idPublicacion]);
+        const query = `
+            SELECT 
+                comentarios.id,
+                comentarios.comentario,
+                comentarios.fecha,
+                comentarios.id_usuario,
+                usuarios.nombre_completo AS nombre_usuario,  -- Utilizo 'nombre_completo' para obtener el nombre del usuario
+                comentarios.id_publicacion,
+                publicaciones.nombre AS nombre_publicacion  -- Utilizo 'nombre' para obtener el nombre de la publicación
+            FROM comentarios
+            JOIN usuarios ON comentarios.id_usuario = usuarios.id
+            JOIN publicaciones ON comentarios.id_publicacion = publicaciones.id
+            WHERE comentarios.id_publicacion = ?
+        `;
+
+        const [resultado] = await pool.query(query, [idPublicacion]);
         const totalComentarios = resultado.length;
 
         if (totalComentarios > 0) {
@@ -260,4 +327,5 @@ export const listarComentariosPorPublicacion = async (req, res) => {
         });
     }
 };
+
 
