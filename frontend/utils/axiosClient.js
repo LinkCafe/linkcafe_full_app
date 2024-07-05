@@ -5,8 +5,8 @@ const axiosClient = axios.create({
     baseURL: 'http://10.0.2.2:3333/'
 })
 
-axiosClient.interceptors.request.use((request) => {
-    const token = AsyncStorage.getItem('token')
+axiosClient.interceptors.request.use( async (request) => {
+    const token = await AsyncStorage.getItem('token')
     request.headers['token'] = token
     return request
 })
