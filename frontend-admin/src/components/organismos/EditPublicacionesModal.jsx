@@ -96,7 +96,7 @@ export default function EditPublicacionesModal({ open, onClose, data, handleEdit
             </div>
             <div className='flex flex-col gap-2'>
               <Label>Fuentes</Label>
-              <Input type="text" placeholder='Fuentes' required ref={fuentes} defaultValue={data.fuentes} />
+              <Input type="url" placeholder='Fuentes' required ref={fuentes} defaultValue={data.fuentes} />
             </div>
             <div className='flex flex-col gap-2'>
               <Label>Tipo</Label>

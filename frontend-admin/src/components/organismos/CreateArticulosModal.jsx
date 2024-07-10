@@ -67,7 +67,7 @@ export default function CreateArticulosModal({open, onClose}) {
                     </div>
                     <div className='flex flex-col gap-2'>
                         <Label>Enlace</Label>
-                        <Input type="text" placeholder='Enlace' required ref={enlace}/>
+                        <Input type="url" placeholder='Enlace' required ref={enlace}/>
                     </div>
                     <div className='flex flex-col gap-2'>
                         <Label>Autor</Label>

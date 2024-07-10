@@ -67,6 +67,12 @@ function Publicaciones() {
     }
   };
 
+  const [expanded, setExpanded] = useState({});
+
+  const toggleReadMore = (id) => {
+    setExpanded(prevState => ({ ...prevState, [id]: !prevState[id] }));
+  };
+
   return (
     <>
       <DefaultLayout>
@@ -78,26 +84,33 @@ function Publicaciones() {
           </div>
           <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 overflow-y-auto h-[calc(100vh-200px)]'>
             {publicaciones.map((d, index) => (
-              <div className="max-w-sm bg-[#f8f4f1] border border-gray-300 rounded-lg shadow-xl" key={index}>
+              <div className="max-w-sm bg-[#f8f4f1] h-min border border-gray-300 rounded-lg shadow-xl mb-5" key={index}>
                 <EditPublicacionesModal
                   open={selectedPublicacion === d.id}
-                  onClose={() => { setSelectedPublicacion(null); }}
+                  onClose={() => setSelectedPublicacion(null)}
                   data={d}
-                  handleEditSuccess={handleEditSuccess} // Pasar la función para manejar el éxito de la edición
+                  handleEditSuccess={handleEditSuccess}
                 />
                 <a href="#">
-                  <img className="rounded-t-lg w-full" src={`http://localhost:3333/public/img/${d.imagen}`} alt="" />
+                  <img className="rounded-t-lg w-full h-40 object-cover" src={`http://localhost:3333/public/img/${d.imagen}`} alt="" />
                 </a>
                 <div className="p-5">
                   <a href="#">
                     <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">{d.nombre}</h5>
                   </a>
-                  <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{d.descripcion}</p>
+                  <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                    {expanded[d.id] ? d.descripcion : `${d.descripcion.slice(0, 100)}...`}
+                    {d.descripcion.length > 100 && (
+                      <button onClick={() => toggleReadMore(d.id)} className="text-blue-500 ml-2">
+                        {expanded[d.id] ? 'Leer menos' : 'Leer más'}
+                      </button>
+                    )}
+                  </p>
                   <div className='flex justify-between items-center mb-3'>
-                    <p className="mb-3 font-normal text-sm text-gray-700 dark:text-gray-400">{d.fuentes}</p>
+                    <p className="mb-3 font-normal text-sm dark:text-gray-400 underline text-blue-500 cursor-pointer">{d.fuentes}</p>
                     <p className={`font-normal text-sm rounded p-1.5 ${getEstadoClass(d.estado)}`}>{d.estado}</p>
                   </div>
-                  <div className='flex flex-row gap-2 items-center justify-center'>
+                  <div className='flex flex-row gap-2 items-center justify-center h-full'>
                     <Button variant="success" onClick={() => setSelectedPublicacion(d.id)}>Editar</Button>
                     <Button variant="danger" onClick={() => handleDelete(d.id)}>Eliminar</Button>
                   </div>
@@ -112,3 +125,4 @@ function Publicaciones() {
 }
 
 export default Publicaciones;
+

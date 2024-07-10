@@ -18,10 +18,14 @@ function Login() {
 
       const response = await axiosClient.post("/login", data)
       if (response.status == 200) {
-        localStorage.setItem('token', response.data.token)
-        localStorage.setItem('user', JSON.stringify(response.data.user))
-        toast.success("Bienvenido Admin")
-        navigate('/inicio')
+        if (response.data.user.tipo == 'admin' || response.data.user.tipo == 'redactor') {
+          localStorage.setItem('token', response.data.token)
+          localStorage.setItem('user', JSON.stringify(response.data.user))
+          toast.success("Bienvenido Admin")
+          navigate('/inicio')
+        } else {
+          toast.error('Esta cuenta no tiene los permisos para acceder a este apartado')
+        }
       } else if (response.status == 404 || response.status == 500) {
         toast.error('Credenciales erroneas')
       }
