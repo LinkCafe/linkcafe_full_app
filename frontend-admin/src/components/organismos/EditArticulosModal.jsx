@@ -13,6 +13,7 @@ export default function EditArticulosModal({ open, onClose, data }) {
     const nombre = useRef(null)
     const tipo = useRef(null)
     const enlace = useRef(null)
+    const descripcion = useRef(null)
     const autor = useRef(null)
 
     const tipos = [
@@ -34,6 +35,7 @@ export default function EditArticulosModal({ open, onClose, data }) {
                     nombre: nombre.current.value,
                     tipo: tipo.current.value,
                     enlace: enlace.current.value,
+                    descripcion: descripcion.current.value,
                     autor: autor.current.value
                 }
                 const response = await axiosClient.put(`/articulos/${data.id}`, Data)
@@ -73,11 +75,15 @@ export default function EditArticulosModal({ open, onClose, data }) {
                         </div>
                         <div className='flex flex-col gap-2'>
                             <Label>Enlace</Label>
-                            <Input type="text" placeholder='Enlace' required ref={enlace} defaultValue={data.enlace}/>
+                            <Input type="text" placeholder='Enlace' required ref={enlace} defaultValue={data.enlace} />
+                        </div>
+                        <div className='flex flex-col gap-2'>
+                            <Label>Descripción</Label>
+                            <textarea cols={10} rows={2} ref={descripcion} defaultValue={data.descripcion} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5' placeholder='Descripción' required></textarea>
                         </div>
                         <div className='flex flex-col gap-2'>
                             <Label>Autor</Label>
-                            <Input type="text" placeholder='Autor' required ref={autor} defaultValue={data.autor}/>
+                            <Input type="text" placeholder='Autor' required ref={autor} defaultValue={data.autor} />
                         </div>
 
                         <Button type='submit' variant="success" >Editar</Button>

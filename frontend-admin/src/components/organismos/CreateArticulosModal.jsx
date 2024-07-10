@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Modal } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close'
 import axiosClient from '../../utils/axiosClient';
 import Input from '../moleculas/Input';
-import InputFile from '../moleculas/InputFile';
 import Label from '../moleculas/Label';
 import Select from '../moleculas/Select';
 import Button from '../moleculas/Button';
@@ -15,6 +14,7 @@ export default function CreateArticulosModal({open, onClose}) {
     const nombre = useRef(null)
     const tipo = useRef(null)
     const enlace = useRef(null)
+    const descripcion = useRef(null)
     const autor = useRef(null)
 
     useEffect(() => {
@@ -30,6 +30,7 @@ export default function CreateArticulosModal({open, onClose}) {
                 tipo: tipo.current.value,
                 enlace: enlace.current.value,
                 autor: autor.current.value,
+                descripcion: descripcion.current.value,
                 id_usuario: user.id
             }
             const response = await axiosClient.post('/articulos', data)
@@ -68,6 +69,10 @@ export default function CreateArticulosModal({open, onClose}) {
                     <div className='flex flex-col gap-2'>
                         <Label>Enlace</Label>
                         <Input type="url" placeholder='Enlace' required ref={enlace}/>
+                    </div>
+                    <div className='flex flex-col gap-2'>
+                        <Label>Descripción</Label>
+                        <textarea cols={10} rows={2} ref={descripcion} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5' placeholder='Descripción' required></textarea>
                     </div>
                     <div className='flex flex-col gap-2'>
                         <Label>Autor</Label>

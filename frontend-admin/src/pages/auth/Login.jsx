@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import LoginImage from '../../assets/cafetero.jpg'
 import axiosClient from '../../utils/axiosClient'
 import { useNavigate } from 'react-router-dom'
@@ -33,6 +33,10 @@ function Login() {
       console.error(error);
     }
   }
+
+  useEffect(() => {
+    document.title = "Login | LinkCafé"
+  }, [])
 
   return (
     <>
