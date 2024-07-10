@@ -104,7 +104,7 @@ export const actualizarUnaPublicacion = async (req, res) => {
         }
 
         const { id } = req.params;
-        const { nombre, descripcion, fuentes, tipo, estado } = req.body; // Añadimos el estado
+        const { nombre, descripcion, fuentes, tipo, estado } = req.body; 
 
         let imagen = req.file ? req.file.originalname : null;
 
@@ -125,7 +125,7 @@ export const actualizarUnaPublicacion = async (req, res) => {
             imagen: imagen,
             fuentes: fuentes || oldPost[0].fuentes,
             tipo: tipo || oldPost[0].tipo,
-            estado: estado || oldPost[0].estado // Añadimos el estado
+            estado: estado || oldPost[0].estado 
         };
 
         const [resultado] = await pool.query(`
