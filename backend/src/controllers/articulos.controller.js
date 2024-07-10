@@ -11,8 +11,7 @@
 import { validationResult } from "express-validator";
 import { pool } from "../database/conexion.js";
 
-
-//Listar Todos los articulos
+// Listar todos los artículos
 export const showArticles = async (req, res) => {
     try {
         const query = `
@@ -23,6 +22,7 @@ export const showArticles = async (req, res) => {
                 articulos.enlace,
                 articulos.fecha,
                 articulos.autor,
+                articulos.descripcion,
                 articulos.id_usuario,
                 usuarios.nombre_completo AS nombre_usuario
             FROM articulos
@@ -45,9 +45,7 @@ export const showArticles = async (req, res) => {
     }
 };
 
-
-
-//Crear articulos
+// Crear un artículo
 export const createArticles = async (req, res) => {
     try {
         const errors = validationResult(req);
@@ -56,7 +54,7 @@ export const createArticles = async (req, res) => {
             return res.status(400).json(errors.array());
         }
 
-        const { nombre, enlace, autor, id_usuario } = req.body;
+        const { nombre, enlace, autor, descripcion, id_usuario } = req.body;
 
         // Verificar si el usuario existe
         const [usuario] = await pool.query("SELECT * FROM usuarios WHERE id = ?", [id_usuario]);
@@ -67,7 +65,7 @@ export const createArticles = async (req, res) => {
             });
         }
 
-        const [resultado] = await pool.query("INSERT INTO articulos(nombre, enlace, autor, id_usuario) VALUES(?, ?, ?, ?)", [nombre, enlace, autor, id_usuario]);
+        const [resultado] = await pool.query("INSERT INTO articulos(nombre, enlace, autor, descripcion, id_usuario) VALUES(?, ?, ?, ?, ?)", [nombre, enlace, autor, descripcion, id_usuario]);
 
         if (resultado.affectedRows > 0) {
             res.status(200).json({
@@ -85,8 +83,7 @@ export const createArticles = async (req, res) => {
     }
 };
 
-
-// Actualizar artículos
+// Actualizar un artículo
 export const updateArticles = async (req, res) => {
     try {
         const errors = validationResult(req);
@@ -96,7 +93,7 @@ export const updateArticles = async (req, res) => {
         }
 
         const { id } = req.params;
-        const { nombre, enlace, autor, id_usuario } = req.body;
+        const { nombre, enlace, autor, descripcion, id_usuario } = req.body;
 
         // Verificar si el artículo existe
         const [oldUser] = await pool.query("SELECT * FROM articulos WHERE id = ?", [id]);
@@ -112,11 +109,13 @@ export const updateArticles = async (req, res) => {
             nombre = ?, 
             enlace = ?, 
             autor = ?, 
+            descripcion = ?, 
             id_usuario = ? 
             WHERE id = ?`, [
             nombre || oldUser[0].nombre,
             enlace || oldUser[0].enlace,
             autor || oldUser[0].autor,
+            descripcion || oldUser[0].descripcion,
             id_usuario || oldUser[0].id_usuario,
             id
         ]);
@@ -137,9 +136,7 @@ export const updateArticles = async (req, res) => {
     }
 };
 
-
-
-//Listar articulos por id 
+// Mostrar solo un artículo
 export const showAArticles = async (req, res) => {
     try {
         const { id } = req.params;
@@ -152,6 +149,7 @@ export const showAArticles = async (req, res) => {
                 articulos.enlace,
                 articulos.fecha,
                 articulos.autor,
+                articulos.descripcion,
                 articulos.id_usuario,
                 usuarios.nombre_completo AS nombre_usuario
             FROM articulos
@@ -175,8 +173,7 @@ export const showAArticles = async (req, res) => {
     }
 };
 
-
-//Eliminar articulos
+// Eliminar un artículo
 export const deleteArticles = async (req, res) => {
     try {
         const { id } = req.params;
@@ -193,12 +190,12 @@ export const deleteArticles = async (req, res) => {
         }
     } catch (error) {
         res.status(500).json({
-            "mensaje": error
+            "mensaje": error.message
         });
     }
 };
 
-// Contar todos los articulos
+// Contar todos los artículos
 export const contarArticulos = async (req, res) => {
     try {
         const [resultado] = await pool.query("SELECT COUNT(*) as total FROM articulos");
@@ -211,7 +208,6 @@ export const contarArticulos = async (req, res) => {
         res.status(500).json({ mensaje: error.message });
     }
 };
-
 
 // Listar los artículos por fechas
 export const listarArticulosPorFecha = async (req, res) => {
@@ -231,6 +227,7 @@ export const listarArticulosPorFecha = async (req, res) => {
                     articulos.enlace,
                     articulos.fecha,
                     articulos.autor,
+                    articulos.descripcion,
                     articulos.id_usuario,
                     usuarios.nombre_completo AS nombre_usuario
                 FROM articulos
@@ -248,6 +245,7 @@ export const listarArticulosPorFecha = async (req, res) => {
                     articulos.enlace,
                     articulos.fecha,
                     articulos.autor,
+                    articulos.descripcion,
                     articulos.id_usuario,
                     usuarios.nombre_completo AS nombre_usuario
                 FROM articulos
@@ -277,4 +275,3 @@ export const listarArticulosPorFecha = async (req, res) => {
         });
     }
 };
-
