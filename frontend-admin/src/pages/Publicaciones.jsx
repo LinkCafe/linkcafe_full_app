@@ -75,7 +75,7 @@ function Publicaciones() {
 
   return (
     <>
-      <DefaultLayout>
+      <DefaultLayout title="LinkCafé | Publicaciones">
         <div className='w-full h-full flex flex-col p-10 gap-5 bg-white rounded-2xl mt-15'>
           <div className='flex flex-row justify-between'>
             <h1 className='text-2xl'>Publicaciones</h1>

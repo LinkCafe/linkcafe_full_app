@@ -56,7 +56,7 @@ function Comentarios() {
 
   return (
     <>
-      <DefaultLayout>
+      <DefaultLayout title="LinkCafé | Comentarios">
         <div className='w-full h-screen flex flex-col p-10 gap-5 bg-white rounded-2xl mt-15'>
           <div className='flex flex-row justify-between '>
             <h1 className='text-2xl'>Comentarios</h1>

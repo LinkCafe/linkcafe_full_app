@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import DefaultLayout from '../layout/DefaultLayout'
 import axiosClient from '../utils/axiosClient'
 import CreateArticulosModal from '../components/organismos/CreateArticulosModal'
@@ -8,13 +8,10 @@ import toast from 'react-hot-toast';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFile, faPenToSquare } from '@fortawesome/free-regular-svg-icons'
 import { Link } from 'react-router-dom'
-import { faArrowRight, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faTrash } from '@fortawesome/free-solid-svg-icons'
 
 function Articulos() {
-
-  // constante para llamar datos de la base de datos
   const [articulos, setArticulos] = useState([])
-  // constante para crear articulos
   const [openCreateArticulosModal, setOpenCreateArticulosModal] = useState(false)
 
   const [selectedArticulo, setSelectedArticulo] = useState(null);
@@ -62,7 +59,7 @@ function Articulos() {
 
   return (
     <>
-      <DefaultLayout>
+      <DefaultLayout title="LinkCafé | Articulos">
         <div className='w-full h-full flex flex-col p-10 gap-5 bg-white rounded-2xl mt-15'>
           <div className='flex flex-row justify-between'>
             <h1 className='text-2xl'>Articulos</h1>
@@ -71,19 +68,32 @@ function Articulos() {
           </div>
           <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
             {articulos.map((a, index) => (
-              <div className="max-w-sm p-6 bg-[#f8f4f1] border border-gray-200 rounded-lg shadow" key={index}>
-                <EditArticulosModal open={selectedArticulo === a.id} onClose={() => { setSelectedArticulo(null); handleEdit(); }} data={a} />
-                <a href="#">
-                  <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">{a.nombre}</h5>
-                </a>
-                <p className="mb-3 font-normal text-sm dark:text-gray-400 underline text-blue-500 cursor-pointer">{a.enlace}</p>
+              <div className="w-full max-w-md p-6 grid gap-6 shadow-lg border border-gray-300 rounded" key={index}>
                 <div className="flex items-center justify-between">
-                  <p className="mb-3 font-normal text-sm text-gray-700 dark:text-gray-400">{a.tipo}</p>
-                  <p className="mb-3 font-normal text-sm text-gray-700 dark:text-gray-400">{a.autor}</p>
+                  <h3 className="text-2xl font-bold">{a.nombre}</h3>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <FontAwesomeIcon icon={faFile} />
+                    <span>{a.tipo}</span>
+                    <EditArticulosModal open={selectedArticulo === a.id} onClose={() => { setSelectedArticulo(null); handleEdit(); }} data={a} />
+                  </div>
                 </div>
-                <div className='flex flex-row gap-2 items-center justify-center'>
-                  <Button variant="success" onClick={() => setSelectedArticulo(a.id)}>Editar</Button>
-                  <Button variant="danger" onClick={() => handleDelete(a.id)}>Eliminar</Button>
+                <p className="text-muted-foreground">
+                  {a.descripcion}
+                </p>
+                <div className="flex items-center justify-between">
+                  <Link href={a.enlace} className="text-blue-400 underline" prefetch={false} target='_blank'>
+                    {a.enlace}
+                  </Link>
+                  <div className="flex items-center gap-2">
+                    <button className='flex flex-row gap-1 justify-center items-center' onClick={() => setSelectedArticulo(a.id)}>
+                      <FontAwesomeIcon icon={faPenToSquare} />
+                      Editar
+                    </button>
+                    <button className='flex flex-row gap-1 justify-center items-center text-white p-2 bg-red-600 hover:bg-red-700 transition-all rounded' onClick={() => handleDelete(a.id)}>
+                      <FontAwesomeIcon icon={faTrash} />
+                      Eliminar
+                    </button>
+                  </div>
                 </div>
               </div>
 

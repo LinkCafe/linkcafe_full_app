@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Sidebar from '../components/organismos/Sidebar';
 import Header from '../components/organismos/Header';
-import toast, { Toaster } from 'react-hot-toast';
 
-export default function DefaultLayout({ children }) {
+export default function DefaultLayout({ children, title }) {
+  useEffect(() => {
+    document.title = title
+  }, [title])
 
   return (
     <div className='flex h-screen overflow-hidden'>

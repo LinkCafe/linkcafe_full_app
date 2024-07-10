@@ -55,7 +55,7 @@ function Usuarios() {
 
   return (
     <>
-      <DefaultLayout>
+      <DefaultLayout title="LinkCafé | Usuarios">
         <div className='w-full h-screen flex flex-col p-10 gap-5  bg-white rounded-2xl mt-15'>
 
           <div className='flex flex-row justify-between'>
