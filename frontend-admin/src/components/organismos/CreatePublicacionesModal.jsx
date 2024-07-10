@@ -66,7 +66,7 @@ export default function CreatePublicacionesModal({ open, onClose }) {
                         </div>
                         <div className='flex flex-col gap-2'>
                             <Label>Fuentes</Label>
-                            <Input type="text" placeholder='Fuentes' required ref={fuentesRef} />
+                            <Input type="url" placeholder='Fuentes' required ref={fuentesRef} />
                         </div>
                         <div className='flex flex-col gap-2'>
                             <Label>Tipo</Label>
