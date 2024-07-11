@@ -1,79 +1,115 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
-import { Text, SafeAreaView, ScrollView } from 'react-native';
-import { StyleSheet } from 'react-native';
-import { TouchableHighlight } from 'react-native';
-import { Linking } from 'react-native';
+import React, { useEffect, useState, useContext } from 'react';
+import { Text, SafeAreaView, ScrollView, Alert, View, StyleSheet} from 'react-native';
+import { Card } from "@rneui/base";
+import axiosClient from '../utils/axiosClient';
+import ThemeContext from '../context/ThemeContext';
 
 const AllArticles = () => {
-const [articles , setArticles]= useState([]);
-const [error, setError]= useState([]);
-  const listar_articulos = async()=>{
+  const [articulos, setArticulos] = useState([]);
+  const { theme } = useContext(ThemeContext);
+
+  const getArticulos = async () => {
     try {
-      const response = await axios.get('http://192.168.0.103:3333/articulos');
-      setArticles(response.data);
-      console.log(response.data)
+      const response = await axiosClient.get('/articulos');
+      if (response && response.status === 200) {
+        setArticulos(response.data);        
+      } else {
+        Alert.alert('No se encontraron artículos');
+      }
     } catch (error) {
-      console.log(error)
-      setError(error.message);
+      Alert.alert('Error al obtener los artículos', error.message);
     }
-  }
-  useEffect(()=>{
-    listar_articulos();
-  }, [])  
+  };
+
+  useEffect(() => {
+    getArticulos();
+  }, []);
+   
   return (
-    <SafeAreaView style={style.safe}>
+    <SafeAreaView style={styles.safe}>
       <ScrollView>
-       
-        {articles.map((article) => {
- return(
-<View key={article.id} style={style.post}>
-<Text style={style.name_data}>Autor: {article.autor}</Text>
-      <Text style={style.name_data}>Fecha: {article.fecha}</Text>
-      <TouchableHighlight onPress={() => Linking.openURL(article.enlace)}>
-      <Text  style={[style.date, {color: 'black' }]}>
-      Enlace del Articulo: <Text style={{textDecorationLine:'underline', color:'blue'}}>{article.enlace}</Text>
-      </Text>
-    </TouchableHighlight>
-      <Text style={style.name_data}>Nombre Del Articulo: {article.nombre}</Text>
- </View>
- );
-})}
-        {error && <Text style={{ color: 'red' }}>{error}</Text>}
+        <View style={styles.containerCard}>
+            {articulos.map((d, index) => (
+              <Card
+                key={index}
+                containerStyle={[
+                  styles.card,
+                  { backgroundColor: theme == "light" ? "white" : "#434343" },
+                ]}
+              >
+                <Text style={{ paddingTop: 10, textAlign: 'center', fontSize: 20,  color: theme == "light" ? "black" : "white" }}>
+                  {d.nombre}
+                </Text>
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    gap: 10,
+                    alignItems: "center",
+                    paddingTop: 10,
+                  }}
+                >
+                  <Text
+                    style={{
+                      padding: 5,
+                      borderRadius: 5,
+                      backgroundColor: theme == "light" ? "#3e3e3e26" : "gray",
+                      color: theme == "light" ? "black" : "white",
+                    }}
+                  >
+                    {d.tipo}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    gap: 10,
+                    alignItems: "center",
+                    paddingTop: 10,
+                  }}
+                >
+                  <Text style={{ textDecorationLine: "underline", color: "#35d4f0" }}>
+                    {d.enlace}
+                  </Text>
+                </View>
+              </Card>
+            ))}
+          </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
-const style = StyleSheet.create({
-    safe:{
-        flex:1,
-        alignItems:"center",
-    },
-    texto:{
-        marginTop:126,
-        fontSize:26,
-        color:'black'
-    },
-    
-    name_data: {
-      fontSize: 16,
-      color: 'black',
-    },
-    date: {
-      fontSize: 16,
-      color: 'black',
-    },
-    post: {
-      paddingLeft: 6,
-      paddingRight: 6,
-      borderWidth: 2,
-      borderColor: 'black',
-      borderRadius: 12,
-      width: '100%',
-      marginVertical: 43,
-    }
-})
 
+const styles = StyleSheet.create({
+  safe: {
+    flex: 1,
+    alignItems: "center",
+    padding: 20,
+  },
+  texto: {
+    marginTop: 20,
+    fontSize: 26,
+    color: 'black',
+  },
+  containerCard: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    gap: 15,
+  },
+  card: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    gap: 10,
+    borderRadius: 10,
+    margin: 0,
+    borderColor: '#a1a1a1',
+    borderWidth: 0.3,
+  },
+});
 
 export default AllArticles;

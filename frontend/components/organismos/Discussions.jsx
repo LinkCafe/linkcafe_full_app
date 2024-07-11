@@ -3,45 +3,40 @@ import {
   Text,
   ScrollView,
   StyleSheet,
-  Image
+  Image,
+  Alert
 } from "react-native";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Avatar, Card } from "@rneui/base";
-import { Button } from "@rneui/base";
+import { Card } from "@rneui/base";
 import ThemeContext from "../../context/ThemeContext";
-import coffeImage from "../../img/coffe.webp";
 import { useNavigation } from '@react-navigation/native';
-import public1Image from '../../img/public1.png';
-import public2Image from '../../img/public2.png'
+import axiosClient from "../../utils/axiosClient";
 
 const Discussions = () => {
-  const data = [
-    {
-      imagen: public1Image,
-      titulo: "Porqué se debe sembrar en luna llena?",
-      veridica: true,
-      categoria: "Producción 🌱",
-      persona: "Fernando",
-    },
-    {
-      imagen: public2Image,
-      titulo: "Cómo saber que mi café es premiun?",
-      veridica: false,
-      categoria: "Producción 🌱",
-      persona: "Fernando",
-    },
-    {
-      imagen: coffeImage,
-      titulo: "Por qué se debe sembrar en luna llena?",
-      veridica: false,
-      categoria: "Producción 🌱",
-      persona: "Fernando",
-    },
-  ];
 
+  const [publicaciones, setPublicaciones] = useState([])
   const { theme } = useContext(ThemeContext)
   const navigation = useNavigation();
+
+  const getPublicacion = async () => {
+    try {
+      const response = await axiosClient.get('/publicaciones');
+      if (response && response.status === 200) {
+        const allPublicaciones = response.data;
+        const lastThreePublicaciones = allPublicaciones.slice(-3)
+        setPublicaciones(lastThreePublicaciones);
+      } else {
+        Alert.alert('No Se Encontraron Publicaciones')
+      }
+    } catch (error) {
+      Alert.alert('Error al obtener los artículos', error.message);
+    }
+  }
+
+  useEffect(() => {
+    getPublicacion();
+  }, []);
 
   const handlePress = (publication) => {
     navigation.navigate('Public', {
@@ -52,27 +47,20 @@ const Discussions = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={style.moreCategories}>
-        <Text style={[style.moreCategoriesText, { color: theme == 'light' ? 'black' : 'white' }]}>Últimas discusiones</Text>
-        <Button
-          type="outline"
-          title="Ver todo >"
-          buttonStyle={{ padding: 1, borderColor: theme == 'light' ? 'black' : '#a1a1a1', borderWidth: .7, backgroundColor: theme == 'light' ? 'white' : 'transparent' }}
-          titleStyle={{ color: theme == 'light' ? 'black' : 'white' }}
-          onPress={handlePress}
-        />
+        <Text style={[style.moreCategoriesText, { color: theme == 'light' ? 'black' : 'white' }]}>Últimas Publicaciones</Text>
       </View>
       <ScrollView horizontal={true}>
         <View style={style.containerCard}>
-          {data.map((d, index) => (
+          {publicaciones.map((d, index) => (
             <Card
               key={index}
               containerStyle={[style.card, { backgroundColor: theme == 'light' ? 'white' : '#464646' }]}
             >
               <Image
-                source={d.imagen}
+                src={`http://10.0.2.2:3333/public/img/${d.imagen}`}
                 style={{ width: "100%", height: 150 }}
               />
-              <Text style={{ paddingTop: 12, color: theme == 'light' ? 'black' : 'white' }}>{d.titulo}</Text>
+              <Text style={{ paddingTop: 12, color: theme == 'light' ? 'black' : 'white' }}>{d.nombre}</Text>
               <View
                 style={{
                   display: "flex",
@@ -100,7 +88,7 @@ const Discussions = () => {
                     color: theme == 'light' ? 'black' : 'white'
                   }}
                 >
-                  {d.categoria}
+                  {d.tipo}
                 </Text>
               </View>
               <View
@@ -112,8 +100,7 @@ const Discussions = () => {
                   paddingTop: 10,
                 }}
               >
-                <Avatar />
-                <Text style={{ fontWeight: "bold", color: theme == 'light' ? 'black' : 'white' }}>{d.persona}</Text>
+                <Text style={{ fontWeight: "bold", color: theme == 'light' ? 'black' : 'white' }}>{d.nombre_usuario}</Text>
               </View>
             </Card>
           ))}
