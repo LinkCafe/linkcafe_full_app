@@ -1,36 +1,40 @@
-import React, { useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   View,
   Text,
   ScrollView,
   StyleSheet,
-  Image,
-  TouchableOpacity,
+  Alert
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Avatar, Card, Button } from "@rneui/base";
-// import { Button } from "react-native";
+import { Card, Button } from "@rneui/base";
 import ThemeContext from "../../context/ThemeContext";
+import axiosClient from '../../utils/axiosClient';
 import { useNavigation } from '@react-navigation/native';
 
 const Articles = () => {
-  const data = [
-    {
-      imagen:
-        "https://images.pexels.com/photos/1002703/pexels-photo-1002703.jpeg?auto=compress&cs=tinysrgb&w=600",
-      titulo: "Prácticas avanzadas para la producción de café ",
-      categoria: "PDF",
-    },
-    {
-      imagen:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6U0IIzs_1vCo98DWEMa81gAhQNlI-13986A&usqp=CAU",
-      titulo: "El café sube un 10,2% su precio actual ",
-      categoria: "Noticia",
-    },
-  ];
-
+  const [articulos, setArticulos] = useState([]);
   const { theme } = useContext(ThemeContext);
   const navigation = useNavigation();
+
+  const getArticulos = async () => {
+    try {
+      const response = await axiosClient.get('/articulos');
+      if (response && response.status === 200) {
+        const allArticles = response.data;
+        const lastThreeArticles = allArticles.slice(-3);
+        setArticulos(lastThreeArticles);
+      } else {
+        Alert.alert('No se encontraron artículos');
+      }
+    } catch (error) {
+      Alert.alert('Error al obtener los artículos', error.message);
+    }
+  };
+
+  useEffect(() => {
+    getArticulos();
+  }, []);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -55,7 +59,7 @@ const Articles = () => {
       </View>
       <ScrollView horizontal={true}>
         <View style={styles.containerCard}>
-          {data.map((d, index) => (
+          {articulos.map((d, index) => (
             <Card
               key={index}
               containerStyle={[
@@ -63,15 +67,8 @@ const Articles = () => {
                 { backgroundColor: theme == "light" ? "white" : "#434343" },
               ]}
             >
-              <Image
-                source={{
-                  uri: d.imagen,
-                  width: "100%",
-                  height: 150,
-                }}
-              />
               <Text style={{ paddingTop: 12, color: theme == "light" ? "black" : "white" }}>
-                {d.titulo}
+                {d.nombre}
               </Text>
               <View
                 style={{
@@ -90,7 +87,7 @@ const Articles = () => {
                     color: theme == "light" ? "black" : "white",
                   }}
                 >
-                  {d.categoria}
+                  {d.tipo}
                 </Text>
               </View>
               <View
