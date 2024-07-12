@@ -40,16 +40,18 @@
         <td>
             Correcto:
             Status: 200
-            JSON{
-                "id": 3,
-                "nombre": "Publicación",
-                "descripcion": "lorem ipsum",
-                "imagen": "imagen.png",
-                "fuentes": "www.com",
+            JSON: [
+            {
+                "id": 65,
+                "nombre": "Cafe Huilense ",
+                "descripcion": "El mejor del Huila",
+                "imagen": "pan.jpg",
+                "fuentes": "cafehuilense.com",
                 "tipo": "Producción",
-                "estado": null,
-                "fecha": "2024-01-25T05:00:00.000Z",
-                "id_usuario": 1
+                "fecha": "2024-07-06T05:00:00.000Z",
+                "estado": "En proceso",
+                "id_usuario": 11,
+                "nombre_usuario": "Leomar Andres"
             } <br>
 
             Incorrecto:
@@ -106,7 +108,7 @@
     <tr>
         <td>PETICIÓN body</td>
         <td>
-            JSON{
+            JSON: {
 
                 "id": 1,
                 "nombre": "Cafe Huilense",
@@ -264,16 +266,17 @@
         <td>
             Correcto:
             Status: 200
-            JSON{
-            "id": 3,
-            "nombre": "Publicación",
-            "descripcion": "lorem ipsum",
-            "imagen": "imagen.png",
-            "fuentes": "www.com",
-            "tipo": "Producción",
-            "estado": null,
-            "fecha": "2024-01-25T05:00:00.000Z",
-            "id_usuario": 1
+            JSON:{
+                "id": 65,
+                "nombre": "Cafe Huilense ",
+                "descripcion": "El mejor del Huila",
+                "imagen": "pan.jpg",
+                "fuentes": "cafehuilense.com",
+                "tipo": "Producción",
+                "fecha": "2024-07-06T05:00:00.000Z",
+                "estado": "En proceso",
+                "id_usuario": 11,
+                "nombre_usuario": "Leomar Andres"
             } <br>
             Incorrecto:
             Status: 404
@@ -458,18 +461,19 @@
         <td>
             Correcto:
             Status: 200
-            JSON{
+            JSON: {
                 "publicaciones": [
                     {
-                        "id": 59,
-                        "nombre": "El mejor cafe de la region",
-                        "descripcion": "Es uno de los cafes de la mejor calidad y con mejor produccion de la region laboyana",
-                        "imagen": "a family eating dinner at a table made out of cork.jpg",
-                        "fuentes": "CafeLaboyano.com",
+                        "id": 65,
+                        "nombre": "Cafe Huilense ",
+                        "descripcion": "El mejor del Huila",
+                        "imagen": "pan.jpg",
+                        "fuentes": "cafehuilense.com",
                         "tipo": "Producción",
+                        "fecha": "2024-07-06T05:00:00.000Z",
                         "estado": "En proceso",
-                        "fecha": "2024-06-04T05:00:00.000Z",
-                        "id_usuario": 7
+                        "id_usuario": 11,
+                        "nombre_usuario": "Leomar Andres"
                     }
                 ],
                 "total": 1

@@ -40,13 +40,17 @@
         <td>
             Correcto:
             Status: 200
-            JSON{
-              "id": 1,
-              "comentario": "comentario",
-              "id_usuario": 1,
-              "id_publicacion": 3,
-              "fecha": "2024-01-25T05:00:00.000Z"
-            } <br>
+            JSON: [
+            {
+                "id": 11,
+                "comentario": "comentario 3",
+                "fecha": "2024-07-10T05:00:00.000Z",
+                "id_usuario": 11,
+                "nombre_usuario": "Leomar Andres",
+                "id_publicacion": 65,
+                "nombre_publicacion": "Cafe Huilense "
+            }
+        ] <br>
 
             Incorrecto:
             Status: 404
@@ -243,12 +247,14 @@
         <td>
             Correcto:
             Status: 200
-            JSON{
-              "id": 1,
-              "comentario": "comentario",
-              "id_usuario": 1,
-              "id_publicacion": 3,
-              "fecha": "2024-01-25T05:00:00.000Z"
+            JSON: {
+                "id": 11,
+                "comentario": "comentario 3",
+                "fecha": "2024-07-10T05:00:00.000Z",
+                "id_usuario": 11,
+                "nombre_usuario": "Leomar Andres",
+                "id_publicacion": 65,
+                "nombre_publicacion": "Cafe Huilense "
             } <br>
           
             Incorrecto:
@@ -433,17 +439,18 @@
         <td>
             Correcto:
             Status: 200
-            JSON{
+            JSON:{
                 "comentarios": [
                     {
-                        "id": 1,
-                        "comentario": "El mejor cafe",
-                        "id_usuario": 9,
-                        "id_publicacion": 58,
-                        "fecha": "2024-06-04T05:00:00.000Z"
+                        "id": 11,
+                        "comentario": "comentario 3",
+                        "fecha": "2024-07-10T05:00:00.000Z",
+                        "id_usuario": 11,
+                        "nombre_usuario": "Leomar Andres",
+                        "id_publicacion": 65,
+                        "nombre_publicacion": "Cafe Huilense "
                     }
-                ],
-                "total": 1
+                ]
             } <br>
             Incorrecto:
             Status: 404
@@ -503,15 +510,20 @@
         <td>
             Correcto:
             Status: 200
-            JSON"total": 1,
-            "comentarios": [
-                {
-                    "id": 4,
-                    "comentario": "El mejor cafe",
-                    "id_usuario": 11,
-                    "id_publicacion": 62,
-                    "fecha": "2024-06-21T05:00:00.000Z"
-                } <br>
+            JSON: {
+                "total": 1,
+                "comentarios": [
+                    {
+                        "id": 11,
+                        "comentario": "comentario 3",
+                        "fecha": "2024-07-10T05:00:00.000Z",
+                        "id_usuario": 11,
+                        "nombre_usuario": "Leomar Andres",
+                        "id_publicacion": 65,
+                        "nombre_publicacion": "Cafe Huilense "
+                    }
+                ]
+            } <br>
             Incorrecto:
             Status: 400
             JSON {
