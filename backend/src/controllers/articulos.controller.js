@@ -20,6 +20,7 @@ export const showArticles = async (req, res) => {
                 articulos.nombre,
                 articulos.tipo,
                 articulos.enlace,
+                articulos.idioma,
                 articulos.fecha,
                 articulos.autor,
                 articulos.descripcion,
@@ -45,6 +46,7 @@ export const showArticles = async (req, res) => {
     }
 };
 
+
 // Crear un artículo
 export const createArticles = async (req, res) => {
     try {
@@ -54,9 +56,8 @@ export const createArticles = async (req, res) => {
             return res.status(400).json(errors.array());
         }
 
-        const { nombre, enlace, autor, descripcion, id_usuario } = req.body;
+        const { nombre, enlace, autor, descripcion, idioma, id_usuario } = req.body;
 
-        // Verificar si el usuario existe
         const [usuario] = await pool.query("SELECT * FROM usuarios WHERE id = ?", [id_usuario]);
 
         if (usuario.length === 0) {
@@ -65,7 +66,7 @@ export const createArticles = async (req, res) => {
             });
         }
 
-        const [resultado] = await pool.query("INSERT INTO articulos(nombre, enlace, autor, descripcion, id_usuario) VALUES(?, ?, ?, ?, ?)", [nombre, enlace, autor, descripcion, id_usuario]);
+        const [resultado] = await pool.query("INSERT INTO articulos(nombre, enlace, autor, descripcion, idioma, id_usuario) VALUES(?, ?, ?, ?, ?, ?)", [nombre, enlace, autor, descripcion, idioma, id_usuario]);
 
         if (resultado.affectedRows > 0) {
             res.status(200).json({
@@ -83,6 +84,7 @@ export const createArticles = async (req, res) => {
     }
 };
 
+
 // Actualizar un artículo
 export const updateArticles = async (req, res) => {
     try {
@@ -93,9 +95,8 @@ export const updateArticles = async (req, res) => {
         }
 
         const { id } = req.params;
-        const { nombre, enlace, autor, descripcion, id_usuario } = req.body;
+        const { nombre, enlace, autor, descripcion, idioma, id_usuario } = req.body;
 
-        // Verificar si el artículo existe
         const [oldUser] = await pool.query("SELECT * FROM articulos WHERE id = ?", [id]);
 
         if (oldUser.length === 0) {
@@ -110,12 +111,14 @@ export const updateArticles = async (req, res) => {
             enlace = ?, 
             autor = ?, 
             descripcion = ?, 
+            idioma = ?, 
             id_usuario = ? 
             WHERE id = ?`, [
             nombre || oldUser[0].nombre,
             enlace || oldUser[0].enlace,
             autor || oldUser[0].autor,
             descripcion || oldUser[0].descripcion,
+            idioma || oldUser[0].idioma,
             id_usuario || oldUser[0].id_usuario,
             id
         ]);
@@ -130,14 +133,15 @@ export const updateArticles = async (req, res) => {
             });
         }
     } catch (error) {
-        res.status(500).json({
+        res.status (500).json({
             "mensaje": error.message
         });
     }
 };
 
+
 // Mostrar solo un artículo
-export const showAArticles = async (req, res) => {
+export const mostrarSoloUnaPublicacion = async (req, res) => {
     try {
         const { id } = req.params;
 
@@ -147,6 +151,7 @@ export const showAArticles = async (req, res) => {
                 articulos.nombre,
                 articulos.tipo,
                 articulos.enlace,
+                articulos.idioma,
                 articulos.fecha,
                 articulos.autor,
                 articulos.descripcion,
@@ -172,6 +177,8 @@ export const showAArticles = async (req, res) => {
         });
     }
 };
+
+
 
 // Eliminar un artículo
 export const deleteArticles = async (req, res) => {
@@ -213,6 +220,7 @@ export const contarArticulos = async (req, res) => {
 export const listarArticulosPorFecha = async (req, res) => {
     try {
         const { fechaInicio, fechaFin } = req.params;
+        const { idioma } = req.query; // Se obtiene el idioma de los parámetros de consulta
 
         let query;
         let params;
@@ -228,13 +236,14 @@ export const listarArticulosPorFecha = async (req, res) => {
                     articulos.fecha,
                     articulos.autor,
                     articulos.descripcion,
+                    articulos.idioma,
                     articulos.id_usuario,
                     usuarios.nombre_completo AS nombre_usuario
                 FROM articulos
                 JOIN usuarios ON articulos.id_usuario = usuarios.id
-                WHERE DATE(articulos.fecha) BETWEEN ? AND ?
+                WHERE DATE(articulos.fecha) BETWEEN ? AND ? AND articulos.idioma = ?
             `;
-            params = [fechaInicio, fechaFin];
+            params = [fechaInicio, fechaFin, idioma];
         } else if (fechaInicio) {
             // Query para una sola fecha
             query = `
@@ -246,13 +255,14 @@ export const listarArticulosPorFecha = async (req, res) => {
                     articulos.fecha,
                     articulos.autor,
                     articulos.descripcion,
+                    articulos.idioma,
                     articulos.id_usuario,
                     usuarios.nombre_completo AS nombre_usuario
                 FROM articulos
                 JOIN usuarios ON articulos.id_usuario = usuarios.id
-                WHERE DATE(articulos.fecha) = ?
+                WHERE DATE(articulos.fecha) = ? AND articulos.idioma = ?
             `;
-            params = [fechaInicio];
+            params = [fechaInicio, idioma];
         } else {
             return res.status(400).json({
                 "mensaje": "Debe proporcionar al menos una fecha"
@@ -275,3 +285,4 @@ export const listarArticulosPorFecha = async (req, res) => {
         });
     }
 };
+
