@@ -69,7 +69,7 @@ export const crearUnaPublicacion = async (req, res) => {
             return res.status(400).json({ error: error.array() });
         }
 
-        const { nombre, descripcion, fuentes, tipo, id_usuario } = req.body;
+        const { nombre, descripcion, fuentes, tipo, id_usuario, idioma } = req.body;
 
         const imagen = req.file.originalname;
 
@@ -85,8 +85,13 @@ export const crearUnaPublicacion = async (req, res) => {
             return res.status(404).json({ mensaje: "No se encontró el usuario con el ID proporcionado." });
         }
 
+        // Verificar el campo idioma
+        if (idioma !== 'EN' && idioma !== 'ES') {
+            return res.status(400).json({ mensaje: "El idioma debe ser 'EN' o 'ES'." });
+        }
+
         // Insertar la nueva publicación en la base de datos
-        await pool.query("INSERT INTO publicaciones (nombre, descripcion, imagen, fuentes, tipo, id_usuario) VALUES (?, ?, ?, ?, ?, ?)", [nombre, descripcion, imagen, fuentes, tipo, id_usuario]);
+        await pool.query("INSERT INTO publicaciones (nombre, descripcion, imagen, fuentes, tipo, id_usuario, idioma) VALUES (?, ?, ?, ?, ?, ?, ?)", [nombre, descripcion, imagen, fuentes, tipo, id_usuario, idioma]);
 
         return res.status(200).json({ mensaje: "Publicación creada y procesada con éxito" });
 
@@ -94,6 +99,7 @@ export const crearUnaPublicacion = async (req, res) => {
         return res.status(500).json({ mensaje: error.message });
     }
 }
+
 
 // Actualizar una publicación
 export const actualizarUnaPublicacion = async (req, res) => {
@@ -104,7 +110,7 @@ export const actualizarUnaPublicacion = async (req, res) => {
         }
 
         const { id } = req.params;
-        const { nombre, descripcion, fuentes, tipo, estado } = req.body; 
+        const { nombre, descripcion, fuentes, tipo, estado, idioma } = req.body; 
 
         let imagen = req.file ? req.file.originalname : null;
 
@@ -119,13 +125,19 @@ export const actualizarUnaPublicacion = async (req, res) => {
             imagen = oldPost[0].imagen;
         }
 
+        // Verificaciones 
+        if (idioma && idioma !== 'EN' && idioma !== 'ES') {
+            return res.status(400).json({ mensaje: "El idioma debe ser 'EN' o 'ES'." });
+        }
+
         const updateFields = {
             nombre: nombre || oldPost[0].nombre,
             descripcion: descripcion || oldPost[0].descripcion,
             imagen: imagen,
             fuentes: fuentes || oldPost[0].fuentes,
             tipo: tipo || oldPost[0].tipo,
-            estado: estado || oldPost[0].estado 
+            estado: estado || oldPost[0].estado,
+            idioma: idioma || oldPost[0].idioma
         };
 
         const [resultado] = await pool.query(`
@@ -151,6 +163,7 @@ export const actualizarUnaPublicacion = async (req, res) => {
     }
 };
 
+
 // Mostrar solo una publicación
 export const mostrarSoloUnaPublicacion = async (req, res) => {
     try {
@@ -164,6 +177,7 @@ export const mostrarSoloUnaPublicacion = async (req, res) => {
                 publicaciones.imagen,
                 publicaciones.fuentes,
                 publicaciones.tipo,
+                publicaciones.idioma,
                 publicaciones.fecha,
                 publicaciones.estado,
                 publicaciones.id_usuario,
@@ -189,6 +203,7 @@ export const mostrarSoloUnaPublicacion = async (req, res) => {
         });
     }
 };
+
 
 
 // Eliminar una publicación
@@ -233,6 +248,7 @@ export const contarPublicaciones = async (req, res) => {
 export const listarPublicacionesPorFecha = async (req, res) => {
     try {
         const { fechaInicio, fechaFin } = req.params;
+        const { idioma } = req.query; // Se obtiene el idioma de los parámetros de consulta
 
         let query;
         let params;
@@ -249,13 +265,14 @@ export const listarPublicacionesPorFecha = async (req, res) => {
                     publicaciones.tipo,
                     publicaciones.fecha,
                     publicaciones.estado,
+                    publicaciones.idioma,
                     publicaciones.id_usuario,
                     usuarios.nombre_completo AS nombre_usuario
                 FROM publicaciones
                 JOIN usuarios ON publicaciones.id_usuario = usuarios.id
-                WHERE DATE(publicaciones.fecha) BETWEEN ? AND ?
+                WHERE DATE(publicaciones.fecha) BETWEEN ? AND ? AND publicaciones.idioma = ?
             `;
-            params = [fechaInicio, fechaFin];
+            params = [fechaInicio, fechaFin, idioma];
         } else if (fechaInicio) {
             // Query para una sola fecha
             query = `
@@ -268,13 +285,14 @@ export const listarPublicacionesPorFecha = async (req, res) => {
                     publicaciones.tipo,
                     publicaciones.fecha,
                     publicaciones.estado,
+                    publicaciones.idioma,
                     publicaciones.id_usuario,
                     usuarios.nombre_completo AS nombre_usuario
                 FROM publicaciones
                 JOIN usuarios ON publicaciones.id_usuario = usuarios.id
-                WHERE DATE(publicaciones.fecha) = ?
+                WHERE DATE(publicaciones.fecha) = ? AND publicaciones.idioma = ?
             `;
-            params = [fechaInicio];
+            params = [fechaInicio, idioma];
         } else {
             return res.status(400).json({
                 "mensaje": "Debe proporcionar al menos una fecha"
@@ -297,6 +315,7 @@ export const listarPublicacionesPorFecha = async (req, res) => {
         });
     }
 };
+
 
 
 // Cambiar el estado de una publicación
