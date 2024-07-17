@@ -141,7 +141,7 @@ export const updateArticles = async (req, res) => {
 
 
 // Mostrar solo un artículo
-export const mostrarSoloUnaPublicacion = async (req, res) => {
+export const showAArticles = async (req, res) => {
     try {
         const { id } = req.params;
 
