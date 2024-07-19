@@ -54,6 +54,12 @@ function Publicaciones() {
     getPublicaciones();
   };
 
+  const getDomain = (url) => {
+    const match = url.match(/^https?:\/\/(?:www\.)?([^\/]+)/i);
+    return match ? match[1] : '';
+  }
+
+
   const getEstadoClass = (estado) => {
     switch (estado) {
       case 'En proceso':
@@ -92,7 +98,7 @@ function Publicaciones() {
                   handleEditSuccess={handleEditSuccess}
                 />
                 <a href="#">
-                  <img className="rounded-t-lg w-full h-40 object-cover" src={`http://localhost:3333/public/img/${d.imagen}`} alt="" />
+                  <img className="rounded-t-lg w-full h-40 object-cover" src={`http://10.193.129.240:3333/public/img/${d.imagen}`} alt="" />
                 </a>
                 <div className="p-5">
                   <a href="#">
@@ -107,7 +113,7 @@ function Publicaciones() {
                     )}
                   </p>
                   <div className='flex justify-between items-center mb-3'>
-                    <p className="mb-3 font-normal text-sm dark:text-gray-400 underline text-blue-500 cursor-pointer">{d.fuentes}</p>
+                    <a href={d.fuentes} target='_blank' className="mb-3 font-normal text-sm dark:text-gray-400 underline text-blue-500 cursor-pointer">{getDomain(d.fuentes)}</a>
                     <p className={`font-normal text-sm rounded p-1.5 ${getEstadoClass(d.estado)}`}>{d.estado}</p>
                   </div>
                   <div className='flex flex-row gap-2 items-center justify-center h-full'>

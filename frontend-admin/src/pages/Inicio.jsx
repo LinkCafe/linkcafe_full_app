@@ -58,7 +58,7 @@ function Inicio() {
 
   return (
     <DefaultLayout title="LinkCafé | Inicio">
-      <div className='w-full h-[91%] flex flex-col p-20 gap-10 bg-white rounded-2xl mt-15'>
+      <div className='w-full h-[91%] flex flex-col p-20 gap-10 bg-white rounded-2xl mt-15 overflow-y-auto'>
         <div className='w-full flex flex-row flex-wrap gap-5 justify-center'>
           <Counts icon={faUser} nombre={'Usuarios:'} cantidad={totalUsuarios} />
           <Counts icon={faNewspaper} nombre={'Articulos:'} cantidad={totalArticulos} />
