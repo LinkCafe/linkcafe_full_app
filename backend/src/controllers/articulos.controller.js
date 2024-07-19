@@ -95,7 +95,7 @@ export const updateArticles = async (req, res) => {
         }
 
         const { id } = req.params;
-        const { nombre, enlace, autor, descripcion, idioma, id_usuario } = req.body;
+        const { nombre, enlace, autor, descripcion, idioma, id_usuario, tipo } = req.body;
 
         const [oldUser] = await pool.query("SELECT * FROM articulos WHERE id = ?", [id]);
 
@@ -112,7 +112,8 @@ export const updateArticles = async (req, res) => {
             autor = ?, 
             descripcion = ?, 
             idioma = ?, 
-            id_usuario = ? 
+            id_usuario = ?,
+            tipo = ?
             WHERE id = ?`, [
             nombre || oldUser[0].nombre,
             enlace || oldUser[0].enlace,
@@ -120,6 +121,7 @@ export const updateArticles = async (req, res) => {
             descripcion || oldUser[0].descripcion,
             idioma || oldUser[0].idioma,
             id_usuario || oldUser[0].id_usuario,
+            tipo || oldUser[0].tipo,
             id
         ]);
 
