@@ -17,6 +17,12 @@ function Inicio() {
 
   const getData = async () => {
     try {
+      await axiosClient.get("/publicaciones").then((response) => {
+        if (response.status == 200) {
+          setPublicaciones(response.data)
+        } 
+      })
+
       await axiosClient.get('/usuarios/contar').then((response) => {
         if (response.status == 200) {
           setTotalUsuarios(response.data.total)
@@ -34,17 +40,12 @@ function Inicio() {
           setTotalArticulos(response.data.total)
         }
       })
-
+      
+      
       await axiosClient.get('/comentarios/contar').then((response) => {
         if (response.status == 200) {
           setTotalComentarios(response.data.total)
         }
-      })
-
-      await axiosClient.get("/publicaciones").then((response) => {
-        if (response.status == 200) {
-          setPublicaciones(response.data)
-        } 
       })
     } catch (error) {
       console.log(error);
