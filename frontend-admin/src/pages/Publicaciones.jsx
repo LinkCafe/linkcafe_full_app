@@ -98,7 +98,7 @@ function Publicaciones() {
                   handleEditSuccess={handleEditSuccess}
                 />
                 <a href="#">
-                  <img className="rounded-t-lg w-full h-40 object-cover" src={`http://10.193.129.240:3333/public/img/${d.imagen}`} alt="" />
+                  <img className="rounded-t-lg w-full h-40 object-cover" src={`http://localhost:3333/public/img/${d.imagen}`} alt="" />
                 </a>
                 <div className="p-5">
                   <a href="#">
