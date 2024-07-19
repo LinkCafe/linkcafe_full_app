@@ -57,6 +57,11 @@ function Articulos() {
     getArticulos();
   };
 
+  const getDomain = (url) => {
+    const match = url.match(/^https?:\/\/(?:www\.)?([^\/]+)/i);
+    return match ? match[1] : '';
+  }
+
   return (
     <>
       <DefaultLayout title="LinkCafé | Articulos">
@@ -81,9 +86,9 @@ function Articulos() {
                   {a.descripcion}
                 </p>
                 <div className="flex items-center justify-between">
-                  <Link href={a.enlace} className="text-blue-400 underline" prefetch={false} target='_blank'>
-                    {a.enlace}
-                  </Link>
+                  <a href={a.enlace} className="text-blue-400 underline text-sm" target='_blank'>
+                    {getDomain(a.enlace)}
+                  </a>
                   <div className="flex items-center gap-2">
                     <button className='flex flex-row gap-1 justify-center items-center' onClick={() => setSelectedArticulo(a.id)}>
                       <FontAwesomeIcon icon={faPenToSquare} />

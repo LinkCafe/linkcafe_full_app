@@ -5,6 +5,7 @@ import { faNewspaper } from '@fortawesome/free-regular-svg-icons';
 import { useEffect, useState } from 'react';
 import axiosClient from '../utils/axiosClient';
 import PublicacionesPorDia from '../components/organismos/PublicacionesPorDia';
+import { Link } from 'react-router-dom';
 
 function Inicio() {
   const [ totalUsuarios, setTotalUsuarios ] = useState(0)
@@ -60,10 +61,18 @@ function Inicio() {
     <DefaultLayout title="LinkCafé | Inicio">
       <div className='w-full h-[91%] flex flex-col p-20 gap-10 bg-white rounded-2xl mt-15 overflow-y-auto'>
         <div className='w-full flex flex-row flex-wrap gap-5 justify-center'>
-          <Counts icon={faUser} nombre={'Usuarios:'} cantidad={totalUsuarios} />
-          <Counts icon={faNewspaper} nombre={'Articulos:'} cantidad={totalArticulos} />
-          <Counts icon={faFire} nombre={'Publicaciones:'} cantidad={totalPublicaciones} />
-          <Counts icon={faMessage} nombre={'Comentarios:'} cantidad={totalComentarios} />
+          <Link to="/usuarios">
+            <Counts icon={faUser} nombre={'Usuarios:'} cantidad={totalUsuarios} />
+          </Link>
+          <Link to="/articulos">
+            <Counts icon={faNewspaper} nombre={'Articulos:'} cantidad={totalArticulos} />
+          </Link>
+          <Link to="/publicaciones">
+            <Counts icon={faFire} nombre={'Publicaciones:'} cantidad={totalPublicaciones} />
+          </Link>
+          <Link to="/comentariosj">
+            <Counts icon={faMessage} nombre={'Comentarios:'} cantidad={totalComentarios} />
+          </Link>
         </div>
         <div className='w-full h-full flex justify-center items-center'>
           <PublicacionesPorDia data={publicaciones} />
