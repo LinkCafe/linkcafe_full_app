@@ -37,6 +37,7 @@ export const listarPublicaciones = async (req, res) => {
                 publicaciones.fecha,
                 publicaciones.estado,
                 publicaciones.id_usuario,
+                publicaciones.idioma,
                 usuarios.nombre_completo AS nombre_usuario
             FROM publicaciones
             JOIN usuarios ON publicaciones.id_usuario = usuarios.id
@@ -190,15 +191,15 @@ export const mostrarSoloUnaPublicacion = async (req, res) => {
         const [resultado] = await pool.query(query, [id]);
 
         if (resultado.length > 0) {
-            res.status(200).json(resultado[0]);
+            return res.status(200).json(resultado[0]);
         } else {
-            res.status(404).json({
+            return res.status(404).json({
                 "mensaje": "No se encontró esa publicación con ese ID"
             });
         }
 
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             "mensaje": error.message
         });
     }
