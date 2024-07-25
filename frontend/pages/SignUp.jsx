@@ -61,9 +61,9 @@ const SignUp = () => {
   };
 
   return (
-    <SafeAreaView style={[styleConstants.container, { backgroundColor: theme === 'light' ? 'white' : '#202020' }]}>
+    <SafeAreaView style={[styleConstants.container, { backgroundColor: 'white' }]}>
       <ScrollView style={style.contentCard}>
-        <Text style={[style.titleStyle, { color: theme === 'light' ? 'black' : 'white' }]}>Registro</Text>
+        <Text style={[style.titleStyle, { color: 'black' }]}>Registro</Text>
 
         <View>
           <Input

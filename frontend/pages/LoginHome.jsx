@@ -15,23 +15,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginHome = () => {
   const navigation = useNavigation();
-  const handleGuest = async () => {
-    try {
-      await AsyncStorage.setItem('name', 'Invitado');
-      await AsyncStorage.setItem('email', 'invitado@gmail.com');
-      await AsyncStorage.setItem('password', 'invitado');
-      console.log("Datos de invitado guardados");
-      navigation.navigate('HomeTabs');
-      ToastAndroid.showWithGravity(
-        'Sesión como invitado',
-        ToastAndroid.LONG,
-        ToastAndroid.BOTTOM,
-      );
-    } catch (error) {
-      console.error("Error al iniciar sesión como invitado:", error);
-    }
-  };
-  
   return (
     <SafeAreaView style={styleConstants.container}>
       <ScrollView style={style.contentCard}>
@@ -58,9 +41,6 @@ const LoginHome = () => {
             onPress={() => navigation.navigate('SignUp')}>
             Registrarse
           </Button>
-          <Text style={style.guestText} onPress={() => handleGuest()}>
-            Iniciar como invitado
-          </Text>
         </View>
       </ScrollView>
     </SafeAreaView>

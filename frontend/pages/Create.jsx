@@ -9,7 +9,7 @@ import React, { useContext, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button, Input } from "@rneui/base";
 import ThemeContext from "../context/ThemeContext";
-
+import RNPickerSelect from 'react-native-picker-select';
 
 const Create = () => {
   const categories = ["Producción", "Barismo", "Otros"];
@@ -42,54 +42,7 @@ const Create = () => {
                 marginBottom: 10,
                 fontSize: 15,
               }}
-              style={{ 
-                color: theme == 'light' ? 'black' : 'white'
-              }}
-            />
-          </View>
-          <View style={{ marginLeft: 10 }}>
-            <Text
-              style={{ fontSize: 16, marginBottom: 10, fontWeight: "bold", color: theme == 'light' ?  'black' : 'white'}}
-            >
-              Tipo de publicación (*)
-            </Text>
-            <View style={{ display: "flex", flexDirection: "row", gap: 5 }}>
-              {categories.map((category) => (
-                <TouchableOpacity
-                  key={category}
-                  style={[
-                    style.categoryButton,
-                    selectedCategory === category &&
-                      style.selectedCategoryButton,
-                    {
-                      backgroundColor: theme == 'light' ? "#eee" : 'gray',
-                    }
-                  ]}
-                  onPress={() => handleCategoryPress(category)}
-                >
-                  <Text style={[style.categoryButtonText, { color: theme == 'light' ? "#333" : 'white'}]}>{category}</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </View>
-        </View>
-        <View style={{ width: "100%", paddingHorizontal: 16 }}>
-          <Text style={{ fontSize: 25, fontWeight: "bold", marginBottom: 10, color: theme == 'light' ?  'black' : 'white' }}>
-            Detalles de la publicación
-          </Text>
-          <View>
-            <Input
-              placeholder="URLs origen de la información"
-              inputContainerStyle={style.inputStyle}
-              leftIconContainerStyle={style.inputContainerStyle}
-              label="Fuentes"
-              labelStyle={{
-                fontWeight: "bold",
-                color: theme == 'light' ? "black" : 'white',
-                marginBottom: 10,
-                fontSize: 15,
-              }}
-              style={{ 
+              style={{
                 color: theme == 'light' ? 'black' : 'white'
               }}
             />
@@ -109,11 +62,48 @@ const Create = () => {
               multiline={true}
               numberOfLines={4}
               textContentType="URL"
-              style={{ 
+              style={{
                 color: theme == 'light' ? 'black' : 'white'
               }}
             />
           </View>
+          <View>
+            <Input
+              placeholder="URLs origen de la información"
+              inputContainerStyle={style.inputStyle}
+              leftIconContainerStyle={style.inputContainerStyle}
+              label="Fuentes"
+              labelStyle={{
+                fontWeight: "bold",
+                color: theme == 'light' ? "black" : 'white',
+                marginBottom: 10,
+                fontSize: 15,
+              }}
+              style={{
+                color: theme == 'light' ? 'black' : 'white'
+              }}
+              dataDetectorTypes={"link"}
+            />
+          </View>
+          <View style={{ paddingLeft: 10 }}>
+            <Text >Tipo (*)</Text>
+            <RNPickerSelect
+              placeholder={{ label: 'Tipo', value: null }}
+              onValueChange={(value) => setSelectedValue(value)}
+              items={[
+                { label: 'Producción', value: 1 },
+                { label: 'Barismo', value: 2 },
+                { label: 'Otros', value: 3 },
+              ]}
+              style={{
+                placeholder: { color: theme == 'light' ? 'black' : 'white' },
+              }}
+            />
+          </View>
+
+        </View>
+        <View style={{ width: "100%", paddingHorizontal: 16 }}>
+
           <Button buttonStyle={{ backgroundColor: "#6a4023", borderRadius: 5 }}>
             Subir imagen
           </Button>
@@ -122,8 +112,10 @@ const Create = () => {
       <View style={style.interactionButton}>
         <Button
           containerStyle={{ width: "50%" }}
-          buttonStyle={{ borderRadius: 5, backgroundColor: "#6a4023", borderColor: "#6a4023",
-            borderWidth: 2}}
+          buttonStyle={{
+            borderRadius: 5, backgroundColor: "#6a4023", borderColor: "#6a4023",
+            borderWidth: 2
+          }}
         >
           Subir
         </Button>
@@ -183,7 +175,7 @@ const style = StyleSheet.create({
     paddingBottom: 10,
     justifyContent: "center",
     alignItems: "center",
-  },
+  }
 });
 
 export default Create;

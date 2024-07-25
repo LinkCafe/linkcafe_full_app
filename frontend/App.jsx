@@ -21,25 +21,9 @@ import { UserProvider } from './context/UserContext.js';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  React.useEffect(() => {
-    const handleDataAdmin = async () => {
-      const dataAdmin = {
-        nombre: 'admin',
-        email: 'admin@gmail.com',
-        password: 'admin',
-        rol: 1,
-      };
-      const existingData = await AsyncStorage.getItem('dataAdmin');
-      if (!existingData) {
-        await AsyncStorage.setItem('dataAdmin', JSON.stringify(dataAdmin));
-      }
-    };
-    handleDataAdmin();
-  }, []);
-
   return (
     <NavigationContainer>
-      <StatusBar />
+      <StatusBar backgroundColor='black' />
       <UserProvider>
         <ThemeProvider>
           <Stack.Navigator>
@@ -95,7 +79,6 @@ export default function App() {
             <Stack.Screen
               name="Public"
               component={PublicationView}
-              options={{ title: 'Porqué se debería sembrar en luna llena?' }}
             />
             <Stack.Screen
               name="All_articles"

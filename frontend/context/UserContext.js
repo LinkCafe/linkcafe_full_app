@@ -10,14 +10,14 @@ export const UserProvider = ({ children }) => {
     useEffect(() => {
         async function fetchUser() {
             try {
-                const response = await JSON.parse(AsyncStorage.getItem('token'))
+                const response = await JSON.parse(AsyncStorage.getItem('user'))
                 setUser(response);
             } catch (error) {
                 console.log(error);   
             }   
         }
         fetchUser();
-    }, []);
+    }, [user]);
 
     return (
         <UserContext.Provider value={{ user, setUser }}>

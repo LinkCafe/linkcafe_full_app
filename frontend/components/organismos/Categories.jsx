@@ -47,7 +47,7 @@ const Categories = () => {
         />
       </View>
       <View style={style.categoriesContainer}>
-        <Button buttonStyle={[style.styleButton, { backgroundColor: theme == 'light' ? "#fafafa" : 'transparent' }]} onPress={() => navigation.navigate("CategoriesFull", {
+        <Button buttonStyle={[style.styleButton, { backgroundColor: theme == 'light' ? "#fafafa" : '#202020' }]} onPress={() => navigation.navigate("CategoriesFull", {
           publicaciones: publicaciones.filter((p) => p.tipo == "Producción" )
         })}>
           <Avatar
@@ -59,7 +59,7 @@ const Categories = () => {
           />
           <Text style={[style.styleButton.text, { color: theme == 'light' ? 'black' : 'white' }]}>Producción</Text>
         </Button>
-        <Button buttonStyle={[style.styleButton, { backgroundColor: theme == 'light' ? "#fafafa" : 'transparent' }]} onPress={() => navigation.navigate("CategoriesFull", {
+        <Button buttonStyle={[style.styleButton, { backgroundColor: theme == 'light' ? "#fafafa" : '#202020' }]} onPress={() => navigation.navigate("CategoriesFull", {
           publicaciones: publicaciones.filter((p) => p.tipo == "Barismo" )
         })} >
           <Avatar
@@ -71,7 +71,7 @@ const Categories = () => {
           />
           <Text style={[style.styleButton.text, { color: theme == 'light' ? 'black' : 'white' }]}>Barismo</Text>
         </Button>
-        <Button buttonStyle={[style.styleButton, { backgroundColor: theme == 'light' ? "#fafafa" : 'transparent' }]} onPress={() => navigation.navigate("CategoriesFull", {
+        <Button buttonStyle={[style.styleButton, { backgroundColor: theme == 'light' ? "#fafafa" : '#202020' }]} onPress={() => navigation.navigate("CategoriesFull", {
           publicaciones: publicaciones.filter((p) => p.tipo == "Otros" )
         })}>
           <Avatar
