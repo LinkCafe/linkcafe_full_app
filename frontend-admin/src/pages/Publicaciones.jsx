@@ -5,12 +5,14 @@ import axiosClient from '../utils/axiosClient';
 import EditPublicacionesModal from '../components/organismos/EditPublicacionesModal';
 import Button from '../components/moleculas/Button';
 import toast from 'react-hot-toast';
+import ViewComentariosModal from '../components/organismos/ViewComentariosModal';
 
 function Publicaciones() {
   const [publicaciones, setPublicaciones] = useState([]);
-  const [openCreatePublicacionesModal, setOpenCreatePublicacionesModal] = useState(false); // Estado para el modal de creación de publicaciones
+  const [openCreatePublicacionesModal, setOpenCreatePublicacionesModal] = useState(false);
   const [selectedPublicacion, setSelectedPublicacion] = useState(null);
-
+  const [openViewComentariosModal, setOpenViewComentariosModal] = useState(false);
+  const [ row, setRow ] = useState({});
   const getPublicaciones = async () => {
     try {
       const response = await axiosClient.get('/publicaciones');
@@ -29,9 +31,8 @@ function Publicaciones() {
     getPublicaciones();
   }, [openCreatePublicacionesModal]);
 
-  // Definir función para manejar el éxito de la edición
   const handleEditSuccess = () => {
-    getPublicaciones(); // Actualizar la lista de publicaciones después de editar con éxito
+    getPublicaciones();
   };
 
   const handleDelete = async (id) => {
@@ -48,10 +49,6 @@ function Publicaciones() {
     } catch (error) {
       console.error(error);
     }
-  };
-
-  const handleEdit = () => {
-    getPublicaciones();
   };
 
   const getDomain = (url) => {
@@ -79,6 +76,13 @@ function Publicaciones() {
     setExpanded(prevState => ({ ...prevState, [id]: !prevState[id] }));
   };
 
+  const openView = (row) => {
+    setRow({})
+    setOpenViewComentariosModal(true);
+    setRow(row);
+
+  }
+
   return (
     <>
       <DefaultLayout title="LinkCafé | Publicaciones">
@@ -87,10 +91,12 @@ function Publicaciones() {
             <h1 className='text-2xl'>Publicaciones</h1>
             <Button variant="success" onClick={() => setOpenCreatePublicacionesModal(true)}>Crear Publicacion</Button>
             <CreatePublicacionesModal open={openCreatePublicacionesModal} onClose={() => setOpenCreatePublicacionesModal(false)} />
+            <ViewComentariosModal open={openViewComentariosModal} onClose={() => setOpenViewComentariosModal(false)} row={row} />
           </div>
-          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 overflow-y-auto h-[calc(100vh-200px)]'>
+          <div className='flex flex-wrap gap-4 overflow-y-auto h-[calc(100vh-200px)]'>
             {publicaciones.map((d, index) => (
               <div className="max-w-sm bg-[#f8f4f1] h-min border border-gray-300 rounded-lg shadow-xl mb-5" key={index}>
+                
                 <EditPublicacionesModal
                   open={selectedPublicacion === d.id}
                   onClose={() => setSelectedPublicacion(null)}
@@ -119,6 +125,8 @@ function Publicaciones() {
                   <div className='flex flex-row gap-2 items-center justify-center h-full'>
                     <Button variant="success" onClick={() => setSelectedPublicacion(d.id)}>Editar</Button>
                     <Button variant="danger" onClick={() => handleDelete(d.id)}>Eliminar</Button>
+                    
+                    <Button variant="primary" onClick={() => openView(d)}>Comentarios</Button>
                   </div>
                 </div>
               </div>

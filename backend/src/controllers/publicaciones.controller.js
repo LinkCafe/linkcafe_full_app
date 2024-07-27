@@ -86,10 +86,6 @@ export const crearUnaPublicacion = async (req, res) => {
             return res.status(404).json({ mensaje: "No se encontró el usuario con el ID proporcionado." });
         }
 
-        // Verificar el campo idioma
-        if (idioma !== 'EN' && idioma !== 'ES') {
-            return res.status(400).json({ mensaje: "El idioma debe ser 'EN' o 'ES'." });
-        }
 
         // Insertar la nueva publicación en la base de datos
         await pool.query("INSERT INTO publicaciones (nombre, descripcion, imagen, fuentes, tipo, id_usuario, idioma) VALUES (?, ?, ?, ?, ?, ?, ?)", [nombre, descripcion, imagen, fuentes, tipo, id_usuario, idioma]);
@@ -124,11 +120,6 @@ export const actualizarUnaPublicacion = async (req, res) => {
 
         if (!imagen) {
             imagen = oldPost[0].imagen;
-        }
-
-        // Verificaciones 
-        if (idioma && idioma !== 'EN' && idioma !== 'ES') {
-            return res.status(400).json({ mensaje: "El idioma debe ser 'EN' o 'ES'." });
         }
 
         const updateFields = {

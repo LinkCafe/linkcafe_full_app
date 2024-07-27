@@ -16,6 +16,7 @@ export default function CreatePublicacionesModal({ open, onClose }) {
     const fuentesRef = useRef(null);
     const tipoRef = useRef(null);
     const imagenRef = useRef(null);
+    const idioma = useRef(null);
 
     useEffect(() => {
         setUser(JSON.parse(localStorage.getItem('user')));
@@ -32,6 +33,7 @@ export default function CreatePublicacionesModal({ open, onClose }) {
                 formData.append('tipo', tipoRef.current.value);
                 formData.append('id_usuario', user.id);
                 formData.append('imagen', imagenRef.current.files[0]);
+                formData.append('idioma', idioma.current.value);
 
                 const response = await axiosClient.post('/publicaciones', formData, {});
 
@@ -75,6 +77,14 @@ export default function CreatePublicacionesModal({ open, onClose }) {
                                 <option value="1">Producción</option>
                                 <option value="2">Barismo</option>
                                 <option value="3">Otros</option>
+                            </Select>
+                        </div>
+                        <div className='flex flex-col gap-2'>
+                            <Label>Idioma</Label>
+                            <Select required ref={idioma}>
+                                <option value="">Seleccione...</option>
+                                <option value={1}>Inglés</option>
+                                <option value={2}>Español</option>
                             </Select>
                         </div>
                         <div className='flex flex-col gap-2'>

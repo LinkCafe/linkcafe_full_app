@@ -15,7 +15,8 @@ export default function EditPublicacionesModal({ open, onClose, data, handleEdit
   const fuentes = useRef(null);
   const tipo = useRef(null);
   const estado = useRef(null);
-  const imagen = useRef(null); // Referencia al campo de entrada de la imagen
+  const imagen = useRef(null);
+  const idioma = useRef(null);
 
   const tipos = [
     {
@@ -35,7 +36,7 @@ export default function EditPublicacionesModal({ open, onClose, data, handleEdit
   const estados = [
     {
       id: 1,
-      nombre: 'Veridica'
+      nombre: 'Verídica'
     },
     {
       id: 2,
@@ -46,6 +47,19 @@ export default function EditPublicacionesModal({ open, onClose, data, handleEdit
       nombre: 'No Veridica'
     }
   ];
+
+  const idiomas = [
+    {
+      id: 1,
+      nombre: 'Inglés',
+      key: 'EN'
+    },
+    {
+      id: 2,
+      nombre: 'Español',
+      key: 'ES'
+    }
+  ]
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -58,6 +72,7 @@ export default function EditPublicacionesModal({ open, onClose, data, handleEdit
         formData.append('tipo', tipo.current.value);
         formData.append('estado', estado.current.value);
         formData.append('imagen', imagen.current.files[0]);
+        formData.append('idioma', idioma.current.value);
 
         const response = await axiosClient.put(`/publicaciones/${data.id}`, formData, {
           headers: {
@@ -112,8 +127,19 @@ export default function EditPublicacionesModal({ open, onClose, data, handleEdit
               <Select required ref={estado} defaultValue={data.estado}>
                 <option value="">Seleccionar...</option>
                 {estados.map(estado => (
-                  <option key={estado.id} value={estado.nombre}>{estado.nombre}</option>
+                  <option key={estado.id} value={estado.nombre} selected={data.estado == estado.nombre}>{estado.nombre}</option>
                 ))}
+              </Select>
+            </div>
+            <div className='flex flex-col gap-2'>
+              <Label>Idioma</Label>
+              <Select required ref={idioma}>
+                <option value="">Seleccione...</option>
+                {
+                  idiomas.map(idioma => (
+                    <option key={idioma.id} value={idioma.id} selected={data.idioma == idioma.key} >{idioma.nombre}</option>
+                  ))
+                }
               </Select>
             </div>
             <div className='flex flex-col gap-2'>
