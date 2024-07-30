@@ -35,7 +35,7 @@ CREATE TABLE `articulos` (
   `fecha` datetime DEFAULT CURRENT_TIMESTAMP,
   `autor` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `descripcion` text COLLATE utf8mb4_general_ci,
-  `idioma` enum('EN','ES') COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `idioma` enum('EN','ES') COLLATE utf8mb4_general_ci DEFAULT NOT NULL
   `id_usuario` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -84,14 +84,14 @@ INSERT INTO `comentarios` (`id`, `comentario`, `id_usuario`, `id_publicacion`, `
 
 CREATE TABLE `publicaciones` (
   `id` int NOT NULL,
-  `nombre` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `nombre` varchar(50) COLLATE utf8mb4_general_ci NOT NULL UNIQUE,
   `descripcion` text COLLATE utf8mb4_general_ci NOT NULL,
   `imagen` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `fuentes` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
   `tipo` enum('Producción','Barismo','Otros') COLLATE utf8mb4_general_ci NOT NULL,
   `estado` enum('Verídica','En proceso','No Veridica') COLLATE utf8mb4_general_ci DEFAULT 'En proceso',
   `fecha` datetime DEFAULT CURRENT_TIMESTAMP,
-  `idioma` enum('EN','ES') COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `idioma` enum('EN','ES') COLLATE utf8mb4_general_ci NOT NULL,
   `id_usuario` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
