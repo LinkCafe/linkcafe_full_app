@@ -4,7 +4,6 @@ import Inicio from "./pages/Inicio";
 import Usuarios from "./pages/Usuarios";
 import Articulos from "./pages/Articulos";
 import Publicaciones from "./pages/Publicaciones";
-import Comentarios from "./pages/Comentarios";
 import Logout from "./pages/auth/Logout";
 import PrivateRoutes from "./utils/PrivateRoutes";
 import { Toaster } from 'react-hot-toast'
@@ -21,7 +20,6 @@ function App() {
           <Route path="/usuarios" element={<Usuarios />} />
           <Route path="/articulos" element={<Articulos />} />
           <Route path="/publicaciones" element={<Publicaciones />} />
-          <Route path="/comentarios" element={<Comentarios />} />
         </Route>
       </Routes>
     </>

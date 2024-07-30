@@ -35,6 +35,8 @@ export default function CreatePublicacionesModal({ open, onClose }) {
                 formData.append('imagen', imagenRef.current.files[0]);
                 formData.append('idioma', idioma.current.value);
 
+                console.log(imagenRef.current.files[0]);
+
                 const response = await axiosClient.post('/publicaciones', formData, {});
 
                 if (response && response.status === 200) {

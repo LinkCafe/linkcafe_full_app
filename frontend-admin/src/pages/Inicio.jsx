@@ -70,7 +70,7 @@ function Inicio() {
           <Link to="/publicaciones">
             <Counts icon={faFire} nombre={'Publicaciones:'} cantidad={totalPublicaciones} />
           </Link>
-          <Link to="/comentariosj">
+          <Link to="/publicaciones">
             <Counts icon={faMessage} nombre={'Comentarios:'} cantidad={totalComentarios} />
           </Link>
         </div>

@@ -71,7 +71,7 @@ function Articulos() {
             <Button variant="success" onClick={() => setOpenCreateArticulosModal(true)}>Crear Articulo</Button>
             <CreateArticulosModal open={openCreateArticulosModal} onClose={() => setOpenCreateArticulosModal(false)} />
           </div>
-          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
+          <div className='flex flex-wrap gap-4 overflow-y-auto h-[calc(100vh-200px)]'>
             {articulos.map((a, index) => (
               <div className="w-full max-w-md p-6 grid gap-6 shadow-lg border border-gray-300 rounded" key={index}>
                 <div className="flex items-center justify-between">

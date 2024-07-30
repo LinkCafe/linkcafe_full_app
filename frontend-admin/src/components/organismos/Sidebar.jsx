@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faComments, faUsers, faHouse, faUpload, faNewspaper } from '@fortawesome/free-solid-svg-icons';
+import { faUsers, faHouse, faUpload, faNewspaper } from '@fortawesome/free-solid-svg-icons';
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import { Zoom, styled } from '@mui/material';
 import { useEffect, useState } from 'react';
@@ -68,13 +68,6 @@ function Sidebar() {
                     <LightTooltip title="Usuarios" placement="right" TransitionComponent={Zoom}>
                       <Link to="/usuarios" className={`h-6 w-6 cursor-pointer text-white transition-all hover:text-gray-400 ${pathname.includes('usuarios') ? " text-gray-400" : ""}`} style={iconStyle}>
                         <FontAwesomeIcon icon={faUsers} className="transition-transform hover:scale-150" />
-                      </Link>
-                    </LightTooltip>
-                  </li>
-                  <li className="p-5">
-                    <LightTooltip title="Comentarios" placement="right" TransitionComponent={Zoom}>
-                      <Link to="/comentarios" className={`h-6 w-6 cursor-pointer text-white transition-all hover:text-gray-400 ${pathname.includes('comentarios') ? " text-gray-400" : ""}`} style={iconStyle}>
-                        <FontAwesomeIcon icon={faComments} className="transition-transform hover:scale-150" />
                       </Link>
                     </LightTooltip>
                   </li>
