@@ -1,7 +1,7 @@
 import { check } from "express-validator";
 
 export const middlewaresShowArticles = [
-    check('nombre', 'El nombre es obligatorio y debe tener entre 2 y 50 caracteres').not().isEmpty().isLength({ min: 2, max: 50 }),
+    check('nombre', 'El nombre es obligatorio y debe tener entre 2 y 50 caracteres').not().isEmpty().isLength({ min: 2, max: 255 }),
     check('descripcion', 'La descripción es obligatoria').not().isEmpty(),
     check('enlace', 'El enlace es obligatorio y debe tener una longitud máxima de 225 caracteres').not().isEmpty().isLength({ max: 225 }),
     check('autor', 'El autor es obligatorio y debe tener entre 3 y 100 caracteres').not().isEmpty().isLength({ min: 3, max: 100 }),
