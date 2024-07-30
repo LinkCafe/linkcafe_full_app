@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Text, SafeAreaView, ScrollView, Alert, View, StyleSheet} from 'react-native';
+import { Text, SafeAreaView, ScrollView, Alert, View, StyleSheet, TouchableOpacity, Linking } from 'react-native';
 import { Card } from "@rneui/base";
 import axiosClient from '../utils/axiosClient';
 import ThemeContext from '../context/ThemeContext';
@@ -12,7 +12,7 @@ const AllArticles = () => {
     try {
       const response = await axiosClient.get('/articulos');
       if (response && response.status === 200) {
-        setArticulos(response.data);        
+        setArticulos(response.data);
       } else {
         Alert.alert('No se encontraron artículos');
       }
@@ -24,12 +24,19 @@ const AllArticles = () => {
   useEffect(() => {
     getArticulos();
   }, []);
-   
+
+  const getDomain = (url) => {
+    const match = url.match(/^https?:\/\/(?:www\.)?([^\/]+)/i);
+    return match ? match[1] : '';
+  };
+
+
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView>
         <View style={styles.containerCard}>
-            {articulos.map((d, index) => (
+          {articulos.map((d, index) => (
+            <TouchableOpacity style={{ width: '100%' }} onPress={() => Linking.openURL(d.enlace)} key={index}>
               <Card
                 key={index}
                 containerStyle={[
@@ -37,9 +44,10 @@ const AllArticles = () => {
                   { backgroundColor: theme == "light" ? "white" : "#434343" },
                 ]}
               >
-                <Text style={{ paddingTop: 10, textAlign: 'center', fontSize: 20,  color: theme == "light" ? "black" : "white" }}>
+                <Text style={{ paddingTop: 10, fontSize: 18, fontWeight: '600', color: theme == "light" ? "black" : "white" }}>
                   {d.nombre}
                 </Text>
+                <Text>{d.descripcion}</Text>
                 <View
                   style={{
                     display: "flex",
@@ -70,12 +78,14 @@ const AllArticles = () => {
                   }}
                 >
                   <Text style={{ textDecorationLine: "underline", color: "#35d4f0" }}>
-                    {d.enlace}
+                    {getDomain(d.enlace)}
                   </Text>
                 </View>
               </Card>
-            ))}
-          </View>
+            </TouchableOpacity>
+
+          ))}
+        </View>
       </ScrollView>
     </SafeAreaView>
   );

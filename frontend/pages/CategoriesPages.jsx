@@ -43,7 +43,7 @@ const CategoriesPages = ({ route }) => {
               {
                 d.imagen != null ? (
                   <Image
-                    src={`http://10.193.129.240:3333/public/img/${d.imagen}`}
+                    src={`http://10.0.2.2:3333/public/img/${d.imagen}`}
                     style={{ width: "100%", height: 150 }}
                   />
                 ) : (

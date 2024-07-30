@@ -4,7 +4,8 @@ import {
   Text,
   ScrollView,
   StyleSheet,
-  Alert
+  Alert,
+  Linking
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Card, Button } from "@rneui/base";
@@ -67,8 +68,8 @@ const Articles = () => {
                 { backgroundColor: theme == "light" ? "white" : "#434343" },
               ]}
             >
-              <Text style={{ paddingTop: 12, color: theme == "light" ? "black" : "white" }}>
-                {d.nombre}
+              <Text style={{ paddingTop: 12, color: theme == "light" ? "black" : "white", fontWeight: '500', fontSize: 16 }}>
+                {d.nombre.slice(0, 40)}...
               </Text>
               <View
                 style={{
@@ -99,7 +100,7 @@ const Articles = () => {
                   paddingTop: 10,
                 }}
               >
-                <Text style={{ textDecorationLine: "underline", color: "#35d4f0" }}>
+                <Text style={{ textDecorationLine: "underline", color: "#35d4f0" }} onPress={() => Linking.openURL(d.enlace)}>
                   Más información
                 </Text>
               </View>

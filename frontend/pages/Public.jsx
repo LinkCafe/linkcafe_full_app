@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, Dimensions, TextInput, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, ToastAndroid, Keyboard } from 'react-native';
+import { View, Text, StyleSheet, Image, Dimensions, TextInput, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, ToastAndroid, Keyboard, Linking } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
@@ -119,7 +119,7 @@ const PublicationView = ({ route, navigation }) => {
                         <Text style={{ color: theme == 'light' ? 'black' : 'white', fontSize: 15 }}>{publicacion.descripcion}</Text>
                         {publicacion.imagen != null ? (
                             <Image
-                                src={`http://10.193.129.240:3333/public/img/${publicacion.imagen}`}
+                                src={`http://10.0.2.2:3333/public/img/${publicacion.imagen}`}
                                 style={{ width: "100%", height: 150 }}
                             />
                         ) : (
@@ -127,7 +127,7 @@ const PublicationView = ({ route, navigation }) => {
                                 <Text style={{ color: theme === 'light' ? 'black' : 'white' }}>Sin Imagen</Text>
                             </View>
                         )}
-                        <Text style={{ color: 'gray' }}>{getDomain(publicacion.fuentes)}</Text>
+                        <Text style={{ color: 'gray' }} onPress={() => Linking.openURL(publicacion.fuentes)}>{getDomain(publicacion.fuentes)}</Text>
                         <View style={{ display: "flex", flexDirection: "row", gap: 10, alignItems: "center", paddingTop: 10 }}>
                             <Text style={{
                                 backgroundColor: publicacion.estado === 'Verídica' ? "#75DF77" : publicacion.estado === 'En proceso' ? "#c9c306" : '#FF7070',

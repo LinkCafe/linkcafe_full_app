@@ -2,20 +2,18 @@ import { View, Text, ScrollView, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useContext, useEffect, useState } from "react";
 import { Avatar, Button, Switch } from "@rneui/base";
-import Reviews from "../components/organismos/Reviews";
 import ThemeContext from "../context/ThemeContext";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import UserContext from "../context/UserContext";
+import axiosClient from "../utils/axiosClient";
 
 
 const Profile = () => {
   const { theme, toggleTheme } = useContext(ThemeContext)
   const { user } = useContext(UserContext)
-  const [ storageUser, setStorageUser ] = useState({}) 
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [storageUser, setStorageUser] = useState({})
+  const [language, setLanguage] = useState(null)
+  const [nameUser, setNameUser] = useState('')
   const navigation = useNavigation()
   const handleToggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
@@ -23,15 +21,14 @@ const Profile = () => {
   }
 
   useEffect(() => {
-    const getUser = async () => {
-      setName(await AsyncStorage.getItem('name'))
-      setEmail(await AsyncStorage.getItem('email'))
-      setPassword(await AsyncStorage.getItem('password'))
-    }
+    const newUser = JSON.parse(user)
+    setStorageUser(newUser)
 
-    setInterval(() => getUser(), 500)
-    setStorageUser(JSON.parse(user))
-    console.log(user);
+    axiosClient.get(`/usuarios/${newUser.id}`).then((response) => {
+      if (response.status == 200) {
+        setNameUser(response.data[0].nombre_completo);
+      }
+    })
   }, [])
 
   return (
@@ -61,9 +58,8 @@ const Profile = () => {
             />
             <View>
               <Text style={{ fontSize: 20, fontWeight: "bold", color: theme == 'light' ? 'black' : 'white' }}>
-                {storageUser.nombre_completo}
+                {nameUser}
               </Text>
-              <Text style={{ color: theme == 'light' ? 'black' : 'white' }}>Caficultor</Text>
             </View>
           </View>
           <View>
@@ -76,17 +72,14 @@ const Profile = () => {
                 borderRadius: 5,
               }}
               titleStyle={{ color: theme == 'light' ? "black" : 'white' }}
-              onPress={() => navigation.navigate("DetailsProfile", {
-                name: name,
-                email: email,
-                password: password
-              })}
+              onPress={() => navigation.navigate("DetailsProfile")}
             >
               Editar {">"}
             </Button>
           </View>
         </View>
-        <Reviews />
+        {/* <Reviews /> */}
+        <Text style={{ fontSize: 22, fontWeight: '600', color: theme == 'light' ? 'black' : 'white', marginTop: 20 }}>Configuraciones adicionales</Text>
         <View style={{
           display: 'flex',
           width: '100%',
@@ -96,8 +89,8 @@ const Profile = () => {
           paddingVertical: 10
         }} >
           <Text style={{
-            fontSize: 20,
-            fontWeight: 'bold',
+            fontSize: 18,
+            fontWeight: '500',
             color: theme == 'light' ? 'black' : 'white'
           }} >Tema: {theme == 'light' ? 'Claro' : 'Oscuro'}</Text>
           <Switch
@@ -105,9 +98,6 @@ const Profile = () => {
             onValueChange={() => handleToggleTheme()}
             color={theme === 'dark' ? 'white' : '#2089dc'}
           />
-        </View>
-        <View>
-          <Button onPress={() => navigation.navigate('chat')}>chat</Button>
         </View>
       </ScrollView>
     </SafeAreaView>

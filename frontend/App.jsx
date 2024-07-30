@@ -11,8 +11,6 @@ import { ThemeProvider } from './context/ThemeContext';
 import DetailsProfile from './pages/DetailsProfile';
 import CategoriesPages from './pages/CategoriesPages';
 import PublicationView from './pages/Public';
-import { Chat } from './pages/Cha.jsx';
-import TituloPersonalizado from './components/organismos/TitlePersonaliced.jsx';
 
 import AllActicles from './pages/AllArticles.jsx';
 import Profile from './pages/Profile.jsx';
@@ -67,13 +65,6 @@ export default function App() {
               component={CategoriesPages}
               options={{
                 title: 'Temas de conversación',
-              }}
-            />
-            <Stack.Screen
-              name="chat"
-              component={Chat}
-              options={{
-                headerTitle: () => <TituloPersonalizado nombreUsuario="jose" />,
               }}
             />
             <Stack.Screen
