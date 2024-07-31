@@ -66,7 +66,7 @@ export const actualizarUnUsuario = async (req, res) => {
         }
 
         const { id } = req.params;
-        const { nombre_completo, correo, clave } = req.body;
+        const { nombre_completo, correo, clave, tipo } = req.body;
 
         // Verificar si el usuario existe
         const [oldUser] = await pool.query("SELECT * FROM usuarios WHERE id = ?", [id]);
@@ -82,11 +82,13 @@ export const actualizarUnUsuario = async (req, res) => {
             UPDATE usuarios SET 
             nombre_completo = ?, 
             correo = ?, 
-            clave = ? 
+            clave = ?,
+            tipo = ?
             WHERE id = ?`, [
             nombre_completo || oldUser[0].nombre_completo,
             correo || oldUser[0].correo,
             clave || oldUser[0].clave,
+            tipo || oldUser[0].tipo,
             id
         ]);
 

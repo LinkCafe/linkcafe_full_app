@@ -38,7 +38,11 @@ const Discussions = () => {
   }
 
   useEffect(() => {
-    getPublicacion();
+    const interval = setInterval(() => {
+      getPublicacion();
+    }, 1000)
+
+    return () => clearInterval(interval);
   }, []);
 
   const handlePress = (publication) => {
@@ -152,7 +156,7 @@ const style = StyleSheet.create({
   containerCard: {
     width: "100%",
     display: "flex",
-    flexDirection: "row",
+    flexDirection: "row-reverse",
     gap: 15,
     paddingLeft: 15,
   },

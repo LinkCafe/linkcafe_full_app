@@ -76,9 +76,12 @@ function Articulos() {
               <div className="w-full max-w-md p-6 grid gap-6 shadow-lg border border-gray-300 rounded" key={index}>
                 <div className="flex items-center justify-between">
                   <h3 className="text-2xl font-bold">{a.nombre}</h3>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <FontAwesomeIcon icon={faFile} />
-                    <span>{a.tipo}</span>
+                  <div className="flex items-center flex-col gap-2 text-sm text-muted-foreground">
+                    <span>{new Date(a.fecha).toLocaleDateString()}</span>
+                    <div className='flex flex-row gap-2 items-center'>
+                      <FontAwesomeIcon icon={faFile} />
+                      <span>{a.tipo}</span>
+                    </div>
                     <EditArticulosModal open={selectedArticulo === a.id} onClose={() => { setSelectedArticulo(null); handleEdit(); }} data={a} />
                   </div>
                 </div>
