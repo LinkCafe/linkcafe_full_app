@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, StyleSheet } from "react-native";
+import { View, Text, ScrollView, StyleSheet, ToastAndroid } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useContext, useEffect, useState } from "react";
 import { Avatar, Button, Switch } from "@rneui/base";
@@ -6,6 +6,7 @@ import ThemeContext from "../context/ThemeContext";
 import { useNavigation } from "@react-navigation/native";
 import UserContext from "../context/UserContext";
 import axiosClient from "../utils/axiosClient";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 const Profile = () => {
@@ -30,6 +31,16 @@ const Profile = () => {
       }
     })
   }, [])
+
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.clear()
+      navigation.navigate('Login')
+      ToastAndroid.show('Sesión cerrada', ToastAndroid.SHORT)
+    } catch (error) {
+      ToastAndroid.show('Error al cerrar sesión', ToastAndroid.SHORT)
+    }
+  }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme == 'light' ? '#f8f4f1' : '#202020' }}>
@@ -99,6 +110,13 @@ const Profile = () => {
             color={theme === 'dark' ? 'white' : '#2089dc'}
           />
         </View>
+        <Button title={'Cerrar Sesión'} buttonStyle={{ 
+          backgroundColor: '#dc3545', 
+          marginTop: 20, 
+          borderRadius: 5, 
+          padding: 10, 
+          width: '100%'
+         }} onPress={handleLogout} />
       </ScrollView>
     </SafeAreaView>
   );
