@@ -9,4 +9,4 @@ export const pool = createPool({
     password: process.env.PASSWORD,
     port: process.env.PORT,
     database: process.env.DATABASE
-})
+});

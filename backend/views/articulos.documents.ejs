@@ -41,13 +41,15 @@
             Correcto:
             Status: 200
             JSON{
-                "id": 1,
-                "nombre": "Cuidado del Café",
+                "id": 8,
+                "nombre": "Como germinar cafe en tiempos de sequia",
                 "tipo": "PDF",
                 "enlace": "google.com",
-                "fecha": "2024-01-23T05:00:00.000Z",
-                "autor": "diego",
-                "id_usuario": 1
+                "fecha": "2024-06-21T05:00:00.000Z",
+                "autor": "Nicolas",
+                "descripcion": "Mejor metodo de germinacion",
+                "id_usuario": 11,
+                "nombre_usuario": "Leomar Andres"
             } <br>
 
             Incorrecto:
@@ -104,13 +106,12 @@
         <td>PETICIÓN body</td>
         <td>
             JSON:{
-
-            "nombre": "Como germinar cafe en tiempos de sequia",
-            "tipo": "PDF",
-            "enlace": "google.com",
-            "autor": "Andres",
-            "id_usuario": 1
-
+                "nombre": "Como germinar cafe en tiempos de sequia",
+                "tipo": "PDF",
+                "enlace": "google.com",
+                "autor": "Andres",
+                "descripcion": "el mejor cafeto de la ciudad",
+                "id_usuario": 14
             }
         </td>
     </tr>
@@ -224,7 +225,7 @@
     </tr>
     <tr>
         <td>URL</td>
-        <td>/articulos/:id</td>
+        <td>/articulos/listar/:id</td>
     </tr>
     <tr>
         <td>DESCRIPCIÓN</td>
@@ -251,14 +252,16 @@
         <td>
             Correcto:
             Status: 200
-            JSON{
-              "id": 1,
-              "nombre": "Cuidado del Café",
-              "tipo": "PDF",
-              "enlace": "google.com",
-              "fecha": "2024-01-23T05:00:00.000Z",
-              "autor": "diego",
-              "id_usuario": 1
+            JSON: {
+                "id": 8,
+                "nombre": "Como germinar cafe en tiempos de sequia",
+                "tipo": "PDF",
+                "enlace": "google.com",
+                "fecha": "2024-06-21T05:00:00.000Z",
+                "autor": "Nicolas",
+                "descripcion": "Mejor metodo de germinacion",
+                "id_usuario": 11,
+                "nombre_usuario": "Leomar Andres"
             } <br>
           
 
@@ -445,20 +448,21 @@
         <td>
             Correcto:
             Status: 200
-            JSON{
-                "articulos": [
-                    {
-                        "id": 6,
-                        "nombre": "Cafe de la mejor calidad ",
-                        "tipo": "PDF",
-                        "enlace": "cafetos.com",
-                        "fecha": "2024-06-04T05:00:00.000Z",
-                        "autor": "Diego ",
-                        "id_usuario": 7
-                    }
-                ],
-                "total": 1
-            } <br>
+            JSON" { articulos": [
+            {
+                "id": 8,
+                "nombre": "Como germinar cafe en tiempos de sequia",
+                "tipo": "PDF",
+                "enlace": "google.com",
+                "fecha": "2024-06-21T05:00:00.000Z",
+                "autor": "Nicolas",
+                "descripcion": "Mejor metodo de germinacion",
+                "id_usuario": 11,
+                "nombre_usuario": "Leomar Andres"
+            }
+        ],
+        "total": 1
+    } <br>
             Incorrecto:
             Status: 404
             JSON {

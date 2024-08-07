@@ -40,13 +40,17 @@
         <td>
             Correcto:
             Status: 200
-            JSON{
-              "id": 1,
-              "comentario": "comentario",
-              "id_usuario": 1,
-              "id_publicacion": 3,
-              "fecha": "2024-01-25T05:00:00.000Z"
-            } <br>
+            JSON: [
+            {
+                "id": 11,
+                "comentario": "comentario 3",
+                "fecha": "2024-07-10T05:00:00.000Z",
+                "id_usuario": 11,
+                "nombre_usuario": "Leomar Andres",
+                "id_publicacion": 65,
+                "nombre_publicacion": "Cafe Huilense "
+            }
+        ] <br>
 
             Incorrecto:
             Status: 404
@@ -216,7 +220,7 @@
     </tr>
     <tr>
         <td>URL</td>
-        <td>/comentarios/:id</td>
+        <td>/comentarios/listar/:id</td>
     </tr>
     <tr>
         <td>DESCRIPCIÓN</td>
@@ -243,12 +247,14 @@
         <td>
             Correcto:
             Status: 200
-            JSON{
-              "id": 1,
-              "comentario": "comentario",
-              "id_usuario": 1,
-              "id_publicacion": 3,
-              "fecha": "2024-01-25T05:00:00.000Z"
+            JSON: {
+                "id": 11,
+                "comentario": "comentario 3",
+                "fecha": "2024-07-10T05:00:00.000Z",
+                "id_usuario": 11,
+                "nombre_usuario": "Leomar Andres",
+                "id_publicacion": 65,
+                "nombre_publicacion": "Cafe Huilense "
             } <br>
           
             Incorrecto:
@@ -433,22 +439,99 @@
         <td>
             Correcto:
             Status: 200
-            JSON{
+            JSON:{
                 "comentarios": [
                     {
-                        "id": 1,
-                        "comentario": "El mejor cafe",
-                        "id_usuario": 9,
-                        "id_publicacion": 58,
-                        "fecha": "2024-06-04T05:00:00.000Z"
+                        "id": 11,
+                        "comentario": "comentario 3",
+                        "fecha": "2024-07-10T05:00:00.000Z",
+                        "id_usuario": 11,
+                        "nombre_usuario": "Leomar Andres",
+                        "id_publicacion": 65,
+                        "nombre_publicacion": "Cafe Huilense "
                     }
-                ],
-                "total": 1
+                ]
             } <br>
             Incorrecto:
             Status: 404
             JSON {
                 "mensaje": "No se encontraron comentarios para las fechas proporcionadas"
+            } <br>
+            Error:
+            Status: 500
+            JSON{
+                "Mensaje": "error"
+            }
+        </td>
+    </tr>
+    <tr>
+        <td>Autor</td>
+        <td>Estefania Chilito Zuñiga</td>
+    </tr>
+</table>
+<hr>
+<h3>Requerimiento 8 Documentación Del ENDPOINT COMENTARIOS</h3>
+<hr>
+<table>
+    <tr>
+        <td>NUMERO</td>
+        <td>8</td>
+    </tr>
+    <tr>
+        <td>NOMBRE DEL SERVICIO</td>
+        <td>Mostrar los comentarios de una publicación</td>
+    </tr>
+    <tr>
+        <td>URL</td>
+        <td>/comentarios/publicacion/:idPublicacion</td>
+    </tr>
+    <tr>
+        <td>DESCRIPCIÓN</td>
+        <td>Permite buscar los comentarios de una publicación cregistrada en la base de datos</td>
+    </tr>
+    <tr>
+        <td>VERBO HTTP</td>
+        <td>GET</td>
+    </tr>
+    <tr>
+        <td>HEADER</td>
+        <td>token: "token"</td>
+    </tr>
+    <tr>
+        <td>USUARIOS</td>
+        <td>Administrador</td>
+    </tr>
+    <tr>
+        <td>PETICIÓN body</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>RESPUESTA JSON</td>
+        <td>
+            Correcto:
+            Status: 200
+            JSON: {
+                "total": 1,
+                "comentarios": [
+                    {
+                        "id": 11,
+                        "comentario": "comentario 3",
+                        "fecha": "2024-07-10T05:00:00.000Z",
+                        "id_usuario": 11,
+                        "nombre_usuario": "Leomar Andres",
+                        "id_publicacion": 65,
+                        "nombre_publicacion": "Cafe Huilense "
+                    }
+                ]
+            } <br>
+            Incorrecto:
+            Status: 400
+            JSON {
+                "mensaje": "No se encontró una publicación con ese ID"
+            },
+            Status: 404
+            JSON {
+                "mensaje": "No hay comentarios para esta publicación"
             } <br>
             Error:
             Status: 500

@@ -10,6 +10,7 @@
 import { pool } from "../database/conexion.js";
 import { validationResult } from "express-validator";
 
+//Listar Usuarios
 export const listartodo = async (req, res) => {
     try {
         const [resultado] = await pool.query("SELECT * FROM usuarios");
@@ -28,6 +29,7 @@ export const listartodo = async (req, res) => {
     }
 };
 
+//Crear Usuarios
 export const crearUnUsuario = async (req, res) => {
     try {
         const error = validationResult(req);
@@ -54,20 +56,45 @@ export const crearUnUsuario = async (req, res) => {
     }
 };
 
+//Acualizar Usuarios
 export const actualizarUnUsuario = async (req, res) => {
     try {
-        const error = validationResult(req);
-        if (!error.isEmpty()) {
-            res.status(404).json({ error });
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
         }
+
         const { id } = req.params;
-        const { nombre_completo, correo, clave } = req.body;
-        const [oldUser] = await pool.query("SELECT * FROM usuarios WHERE id=?", [id]);
-        const [resultado] = await pool.query(`UPDATE usuarios SET nombre_completo='${nombre_completo ? nombre_completo : oldUser[0].nombre_completo}', correo='${correo ? correo : oldUser[0].correo}', clave='${clave ? clave : oldUser[0].clave}' WHERE id=${parseInt(id)}`);
+        const { nombre_completo, correo, clave, tipo } = req.body;
+
+        // Verificar si el usuario existe
+        const [oldUser] = await pool.query("SELECT * FROM usuarios WHERE id = ?", [id]);
+
+        if (oldUser.length === 0) {
+            return res.status(404).json({
+                "mensaje": "No se encontró un usuario con ese ID"
+            });
+        }
+
+        // Actualizar el usuario
+        const [resultado] = await pool.query(`
+            UPDATE usuarios SET 
+            nombre_completo = ?, 
+            correo = ?, 
+            clave = ?,
+            tipo = ?
+            WHERE id = ?`, [
+            nombre_completo || oldUser[0].nombre_completo,
+            correo || oldUser[0].correo,
+            clave || oldUser[0].clave,
+            tipo || oldUser[0].tipo,
+            id
+        ]);
 
         if (resultado.affectedRows > 0) {
             res.status(200).json({
-                "mensaje": "El usuario ha sido actualizado"
+                "mensaje": "El usuario ha sido actualizado con éxito"
             });
         } else {
             res.status(404).json({
@@ -76,11 +103,13 @@ export const actualizarUnUsuario = async (req, res) => {
         }
     } catch (error) {
         res.status(500).json({
-            "mensaje": error
+            "mensaje": error.message
         });
     }
 };
 
+
+//Mostrar Usuarios por ID
 export const mostrarunusuario = async (req, res) => {
     try {
         const { id } = req.params;
@@ -99,6 +128,7 @@ export const mostrarunusuario = async (req, res) => {
     }
 };
 
+//Eliminar Usuarios
 export const eliminarUnUsuario = async (req, res) => {
     try {
         const { id } = req.params;

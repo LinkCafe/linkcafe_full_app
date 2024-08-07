@@ -3,119 +3,146 @@ import {
   Text,
   ScrollView,
   StyleSheet,
-  Image
+  Image,
+  Alert,
+  TouchableOpacity
 } from "react-native";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Avatar, Card } from "@rneui/base";
-import { Button } from "@rneui/base";
+import { Card } from "@rneui/base";
 import ThemeContext from "../../context/ThemeContext";
-import coffeImage from "../../img/coffe.webp";
 import { useNavigation } from '@react-navigation/native';
-import public1Image from '../../img/public1.png';
-import public2Image from '../../img/public2.png'
+import axiosClient from "../../utils/axiosClient";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faGlobe, faUser } from "@fortawesome/free-solid-svg-icons";
 
 const Discussions = () => {
-  const data = [
-    {
-      imagen: public1Image,
-      titulo: "Porqué se debe sembrar en luna llena?",
-      veridica: true,
-      categoria: "Producción 🌱",
-      persona: "Fernando",
-    },
-    {
-      imagen: public2Image,
-      titulo: "Cómo saber que mi café es premiun?",
-      veridica: false,
-      categoria: "Producción 🌱",
-      persona: "Fernando",
-    },
-    {
-      imagen: coffeImage,
-      titulo: "Por qué se debe sembrar en luna llena?",
-      veridica: false,
-      categoria: "Producción 🌱",
-      persona: "Fernando",
-    },
-  ];
 
+  const [publicaciones, setPublicaciones] = useState([])
   const { theme } = useContext(ThemeContext)
   const navigation = useNavigation();
+
+  const getPublicacion = async () => {
+    try {
+      const response = await axiosClient.get('/publicaciones');
+      if (response && response.status === 200) {
+        const allPublicaciones = response.data;
+        const lastThreePublicaciones = allPublicaciones.slice(-3)
+        setPublicaciones(lastThreePublicaciones);
+      } else {
+        Alert.alert('No Se Encontraron Publicaciones')
+      }
+    } catch (error) {
+      Alert.alert('Error al obtener los artículos', error.message);
+    }
+  }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getPublicacion();
+    }, 1000)
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handlePress = (publication) => {
     navigation.navigate('Public', {
       screen: 'Public',
-    });     
+    });
   };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={style.moreCategories}>
-        <Text style={[style.moreCategoriesText, { color: theme == 'light' ? 'black' : 'white' }]}>Últimas discusiones</Text>
-        <Button
-          type="outline"
-          title="Ver todas >"
-          onPress={handlePress}
-          buttonStyle={{ padding: 1, borderColor: theme == 'light' ? 'black' : 'white', borderWidth: 1 }}
-          titleStyle={{ color: theme == 'light' ? 'black' : 'white' }}
-        />
+        <Text style={[style.moreCategoriesText, { color: theme == 'light' ? 'black' : 'white' }]}>Últimas Publicaciones</Text>
       </View>
       <ScrollView horizontal={true}>
         <View style={style.containerCard}>
-          {data.map((d, index) => (
-                <Card
-            key={index}
-            containerStyle={[style.card, { backgroundColor: theme == 'light' ? 'white' : '#464646' }]}
-                >
-                <Image
-              source={d.imagen}
-              style={{ width: "100%", height: 150 }}
-                />
-              <Text style={{ paddingTop: 12, color: theme == 'light' ? 'black' : 'white' }}>{d.titulo}</Text>
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  gap: 10,
-                  alignItems: "center",
-                  paddingTop: 10,
-                }}
+          {publicaciones.map((d, index) => (
+            <TouchableOpacity onPress={() => {
+              navigation.navigate('Public', {
+                id: d.id
+              }
+              )
+            }}
+              key={index}
+            >
+              <Card
+                key={index}
+                containerStyle={[style.card, { backgroundColor: theme == 'light' ? 'white' : '#464646' }]}
               >
-                <Text
+                {
+                  d.imagen != null ? (
+                    <Image
+                      src={`http://10.0.2.2:3333/public/img/${d.imagen}`}
+                      style={{ width: "100%", height: 150 }}
+                    />
+                  ) : (
+                    <View style={{ width: '100%', height: 150, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                      <Text style={{ color: theme == 'light' ? 'black' : 'white' }}>Sin Imagen</Text>
+                    </View>
+                  )
+                }
+
+                <View
                   style={{
-                    backgroundColor:
-                      d.veridica == true ? theme == 'light' ? "#D4EFDF" : '#75DF77' : theme == 'light' ? "#E920203e" : '#FF7070',
-                    padding: 5,
-                    borderRadius: 5,
+                    display: "flex",
+                    flexDirection: "row",
+                    gap: 10,
+                    alignItems: "center",
+                    paddingTop: 10,
                   }}
                 >
-                  {d.veridica == true ? "Veridica" : "En proceso"}
-                </Text>
-                <Text
+                  <Text
+                    style={{
+                      backgroundColor:
+                        d.estado == 'Verídica' ? "#75DF77" : d.estado == 'En proceso' ? "#c9c306" : '#FF7070',
+                      padding: 3,
+                      borderRadius: 2,
+                      color: 'white'
+                    }}
+                  >
+                    {d.estado}
+                  </Text>
+                  <Text
+                    style={{
+                      padding: 3,
+                      borderRadius: 2,
+                      backgroundColor: theme == 'light' ? "#3e3e3e26" : 'gray',
+                      color: theme == 'light' ? 'black' : 'white'
+                    }}
+                  >
+                    {d.tipo}
+                  </Text>
+                </View>
+                <Text style={{ paddingTop: 5, color: theme == 'light' ? 'black' : 'white', fontWeight: '500', fontSize: 14 }}>{d.nombre.slice(0, 50)} ...</Text>
+                <View
                   style={{
-                    padding: 5,
-                    borderRadius: 5,
-                    backgroundColor: theme == 'light' ? "#3e3e3e26" : 'gray',
-                    color: theme == 'light' ? 'black' : 'white'
+                    display: "flex",
+                    flexDirection: "row",
+                    gap: 5,
+                    alignItems: "center",
+                    paddingTop: 5,
                   }}
                 >
-                  {d.categoria}
-                </Text>
-              </View>
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  gap: 10,
-                  alignItems: "center",
-                  paddingTop: 10,
-                }}
-              >
-                <Avatar />
-                <Text style={{ fontWeight: "bold", color: theme == 'light' ? 'black' : 'white' }}>{d.persona}</Text>
-              </View>
-            </Card>
+                  <FontAwesomeIcon icon={faUser} style={{ color: theme == 'light' ? '#202020' : 'white' }} />
+                  <Text style={{ color: theme == 'light' ? '#202020' : 'white' }}>{d.nombre_usuario}</Text>
+                </View>
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    gap: 5,
+                    alignItems: "center",
+                    paddingTop: 10,
+                  }}
+                >
+                  <FontAwesomeIcon icon={faGlobe} style={{ color: theme == 'light' ? '#202020' : 'white' }} />
+                  <Text style={{ color: theme == 'light' ? 'black' : 'white' }}>{d.idioma}</Text>
+                </View>
+              </Card>
+            </TouchableOpacity>
+
           ))}
         </View>
       </ScrollView>
@@ -129,7 +156,7 @@ const style = StyleSheet.create({
   containerCard: {
     width: "100%",
     display: "flex",
-    flexDirection: "row",
+    flexDirection: "row-reverse",
     gap: 15,
     paddingLeft: 15,
   },
@@ -140,6 +167,8 @@ const style = StyleSheet.create({
     gap: 10,
     borderRadius: 10,
     margin: 0,
+    borderColor: '#a1a1a1',
+    borderWidth: .3
   },
   moreCategories: {
     width: "100%",

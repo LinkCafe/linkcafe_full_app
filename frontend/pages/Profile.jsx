@@ -1,37 +1,50 @@
-import { View, Text, ScrollView, StyleSheet } from "react-native";
+import { View, Text, ScrollView, StyleSheet, ToastAndroid } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useContext, useEffect, useState } from "react";
 import { Avatar, Button, Switch } from "@rneui/base";
-import Reviews from "../components/organismos/Reviews";
 import ThemeContext from "../context/ThemeContext";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
+import UserContext from "../context/UserContext";
+import axiosClient from "../utils/axiosClient";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
-const Profile =  () => {
+const Profile = () => {
   const { theme, toggleTheme } = useContext(ThemeContext)
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const { user } = useContext(UserContext)
+  const [storageUser, setStorageUser] = useState({})
+  const [language, setLanguage] = useState(null)
+  const [nameUser, setNameUser] = useState('')
   const navigation = useNavigation()
   const handleToggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     toggleTheme(newTheme);
   }
-  
-  useEffect(() => {
-    const getUser = async () => {
-      setName(await AsyncStorage.getItem('name'))
-      setEmail(await AsyncStorage.getItem('email'))
-      setPassword(await AsyncStorage.getItem('password'))
-    }
 
-    setInterval(() => getUser(), 500)
+  useEffect(() => {
+    const newUser = JSON.parse(user)
+    setStorageUser(newUser)
+
+    axiosClient.get(`/usuarios/${newUser.id}`).then((response) => {
+      if (response.status == 200) {
+        setNameUser(response.data[0].nombre_completo);
+      }
+    })
   }, [])
 
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.clear()
+      navigation.navigate('Login')
+      ToastAndroid.show('Sesión cerrada', ToastAndroid.SHORT)
+    } catch (error) {
+      ToastAndroid.show('Error al cerrar sesión', ToastAndroid.SHORT)
+    }
+  }
+
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: theme == 'light' ? 'white' : '#202020' }}>
-      <ScrollView style={{ paddingHorizontal: 16}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme == 'light' ? '#f8f4f1' : '#202020' }}>
+      <ScrollView style={{ paddingHorizontal: 16 }}>
         <View
           style={{
             display: "flex",
@@ -56,9 +69,8 @@ const Profile =  () => {
             />
             <View>
               <Text style={{ fontSize: 20, fontWeight: "bold", color: theme == 'light' ? 'black' : 'white' }}>
-                {name}
+                {nameUser}
               </Text>
-              <Text style={{ color: theme == 'light' ? 'black' : 'white' }}>Caficultor</Text>
             </View>
           </View>
           <View>
@@ -71,20 +83,14 @@ const Profile =  () => {
                 borderRadius: 5,
               }}
               titleStyle={{ color: theme == 'light' ? "black" : 'white' }}
-              onPress={() => navigation.navigate("DetailsProfile", {
-                name: name,
-                email: email,
-                password: password
-              }) } 
+              onPress={() => navigation.navigate("DetailsProfile")}
             >
               Editar {">"}
             </Button>
-            
-
-
           </View>
         </View>
-        <Reviews />
+        {/* <Reviews /> */}
+        <Text style={{ fontSize: 22, fontWeight: '600', color: theme == 'light' ? 'black' : 'white', marginTop: 20 }}>Configuraciones adicionales</Text>
         <View style={{
           display: 'flex',
           width: '100%',
@@ -94,19 +100,23 @@ const Profile =  () => {
           paddingVertical: 10
         }} >
           <Text style={{
-            fontSize: 20,
-            fontWeight: 'bold',
+            fontSize: 18,
+            fontWeight: '500',
             color: theme == 'light' ? 'black' : 'white'
-          }} >Tema: {theme == 'light' ? 'Claro' : 'Oscuro' }</Text>
-          <Switch 
-            value={ theme === 'light' ? false : true } 
+          }} >Tema: {theme == 'light' ? 'Claro' : 'Oscuro'}</Text>
+          <Switch
+            value={theme === 'light' ? false : true}
             onValueChange={() => handleToggleTheme()}
-            color={ theme === 'dark' ? 'white' : '#2089dc'}
-            />
+            color={theme === 'dark' ? 'white' : '#2089dc'}
+          />
         </View>
-        <View>
-        <Button onPress={()=>navigation.navigate('chat')}>chat</Button>
-        </View>
+        <Button title={'Cerrar Sesión'} buttonStyle={{ 
+          backgroundColor: '#dc3545', 
+          marginTop: 20, 
+          borderRadius: 5, 
+          padding: 10, 
+          width: '100%'
+         }} onPress={handleLogout} />
       </ScrollView>
     </SafeAreaView>
   );

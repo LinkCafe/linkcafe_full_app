@@ -7,6 +7,7 @@ import InputFile from '../moleculas/InputFile';
 import Label from '../moleculas/Label';
 import Select from '../moleculas/Select';
 import Button from '../moleculas/Button';
+import toast from 'react-hot-toast';
 
 export default function CreatePublicacionesModal({ open, onClose }) {
     const [user, setUser] = useState({});
@@ -15,6 +16,7 @@ export default function CreatePublicacionesModal({ open, onClose }) {
     const fuentesRef = useRef(null);
     const tipoRef = useRef(null);
     const imagenRef = useRef(null);
+    const idioma = useRef(null);
 
     useEffect(() => {
         setUser(JSON.parse(localStorage.getItem('user')));
@@ -31,14 +33,17 @@ export default function CreatePublicacionesModal({ open, onClose }) {
                 formData.append('tipo', tipoRef.current.value);
                 formData.append('id_usuario', user.id);
                 formData.append('imagen', imagenRef.current.files[0]);
+                formData.append('idioma', idioma.current.value);
+
+                console.log(imagenRef.current.files[0]);
 
                 const response = await axiosClient.post('/publicaciones', formData, {});
 
                 if (response && response.status === 200) {
-                    alert('Publicación creada correctamente');
+                    toast.success('Publicación creada correctamente')
                     onClose();
                 } else {
-                    alert('Error al crear la publicación');
+                    toast.error('Error Al Crear La Publicación')
                 }
             }
         } catch (error) {
@@ -65,7 +70,7 @@ export default function CreatePublicacionesModal({ open, onClose }) {
                         </div>
                         <div className='flex flex-col gap-2'>
                             <Label>Fuentes</Label>
-                            <Input type="text" placeholder='Fuentes' required ref={fuentesRef} />
+                            <Input type="url" placeholder='Fuentes' required ref={fuentesRef} />
                         </div>
                         <div className='flex flex-col gap-2'>
                             <Label>Tipo</Label>
@@ -74,6 +79,14 @@ export default function CreatePublicacionesModal({ open, onClose }) {
                                 <option value="1">Producción</option>
                                 <option value="2">Barismo</option>
                                 <option value="3">Otros</option>
+                            </Select>
+                        </div>
+                        <div className='flex flex-col gap-2'>
+                            <Label>Idioma</Label>
+                            <Select required ref={idioma}>
+                                <option value="">Seleccione...</option>
+                                <option value={1}>Inglés</option>
+                                <option value={2}>Español</option>
                             </Select>
                         </div>
                         <div className='flex flex-col gap-2'>

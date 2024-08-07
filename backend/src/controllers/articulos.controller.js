@@ -11,11 +11,26 @@
 import { validationResult } from "express-validator";
 import { pool } from "../database/conexion.js";
 
-
-//Listar Todos los articulos
+// Listar todos los artículos
 export const showArticles = async (req, res) => {
     try {
-        const [resultado] = await pool.query("SELECT * FROM articulos");
+        const query = `
+            SELECT 
+                articulos.id,
+                articulos.nombre,
+                articulos.tipo,
+                articulos.enlace,
+                articulos.idioma,
+                articulos.fecha,
+                articulos.autor,
+                articulos.descripcion,
+                articulos.id_usuario,
+                usuarios.nombre_completo AS nombre_usuario
+            FROM articulos
+            JOIN usuarios ON articulos.id_usuario = usuarios.id
+        `;
+
+        const [resultado] = await pool.query(query);
 
         if (resultado.length > 0) {
             res.status(200).json(resultado);
@@ -26,21 +41,32 @@ export const showArticles = async (req, res) => {
         }
     } catch (error) {
         res.status(500).json({
-            "Mensaje": error
+            "Mensaje": error.message
         });
     }
 };
 
-//Crear articulos
+
+// Crear un artículo
 export const createArticles = async (req, res) => {
     try {
-        const error = validationResult(req);
+        const errors = validationResult(req);
 
-        if (!error.isEmpty()) {
-            return res.status(400).json(error.array());
+        if (!errors.isEmpty()) {
+            return res.status(400).json(errors.array());
         }
-        const { nombre, enlace, autor, id_usuario } = req.body;
-        const [resultado] = await pool.query("INSERT INTO articulos(nombre, enlace, autor, id_usuario) VALUES(?, ?, ?, ?)", [nombre, enlace, autor, id_usuario]);
+
+        const { nombre, enlace, autor, descripcion, idioma, id_usuario } = req.body;
+
+        const [usuario] = await pool.query("SELECT * FROM usuarios WHERE id = ?", [id_usuario]);
+
+        if (usuario.length === 0) {
+            return res.status(404).json({
+                "Mensaje": "No se encontró el ID del usuario"
+            });
+        }
+
+        const [resultado] = await pool.query("INSERT INTO articulos(nombre, enlace, autor, descripcion, idioma, id_usuario) VALUES(?, ?, ?, ?, ?, ?)", [nombre, enlace, autor, descripcion, idioma, id_usuario]);
 
         if (resultado.affectedRows > 0) {
             res.status(200).json({
@@ -53,54 +79,95 @@ export const createArticles = async (req, res) => {
         }
     } catch (error) {
         res.status(500).json({
-            "Mensaje": error
+            "Mensaje": error.message
         });
     }
 };
 
-//Actualizar arituclos
+
+// Actualizar un artículo
 export const updateArticles = async (req, res) => {
     try {
-        const error = validationResult(req);
+        const errors = validationResult(req);
 
-        if (!error.isEmpty()) {
-            return res.status(400).json(error.array());
+        if (!errors.isEmpty()) {
+            return res.status(400).json(errors.array());
         }
+
         const { id } = req.params;
-        const { nombre, enlace, autor, id_usuario } = req.body;
-        const [oldUser] = await pool.query("SELECT * FROM articulos WHERE id=?", [id]);
-        const [resultado] = await pool.query(`UPDATE articulos SET 
-        nombre='${nombre ? nombre : oldUser[0].nombre}',
-        enlace='${enlace ? enlace : oldUser[0].enlace}', 
-        autor='${autor ? autor : oldUser[0].autor}',
-        id_usuario='${id_usuario ? id_usuario : oldUser[0].id_usuario}'
-        WHERE id=${parseInt(id)}`);
+        const { nombre, enlace, autor, descripcion, idioma, id_usuario, tipo } = req.body;
+
+        const [oldUser] = await pool.query("SELECT * FROM articulos WHERE id = ?", [id]);
+
+        if (oldUser.length === 0) {
+            return res.status(404).json({
+                "mensaje": "No se encontró un artículo con ese ID"
+            });
+        }
+
+        const [resultado] = await pool.query(`
+            UPDATE articulos SET 
+            nombre = ?, 
+            enlace = ?, 
+            autor = ?, 
+            descripcion = ?, 
+            idioma = ?, 
+            id_usuario = ?,
+            tipo = ?
+            WHERE id = ?`, [
+            nombre || oldUser[0].nombre,
+            enlace || oldUser[0].enlace,
+            autor || oldUser[0].autor,
+            descripcion || oldUser[0].descripcion,
+            idioma || oldUser[0].idioma,
+            id_usuario || oldUser[0].id_usuario,
+            tipo || oldUser[0].tipo,
+            id
+        ]);
 
         if (resultado.affectedRows > 0) {
             res.status(200).json({
-                "mensaje": "El Articulo A Sido Modificado Con Exito"
+                "mensaje": "El artículo ha sido modificado con éxito"
             });
         } else {
             res.status(404).json({
-                "mensaje": "No Se Pudo Modificar El Articulo"
+                "mensaje": "No se pudo modificar el artículo"
             });
         }
     } catch (error) {
-        res.status(500).json({
-            "mensaje": error
+        res.status (500).json({
+            "mensaje": error.message
         });
     }
 };
 
 
-//Listar articulos por id 
+// Mostrar solo un artículo
 export const showAArticles = async (req, res) => {
     try {
         const { id } = req.params;
-        const [resultado] = await pool.query("SELECT * FROM articulos WHERE id=?", [id]);
+
+        const query = `
+            SELECT 
+                articulos.id,
+                articulos.nombre,
+                articulos.tipo,
+                articulos.enlace,
+                articulos.idioma,
+                articulos.fecha,
+                articulos.autor,
+                articulos.descripcion,
+                articulos.id_usuario,
+                usuarios.nombre_completo AS nombre_usuario
+            FROM articulos
+            JOIN usuarios ON articulos.id_usuario = usuarios.id
+            WHERE articulos.id = ?
+        `;
+
+        const [resultado] = await pool.query(query, [id]);
 
         if (resultado.length > 0) {
-            res.status(200).json(resultado);
+            res.status(200).json(resultado[0]);
         } else {
             res.status(404).json({
                 "mensaje": "No se encontró Ningun articulo con ese ID"
@@ -108,12 +175,14 @@ export const showAArticles = async (req, res) => {
         }
     } catch (error) {
         res.status(500).json({
-            "mensaje": error
+            "mensaje": error.message
         });
     }
 };
 
-//Eliminar articulos
+
+
+// Eliminar un artículo
 export const deleteArticles = async (req, res) => {
     try {
         const { id } = req.params;
@@ -130,12 +199,12 @@ export const deleteArticles = async (req, res) => {
         }
     } catch (error) {
         res.status(500).json({
-            "mensaje": error
+            "mensaje": error.message
         });
     }
 };
 
-// Contar todos los articulos
+// Contar todos los artículos
 export const contarArticulos = async (req, res) => {
     try {
         const [resultado] = await pool.query("SELECT COUNT(*) as total FROM articulos");
@@ -149,23 +218,53 @@ export const contarArticulos = async (req, res) => {
     }
 };
 
-
 // Listar los artículos por fechas
 export const listarArticulosPorFecha = async (req, res) => {
     try {
         const { fechaInicio, fechaFin } = req.params;
+        const { idioma } = req.query; // Se obtiene el idioma de los parámetros de consulta
 
         let query;
         let params;
 
         if (fechaInicio && fechaFin) {
             // Query para rango de fechas
-            query = "SELECT * FROM articulos WHERE DATE(fecha) BETWEEN ? AND ?";
-            params = [fechaInicio, fechaFin];
+            query = `
+                SELECT 
+                    articulos.id,
+                    articulos.nombre,
+                    articulos.tipo,
+                    articulos.enlace,
+                    articulos.fecha,
+                    articulos.autor,
+                    articulos.descripcion,
+                    articulos.idioma,
+                    articulos.id_usuario,
+                    usuarios.nombre_completo AS nombre_usuario
+                FROM articulos
+                JOIN usuarios ON articulos.id_usuario = usuarios.id
+                WHERE DATE(articulos.fecha) BETWEEN ? AND ? AND articulos.idioma = ?
+            `;
+            params = [fechaInicio, fechaFin, idioma];
         } else if (fechaInicio) {
             // Query para una sola fecha
-            query = "SELECT * FROM articulos WHERE DATE(fecha) = ?";
-            params = [fechaInicio];
+            query = `
+                SELECT 
+                    articulos.id,
+                    articulos.nombre,
+                    articulos.tipo,
+                    articulos.enlace,
+                    articulos.fecha,
+                    articulos.autor,
+                    articulos.descripcion,
+                    articulos.idioma,
+                    articulos.id_usuario,
+                    usuarios.nombre_completo AS nombre_usuario
+                FROM articulos
+                JOIN usuarios ON articulos.id_usuario = usuarios.id
+                WHERE DATE(articulos.fecha) = ? AND articulos.idioma = ?
+            `;
+            params = [fechaInicio, idioma];
         } else {
             return res.status(400).json({
                 "mensaje": "Debe proporcionar al menos una fecha"

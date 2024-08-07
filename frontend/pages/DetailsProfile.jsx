@@ -5,30 +5,46 @@ import ThemeContext from '../context/ThemeContext'
 import { Button, Input } from '@rneui/base'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useNavigation } from '@react-navigation/native'
+import UserContext from '../context/UserContext'
+import axiosClient from '../utils/axiosClient'
 
 const DetailsProfile = () => {
     const { theme } = useContext(ThemeContext)
     const navigation = useNavigation()
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
+    const { user } = useContext(UserContext)
+    const [ localUser, setLocalUser ] = useState({})
+    useEffect(() => {
+        const newUser = JSON.parse(user)
+        setLocalUser(newUser)
+    }, [])
     useEffect(() => {
         const getUser = async () => {
-            setName(await AsyncStorage.getItem('name'))
-            setEmail(await AsyncStorage.getItem('email'))
+            setName(localUser.nombre_completo)
+            setEmail(localUser.correo)
         }
 
         getUser()
     }, [])
 
+
     const handleSubmit = async () => {
-        await AsyncStorage.setItem('email', email);
-        await AsyncStorage.setItem('name', name)
-        ToastAndroid.showWithGravity(
-            'Datos actualizados',
-            ToastAndroid.LONG,
-            ToastAndroid.BOTTOM,
-        );
-        navigation.navigate("Profile")
+        try {
+            const data = {
+                nombre_completo: name,
+                correo: email
+            }
+
+            await axiosClient.put(`/usuarios/${localUser.id}`, data).then((response) => {
+                if (response.status == 200) {
+                    ToastAndroid.show("Usuario actualizado correctamente", ToastAndroid.SHORT)
+                    navigation.navigate('Profile')
+                }
+            })
+        } catch (error) {
+            console.log(error);
+        }
     }
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: theme == 'light' ? 'white' : '#202020' }}>
@@ -47,7 +63,7 @@ const DetailsProfile = () => {
                     style={{
                         color: theme == 'light' ? 'black' : 'white'
                     }}
-                    defaultValue={name}
+                    defaultValue={localUser.nombre_completo}
                     onChangeText={(text) => setName(text)}
                 />
                 <Input
@@ -66,7 +82,7 @@ const DetailsProfile = () => {
                     }}
                     textContentType="emailAddress"
                     keyboardType="email-address"
-                    defaultValue={email}
+                    defaultValue={localUser.correo}
                     onChangeText={(text) => setEmail(text)}
                 />
                 <Button

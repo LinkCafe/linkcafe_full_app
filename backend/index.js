@@ -26,7 +26,7 @@ server.get('/document', (req, res) => {
 
 // Rutas
 server.use(rutasAuth)
-server.use(validarToken, rutasArticulos)
+server.use(validarToken,rutasArticulos)
 server.use(validarToken, rutasComentarios)
 server.use(validarToken, rutasPublicaciones)
 server.use(validarToken, rutasUsuarios)

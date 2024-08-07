@@ -3,14 +3,35 @@ import {
   Text,
   StyleSheet
 } from "react-native";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button, Avatar } from "@rneui/base";
 import ThemeContext from "../../context/ThemeContext";
 import { useNavigation } from "@react-navigation/native";
+import axiosClient from "../../utils/axiosClient";
 
 const Categories = () => {
+
   const { theme } = useContext(ThemeContext)
   const navigation = useNavigation()
+  const [publicaciones, setPublicaciones] = useState([])
+
+  const getPublicaciones = async () => {
+    try {
+      const response = await axiosClient.get('/publicaciones');
+      if (response && response.status === 200) {
+        setPublicaciones(response.data);
+      } else {
+        Alert.alert('No se encontraron publicaciones');
+      }
+    } catch (error) {
+      Alert.alert('Error al obtener las Publicaciones', error.message);
+    }
+  }
+
+  useEffect(() => {
+    getPublicaciones();
+  }, []);
+
   return (
     <View style={style.container}>
       <View style={style.moreCategories}>
@@ -18,16 +39,16 @@ const Categories = () => {
         <Button
           type="outline"
           title="Ver todo >"
-          buttonStyle={{ padding: 1, borderColor: theme == 'light' ? 'black' : 'white', borderWidth: 1 }}
+          buttonStyle={{ padding: 1, borderColor: theme == 'light' ? 'black' : '#a1a1a1', borderWidth: .7, backgroundColor: theme == 'light' ? 'white' : 'transparent' }}
           titleStyle={{ color: theme == 'light' ? 'black' : 'white' }}
           onPress={() => navigation.navigate("CategoriesFull", {
-            type: 'all'
+            publicaciones
           })}
         />
       </View>
       <View style={style.categoriesContainer}>
-        <Button buttonStyle={[style.styleButton, { backgroundColor: theme == 'light' ? "#fafafa" : 'transparent' }]} onPress={() => navigation.navigate("CategoriesFull", {
-          type: 'produccion'
+        <Button buttonStyle={[style.styleButton, { backgroundColor: theme == 'light' ? "#fafafa" : '#202020' }]} onPress={() => navigation.navigate("CategoriesFull", {
+          publicaciones: publicaciones.filter((p) => p.tipo == "Producción" )
         })}>
           <Avatar
             size={40}
@@ -38,8 +59,8 @@ const Categories = () => {
           />
           <Text style={[style.styleButton.text, { color: theme == 'light' ? 'black' : 'white' }]}>Producción</Text>
         </Button>
-        <Button buttonStyle={[style.styleButton, { backgroundColor: theme == 'light' ? "#fafafa" : 'transparent' }]} onPress={() => navigation.navigate("CategoriesFull", {
-          type: 'barismo'
+        <Button buttonStyle={[style.styleButton, { backgroundColor: theme == 'light' ? "#fafafa" : '#202020' }]} onPress={() => navigation.navigate("CategoriesFull", {
+          publicaciones: publicaciones.filter((p) => p.tipo == "Barismo" )
         })} >
           <Avatar
             size={40}
@@ -50,8 +71,8 @@ const Categories = () => {
           />
           <Text style={[style.styleButton.text, { color: theme == 'light' ? 'black' : 'white' }]}>Barismo</Text>
         </Button>
-        <Button buttonStyle={[style.styleButton, { backgroundColor: theme == 'light' ? "#fafafa" : 'transparent' }]} onPress={() => navigation.navigate("CategoriesFull", {
-          type: 'otros'
+        <Button buttonStyle={[style.styleButton, { backgroundColor: theme == 'light' ? "#fafafa" : '#202020' }]} onPress={() => navigation.navigate("CategoriesFull", {
+          publicaciones: publicaciones.filter((p) => p.tipo == "Otros" )
         })}>
           <Avatar
             size={40}
@@ -99,9 +120,18 @@ const style = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     paddingVertical: 20,
-    borderColor: "#797979",
-    borderWidth: 1,
+    borderColor: "#a1a1a1",
+    borderWidth: .7,
     borderRadius: 7,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.34,
+    shadowRadius: 6.27,
+
+    elevation: 10,
     text: {
       fontSize: 15,
       marginTop: 5,

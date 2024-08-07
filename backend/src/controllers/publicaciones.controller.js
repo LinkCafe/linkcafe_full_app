@@ -26,22 +26,40 @@ export const cargarImagen = upload.single('imagen');
 // Listar todas las publicaciones
 export const listarPublicaciones = async (req, res) => {
     try {
-        const [resultado] = await pool.query("SELECT * FROM publicaciones");
+        const query = `
+            SELECT 
+                publicaciones.id,
+                publicaciones.nombre,
+                publicaciones.descripcion,
+                publicaciones.imagen,
+                publicaciones.fuentes,
+                publicaciones.tipo,
+                publicaciones.fecha,
+                publicaciones.estado,
+                publicaciones.id_usuario,
+                publicaciones.idioma,
+                usuarios.nombre_completo AS nombre_usuario
+            FROM publicaciones
+            JOIN usuarios ON publicaciones.id_usuario = usuarios.id
+        `;
+
+        const [resultado] = await pool.query(query);
 
         if (resultado.length > 0) {
             res.status(200).json(resultado);
         } else {
             res.status(404).json({
-                "mensaje": "No encontramos publicaciones "
+                "mensaje": "No encontramos publicaciones"
             });
         }
 
     } catch (error) {
-        res.status500().json({
+        res.status(500).json({
             "mensaje": error.message
         });
     }
-}
+};
+
 
 // Crear una nueva publicación
 export const crearUnaPublicacion = async (req, res) => {
@@ -52,7 +70,7 @@ export const crearUnaPublicacion = async (req, res) => {
             return res.status(400).json({ error: error.array() });
         }
 
-        const { nombre, descripcion, fuentes, tipo, id_usuario } = req.body;
+        const { nombre, descripcion, fuentes, tipo, id_usuario, idioma } = req.body;
 
         const imagen = req.file.originalname;
 
@@ -68,8 +86,9 @@ export const crearUnaPublicacion = async (req, res) => {
             return res.status(404).json({ mensaje: "No se encontró el usuario con el ID proporcionado." });
         }
 
+
         // Insertar la nueva publicación en la base de datos
-        await pool.query("INSERT INTO publicaciones (nombre, descripcion, imagen, fuentes, tipo, id_usuario) VALUES (?, ?, ?, ?, ?, ?)", [nombre, descripcion, imagen, fuentes, tipo, id_usuario]);
+        await pool.query("INSERT INTO publicaciones (nombre, descripcion, imagen, fuentes, tipo, id_usuario, idioma) VALUES (?, ?, ?, ?, ?, ?, ?)", [nombre, descripcion, imagen, fuentes, tipo, id_usuario, idioma]);
 
         return res.status(200).json({ mensaje: "Publicación creada y procesada con éxito" });
 
@@ -77,6 +96,7 @@ export const crearUnaPublicacion = async (req, res) => {
         return res.status(500).json({ mensaje: error.message });
     }
 }
+
 
 // Actualizar una publicación
 export const actualizarUnaPublicacion = async (req, res) => {
@@ -87,9 +107,9 @@ export const actualizarUnaPublicacion = async (req, res) => {
         }
 
         const { id } = req.params;
-        const { nombre, descripcion, fuentes, tipo } = req.body;
+        const { nombre, descripcion, fuentes, tipo, estado, idioma } = req.body; 
 
-        let imagen = req.file ? req.file.originalname : null; 
+        let imagen = req.file ? req.file.originalname : null;
 
         const [oldPost] = await pool.query("SELECT * FROM publicaciones WHERE id=?", [id]);
         if (!oldPost || oldPost.length === 0) {
@@ -102,15 +122,21 @@ export const actualizarUnaPublicacion = async (req, res) => {
             imagen = oldPost[0].imagen;
         }
 
+        const updateFields = {
+            nombre: nombre || oldPost[0].nombre,
+            descripcion: descripcion || oldPost[0].descripcion,
+            imagen: imagen,
+            fuentes: fuentes || oldPost[0].fuentes,
+            tipo: tipo || oldPost[0].tipo,
+            estado: estado || oldPost[0].estado,
+            idioma: idioma || oldPost[0].idioma
+        };
+
         const [resultado] = await pool.query(`
             UPDATE publicaciones 
-            SET nombre='${nombre ? nombre : oldPost[0].nombre}',
-                descripcion='${descripcion ? descripcion : oldPost[0].descripcion}',
-                imagen='${imagen}',
-                fuentes='${fuentes ? fuentes : oldPost[0].fuentes}',
-                tipo='${tipo ? tipo : oldPost[0].tipo}'
-            WHERE id=${parseInt(id)}
-        `);
+            SET ? 
+            WHERE id=?
+        `, [updateFields, id]);
 
         if (resultado.affectedRows > 0) {
             return res.status(200).json({
@@ -127,28 +153,50 @@ export const actualizarUnaPublicacion = async (req, res) => {
             "mensaje": error.message
         });
     }
-}
+};
+
 
 // Mostrar solo una publicación
 export const mostrarSoloUnaPublicacion = async (req, res) => {
     try {
         const { id } = req.params;
-        const [resultado] = await pool.query("SELECT * FROM publicaciones WHERE id=?", [id]);
+
+        const query = `
+            SELECT 
+                publicaciones.id,
+                publicaciones.nombre,
+                publicaciones.descripcion,
+                publicaciones.imagen,
+                publicaciones.fuentes,
+                publicaciones.tipo,
+                publicaciones.idioma,
+                publicaciones.fecha,
+                publicaciones.estado,
+                publicaciones.id_usuario,
+                usuarios.nombre_completo AS nombre_usuario
+            FROM publicaciones
+            JOIN usuarios ON publicaciones.id_usuario = usuarios.id
+            WHERE publicaciones.id = ?
+        `;
+
+        const [resultado] = await pool.query(query, [id]);
 
         if (resultado.length > 0) {
-            res.status(200).json(resultado);
+            return res.status(200).json(resultado[0]);
         } else {
-            res.status(404).json({
+            return res.status(404).json({
                 "mensaje": "No se encontró esa publicación con ese ID"
             });
         }
 
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             "mensaje": error.message
         });
     }
-}
+};
+
+
 
 // Eliminar una publicación
 export const eliminarUnaPublicacion = async (req, res) => {
@@ -192,18 +240,51 @@ export const contarPublicaciones = async (req, res) => {
 export const listarPublicacionesPorFecha = async (req, res) => {
     try {
         const { fechaInicio, fechaFin } = req.params;
+        const { idioma } = req.query; // Se obtiene el idioma de los parámetros de consulta
 
         let query;
         let params;
 
         if (fechaInicio && fechaFin) {
             // Query para rango de fechas
-            query = "SELECT * FROM publicaciones WHERE DATE(fecha) BETWEEN ? AND ?";
-            params = [fechaInicio, fechaFin];
+            query = `
+                SELECT 
+                    publicaciones.id,
+                    publicaciones.nombre,
+                    publicaciones.descripcion,
+                    publicaciones.imagen,
+                    publicaciones.fuentes,
+                    publicaciones.tipo,
+                    publicaciones.fecha,
+                    publicaciones.estado,
+                    publicaciones.idioma,
+                    publicaciones.id_usuario,
+                    usuarios.nombre_completo AS nombre_usuario
+                FROM publicaciones
+                JOIN usuarios ON publicaciones.id_usuario = usuarios.id
+                WHERE DATE(publicaciones.fecha) BETWEEN ? AND ? AND publicaciones.idioma = ?
+            `;
+            params = [fechaInicio, fechaFin, idioma];
         } else if (fechaInicio) {
             // Query para una sola fecha
-            query = "SELECT * FROM publicaciones WHERE DATE(fecha) = ?";
-            params = [fechaInicio];
+            query = `
+                SELECT 
+                    publicaciones.id,
+                    publicaciones.nombre,
+                    publicaciones.descripcion,
+                    publicaciones.imagen,
+                    publicaciones.fuentes,
+                    publicaciones.tipo,
+                    publicaciones.fecha,
+                    publicaciones.estado,
+                    publicaciones.idioma,
+                    publicaciones.id_usuario,
+                    usuarios.nombre_completo AS nombre_usuario
+                FROM publicaciones
+                JOIN usuarios ON publicaciones.id_usuario = usuarios.id
+                WHERE DATE(publicaciones.fecha) = ? AND publicaciones.idioma = ?
+            `;
+            params = [fechaInicio, idioma];
         } else {
             return res.status(400).json({
                 "mensaje": "Debe proporcionar al menos una fecha"
@@ -225,5 +306,38 @@ export const listarPublicacionesPorFecha = async (req, res) => {
             "mensaje": error.message
         });
     }
+};
+
+
+
+// Cambiar el estado de una publicación
+export const cambiarEstadoPublicacion = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { estado } = req.body;
+
+        // Verificar que el estado sea un número válido
+        const estadosValidos = [1, 2, 3];
+        if (!estadosValidos.includes(Number(estado))) {
+            return res.status(400).json({ mensaje: "Estado no válido" });
+        }
+
+        // Actualizar el estado en la base de datos
+        const [resultado] = await pool.query(`
+            UPDATE publicaciones 
+            SET estado = ?
+            WHERE id = ?
+        `, [estado, id]);
+
+        if (resultado.affectedRows > 0) {
+            return res.status(200).json({ mensaje: "Estado de la publicación actualizado con éxito" });
+        } else {
+            return res.status(404).json({ mensaje: "No se encontró la publicación" });
+        }
+    } catch (error) {
+        return res.status(500).json({ mensaje: error.message });
+    }
 }
+
+
  

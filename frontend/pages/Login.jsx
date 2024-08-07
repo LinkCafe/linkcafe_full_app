@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, ToastAndroid } from "react-native";
+import { View, Text, StyleSheet, ScrollView, ToastAndroid, TouchableOpacity } from "react-native";
 import React, { useState, useContext } from "react";
 import { styleConstants } from "../constants/style";
 import { Button, Input } from "@rneui/base";
@@ -6,9 +6,16 @@ import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ThemeContext from '../context/ThemeContext';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faEnvelope, faEye, faEyeSlash, faLock } from '@fortawesome/free-solid-svg-icons';
+import axiosClient from "../utils/axiosClient";
+import UserContext from "../context/UserContext";
+
+
 
 const Login = () => {
   const { theme } = useContext(ThemeContext);
+  const { setUser } = useContext(UserContext)
   const [visiblePassword, setVisiblePassword] = useState(true);
   const navigation = useNavigation();
   const handleVisibilityPassword = () => {
@@ -17,11 +24,21 @@ const Login = () => {
   const [password, setPassword] = useState(null);
   const [email, setEmail] = useState(null);
   const handleLogin = async () => {
-    const emailStorage = await AsyncStorage.getItem('email');
-    const passwordStorage = await AsyncStorage.getItem('password');
-    if (password === passwordStorage && email === emailStorage) {
-      navigation.navigate('HomeTabs');
-    } else {
+    const data = {
+      correo: email,
+      clave: password
+    }
+
+    try {
+      const response = await axiosClient.post("/login", data)
+      if (response.status == 200) {
+        console.log("Sesión iniciada");
+        await AsyncStorage.setItem('token', response.data.token)
+        await AsyncStorage.setItem('user', JSON.stringify(response.data.user))
+        setUser(JSON.stringify(response.data.user))
+        navigation.navigate('HomeTabs');
+      }
+    } catch (error) {
       ToastAndroid.showWithGravity(
         'Error al iniciar sesión',
         ToastAndroid.SHORT,
@@ -31,41 +48,36 @@ const Login = () => {
   };
 
   return (
-    <SafeAreaView style={[styleConstants.container, {backgroundColor: theme === 'dark'? '#333' : '#FFF'}]}>
+    <SafeAreaView style={styleConstants.container}>
       <ScrollView style={style.contentCard}>
-        <Text style={[style.loginTitleStyle, { color: theme === 'dark'? 'white' : 'black' }]}>Iniciar Sesión </Text>
-        <Input
-          placeholder="Correo"
-          inputContainerStyle={style.inputStyle}
-          label="Correo"
-          leftIcon={{
-            type: 'font-awesome',
-            name: 'envelope',
-            color: '#E39B5A',
-          }}
-          leftIconContainerStyle={style.inputContainerStyle}
-          textContentType="emailAddress"
-          keyboardType="email-address"
-          labelStyle={style.labelStyle}
-          onChangeText={text => setEmail(text)}
-        />
-        <Input
-          placeholder="Contraseña"
-          inputContainerStyle={style.inputStyle}
-          label="Contraseña"
-          secureTextEntry={visiblePassword}
-          leftIcon={{type: 'font-awesome', name: 'lock', color: '#E39B5A'}}
-          leftIconContainerStyle={style.inputContainerStyle}
-          labelStyle={style.labelStyle}
-          rightIcon={{
-            type: 'font-awesome',
-            name: visiblePassword === true ? 'eye' : 'eye-slash',
-            color: '#E39B5A',
-            onPress: () => handleVisibilityPassword(),
-          }}
-          rightIconContainerStyle={style.inputContainerStyle}
-          onChangeText={text => setPassword(text)}
-        />
+        <Text style={style.loginTitleStyle}>Iniciar Sesión </Text>
+        <View>
+          <Input
+            placeholder="Correo"
+            inputContainerStyle={style.inputStyle}
+            label="Correo"
+            leftIcon={() => <FontAwesomeIcon icon={faEnvelope} size={20} style={style.email} />}
+            leftIconContainerStyle={style.inputContainerStyle}
+            textContentType="emailAddress"
+            keyboardType="email-address"
+            labelStyle={style.labelStyle}
+            onChangeText={text => setEmail(text)}
+          />
+        </View>
+        <View>
+          <Input
+            placeholder="Contraseña"
+            inputContainerStyle={style.inputStyle}
+            label="Contraseña"
+            secureTextEntry={visiblePassword}
+            leftIcon={() => <FontAwesomeIcon icon={faLock} size={20} style={style.password} />}
+            leftIconContainerStyle={style.inputContainerStyle}
+            labelStyle={style.labelStyle}
+            rightIcon={() => <TouchableOpacity onPress={() => handleVisibilityPassword()}><Text><FontAwesomeIcon icon={visiblePassword ? faEye : faEyeSlash} size={20} style={style.password} /></Text></TouchableOpacity>}
+            rightIconContainerStyle={style.inputContainerStyle}
+            onChangeText={text => setPassword(text)}
+          />
+        </View>
         <Text style={style.forgotPasswordStyle}>¿Olvidaste la contraseña?</Text>
         <View style={style.interaction}>
           <Button
@@ -98,7 +110,7 @@ const style = StyleSheet.create({
     paddingVertical: 55,
     textAlign: 'left',
     fontSize: 25,
-    color:'black',
+    color: 'black',
     fontWeight: "500"
   },
   forgotPasswordStyle: {
@@ -109,8 +121,8 @@ const style = StyleSheet.create({
   },
   inputStyle: {
     padding: 2,
-    borderColor: '#eeeeee',
-    borderWidth: 1,
+    borderColor: '#6a4023',
+    borderWidth: .2,
     borderRadius: 5,
   },
   inputContainerStyle: {
@@ -135,20 +147,27 @@ const style = StyleSheet.create({
     gap: 30,
   },
   btnSignUpTitle: {
-    color: '#E39B5A',
+    color: '#6a4023',
   },
   button: {
     borderRadius: 10,
     padding: 12,
   },
   btnLogin: {
-    backgroundColor: '#E39B5A',
+    backgroundColor: '#6a4023',
   },
   btnSignUp: {
     backgroundColor: 'transparent',
-    borderColor: '#E39B5A',
+    borderColor: '#6a4023',
     borderWidth: 2,
   },
+  email: {
+    color: '#6a4023'
+  },
+  password: {
+    color: '#6a4023'
+  }
 });
+
 
 export default Login;

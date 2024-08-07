@@ -7,13 +7,16 @@ import InputFile from '../moleculas/InputFile';
 import Label from '../moleculas/Label';
 import Select from '../moleculas/Select';
 import Button from '../moleculas/Button';
+import toast from 'react-hot-toast';
 
 export default function EditPublicacionesModal({ open, onClose, data, handleEditSuccess }) {
   const nombre = useRef(null);
   const descripcion = useRef(null);
   const fuentes = useRef(null);
   const tipo = useRef(null);
-  const imagen = useRef(null); // Referencia al campo de entrada de la imagen
+  const estado = useRef(null);
+  const imagen = useRef(null);
+  const idioma = useRef(null);
 
   const tipos = [
     {
@@ -30,6 +33,34 @@ export default function EditPublicacionesModal({ open, onClose, data, handleEdit
     }
   ];
 
+  const estados = [
+    {
+      id: 1,
+      nombre: 'Verídica'
+    },
+    {
+      id: 2,
+      nombre: 'En proceso'
+    },
+    {
+      id: 3,
+      nombre: 'No Veridica'
+    }
+  ];
+
+  const idiomas = [
+    {
+      id: 1,
+      nombre: 'Inglés',
+      key: 'EN'
+    },
+    {
+      id: 2,
+      nombre: 'Español',
+      key: 'ES'
+    }
+  ]
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -39,7 +70,9 @@ export default function EditPublicacionesModal({ open, onClose, data, handleEdit
         formData.append('descripcion', descripcion.current.value);
         formData.append('fuentes', fuentes.current.value);
         formData.append('tipo', tipo.current.value);
-        formData.append('imagen', imagen.current.files[0]); 
+        formData.append('estado', estado.current.value);
+        formData.append('imagen', imagen.current.files[0]);
+        formData.append('idioma', idioma.current.value);
 
         const response = await axiosClient.put(`/publicaciones/${data.id}`, formData, {
           headers: {
@@ -48,13 +81,14 @@ export default function EditPublicacionesModal({ open, onClose, data, handleEdit
         });
 
         if (response.status === 200) {
-          alert('Publicación Editada Correctamente');
+          toast.success('Publicación Editada Correctamente');
           handleEditSuccess(); // Llamar a la función para manejar el éxito de la edición
           onClose();
         }
       }
     } catch (error) {
       console.error(error);
+      toast.error('Ocurrió un error al editar la publicación');
     }
   };
 
@@ -77,7 +111,7 @@ export default function EditPublicacionesModal({ open, onClose, data, handleEdit
             </div>
             <div className='flex flex-col gap-2'>
               <Label>Fuentes</Label>
-              <Input type="text" placeholder='Fuentes' required ref={fuentes} defaultValue={data.fuentes} />
+              <Input type="url" placeholder='Fuentes' required ref={fuentes} defaultValue={data.fuentes} />
             </div>
             <div className='flex flex-col gap-2'>
               <Label>Tipo</Label>
@@ -86,6 +120,26 @@ export default function EditPublicacionesModal({ open, onClose, data, handleEdit
                 {tipos.map(tipo => (
                   <option key={tipo.id} value={tipo.nombre}>{tipo.nombre}</option>
                 ))}
+              </Select>
+            </div>
+            <div className='flex flex-col gap-2'>
+              <Label>Estado</Label>
+              <Select required ref={estado} defaultValue={data.estado}>
+                <option value="">Seleccionar...</option>
+                {estados.map(estado => (
+                  <option key={estado.id} value={estado.nombre} selected={data.estado == estado.nombre}>{estado.nombre}</option>
+                ))}
+              </Select>
+            </div>
+            <div className='flex flex-col gap-2'>
+              <Label>Idioma</Label>
+              <Select required ref={idioma}>
+                <option value="">Seleccione...</option>
+                {
+                  idiomas.map(idioma => (
+                    <option key={idioma.id} value={idioma.id} selected={data.idioma == idioma.key} >{idioma.nombre}</option>
+                  ))
+                }
               </Select>
             </div>
             <div className='flex flex-col gap-2'>

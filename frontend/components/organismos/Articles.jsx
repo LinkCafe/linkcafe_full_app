@@ -1,40 +1,41 @@
-import React, { useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   View,
   Text,
   ScrollView,
   StyleSheet,
-  Image,
-  TouchableOpacity,
+  Alert,
+  Linking
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Avatar, Card } from "@rneui/base";
-import { Button } from "react-native";
+import { Card, Button } from "@rneui/base";
 import ThemeContext from "../../context/ThemeContext";
+import axiosClient from '../../utils/axiosClient';
 import { useNavigation } from '@react-navigation/native';
 
 const Articles = () => {
-  const data = [
-    {
-      imagen:
-        "https://images.pexels.com/photos/1002703/pexels-photo-1002703.jpeg?auto=compress&cs=tinysrgb&w=600",
-      titulo: "Prácticas avanzadas para la producción de café ",
-      categoria: "PDF",
-    },
-    {
-      imagen:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6U0IIzs_1vCo98DWEMa81gAhQNlI-13986A&usqp=CAU",
-      titulo: "El café sube un 10,2% su precio actual ",
-      categoria: "Noticia",
-    },
-  ];
-
+  const [articulos, setArticulos] = useState([]);
   const { theme } = useContext(ThemeContext);
   const navigation = useNavigation();
 
-  const goToArticle = () => {
-    navigation.navigate("All_articles");
+  const getArticulos = async () => {
+    try {
+      const response = await axiosClient.get('/articulos');
+      if (response && response.status === 200) {
+        const allArticles = response.data;
+        const lastThreeArticles = allArticles.slice(-3);
+        setArticulos(lastThreeArticles);
+      } else {
+        Alert.alert('No se encontraron artículos');
+      }
+    } catch (error) {
+      Alert.alert('Error al obtener los artículos', error.message);
+    }
   };
+
+  useEffect(() => {
+    getArticulos();
+  }, []);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -47,13 +48,19 @@ const Articles = () => {
         >
           Artículos recomendados
         </Text>
-        <TouchableOpacity onPress={goToArticle} style={styles.all_articles}>
-          <Text style={styles.text}>Ver todos  </Text>
-        </TouchableOpacity>
+        <Button
+          type="outline"
+          title="Ver todo >"
+          buttonStyle={{ padding: 1, borderColor: theme == 'light' ? 'black' : '#a1a1a1', borderWidth: .7, backgroundColor: theme == 'light' ? 'white' : 'transparent'}}
+          titleStyle={{ color: theme == 'light' ? 'black' : 'white' }}
+          onPress={() => navigation.navigate("All_articles", {
+            type: 'all'
+          })}
+        />
       </View>
       <ScrollView horizontal={true}>
         <View style={styles.containerCard}>
-          {data.map((d, index) => (
+          {articulos.map((d, index) => (
             <Card
               key={index}
               containerStyle={[
@@ -61,15 +68,8 @@ const Articles = () => {
                 { backgroundColor: theme == "light" ? "white" : "#434343" },
               ]}
             >
-              <Image
-                source={{
-                  uri: d.imagen,
-                  width: "100%",
-                  height: 150,
-                }}
-              />
-              <Text style={{ paddingTop: 12, color: theme == "light" ? "black" : "white" }}>
-                {d.titulo}
+              <Text style={{ paddingTop: 12, color: theme == "light" ? "black" : "white", fontWeight: '500', fontSize: 16 }}>
+                {d.nombre.slice(0, 40)}...
               </Text>
               <View
                 style={{
@@ -88,7 +88,7 @@ const Articles = () => {
                     color: theme == "light" ? "black" : "white",
                   }}
                 >
-                  {d.categoria}
+                  {d.tipo}
                 </Text>
               </View>
               <View
@@ -100,7 +100,7 @@ const Articles = () => {
                   paddingTop: 10,
                 }}
               >
-                <Text style={{ textDecorationLine: "underline", color: "#35d4f0" }}>
+                <Text style={{ textDecorationLine: "underline", color: "#35d4f0" }} onPress={() => Linking.openURL(d.enlace)}>
                   Más información
                 </Text>
               </View>
@@ -127,6 +127,8 @@ const styles = StyleSheet.create({
     gap: 10,
     borderRadius: 10,
     margin: 0,
+    borderColor: '#a1a1a1',
+    borderWidth: .3
   },
   moreCategories: {
     width: "100%",
@@ -144,7 +146,7 @@ const styles = StyleSheet.create({
   all_articles:{
     borderWidth:1,
     borderRadius:5,
-    width:100
+    width:100,
   },
   text:{
     paddingRight:3,

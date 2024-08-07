@@ -5,6 +5,7 @@ import axiosClient from '../../utils/axiosClient'
 import Input from '../moleculas/Input'
 import Button from '../moleculas/Button'
 import Label from '../moleculas/Label'
+import toast from 'react-hot-toast';
 
 
 export default function EditComentariosModal({open, onClose, row}) {
@@ -20,7 +21,7 @@ export default function EditComentariosModal({open, onClose, row}) {
                 }
                 const response = await axiosClient.put(`/comentarios/${row.id}`, data)
                     if(response.status === 200){
-                        alert('Comentario Editado Correctamente')
+                        toast.success('Comentario Editado Correctamente')
                         onClose()
                     }
             }

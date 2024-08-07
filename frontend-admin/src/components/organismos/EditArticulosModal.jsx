@@ -6,12 +6,14 @@ import Input from '../moleculas/Input';
 import Label from '../moleculas/Label';
 import Select from '../moleculas/Select';
 import Button from '../moleculas/Button';
+import toast from 'react-hot-toast';
 
 export default function EditArticulosModal({ open, onClose, data }) {
 
     const nombre = useRef(null)
     const tipo = useRef(null)
     const enlace = useRef(null)
+    const descripcion = useRef(null)
     const autor = useRef(null)
 
     const tipos = [
@@ -31,19 +33,21 @@ export default function EditArticulosModal({ open, onClose, data }) {
             if (confirm('¿Estas seguro de editar este articulo?')) {
                 const Data = {
                     nombre: nombre.current.value,
-                    tipo: tipo.current.value,
+                    tipo: parseInt(tipo.current.value),
                     enlace: enlace.current.value,
+                    descripcion: descripcion.current.value,
                     autor: autor.current.value
                 }
                 const response = await axiosClient.put(`/articulos/${data.id}`, Data)
                 if (response.status === 200) {
-                    alert('Articulo Creado Correctamente');
+                    toast.success('¡Artículo editado con éxito!');
                     onClose()
                 }
             }
 
         } catch (error) {
             console.error(error)
+            toast.error('Error al editar el articulo')
         }
     }
 
@@ -62,20 +66,24 @@ export default function EditArticulosModal({ open, onClose, data }) {
                         </div>
                         <div className='flex flex-col gap-2'>
                             <Label>Tipo</Label>
-                            <Select required ref={tipo} defaultValue={data.tipo}>
+                            <Select required ref={tipo}>
                                 <option value="">Seleccionar...</option>
                                 {tipos.map(tipo => (
-                                    <option key={tipo.id} value={tipo.nombre}>{tipo.nombre}</option>
+                                    <option key={tipo.id} value={tipo.id} selected={data.tipo == tipo.nombre}>{tipo.nombre}</option>
                                 ))}
                             </Select>
                         </div>
                         <div className='flex flex-col gap-2'>
                             <Label>Enlace</Label>
-                            <Input type="text" placeholder='Enlace' required ref={enlace} defaultValue={data.enlace}/>
+                            <Input type="text" placeholder='Enlace' required ref={enlace} defaultValue={data.enlace} />
+                        </div>
+                        <div className='flex flex-col gap-2'>
+                            <Label>Descripción</Label>
+                            <textarea cols={10} rows={2} ref={descripcion} defaultValue={data.descripcion} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5' placeholder='Descripción' required></textarea>
                         </div>
                         <div className='flex flex-col gap-2'>
                             <Label>Autor</Label>
-                            <Input type="text" placeholder='Autor' required ref={autor} defaultValue={data.autor}/>
+                            <Input type="text" placeholder='Autor' required ref={autor} defaultValue={data.autor} />
                         </div>
 
                         <Button type='submit' variant="success" >Editar</Button>

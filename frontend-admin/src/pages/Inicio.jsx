@@ -1,40 +1,82 @@
-import React from 'react';
-import sampleImage from '../assets/grafica.png';
+import { faFire, faMessage, faUser } from '@fortawesome/free-solid-svg-icons';
 import DefaultLayout from '../layout/DefaultLayout';
+import Counts from '../components/organismos/Counts';
+import { faNewspaper } from '@fortawesome/free-regular-svg-icons';
+import { useEffect, useState } from 'react';
+import axiosClient from '../utils/axiosClient';
+import PublicacionesPorDia from '../components/organismos/PublicacionesPorDia';
+import { Link } from 'react-router-dom';
 
 function Inicio() {
+  const [ totalUsuarios, setTotalUsuarios ] = useState(0)
+  const [ totalArticulos, setTotalArticulos ] = useState(0)
+  const [ totalPublicaciones, setTotalPublicaciones ] = useState(0)
+  const [ totalComentarios, setTotalComentarios ] = useState(0)
+  const [ publicaciones, setPublicaciones ] = useState([])
+
+ 
+
+  const getData = async () => {
+    try {
+      await axiosClient.get("/publicaciones").then((response) => {
+        if (response.status == 200) {
+          setPublicaciones(response.data)
+        } 
+      })
+
+      await axiosClient.get('/usuarios/contar').then((response) => {
+        if (response.status == 200) {
+          setTotalUsuarios(response.data.total)
+        }
+      })
+
+      await axiosClient.get('/publicaciones/contar').then((response) => {
+        if (response.status == 200) {
+          setTotalPublicaciones(response.data.total)
+        }
+      })
+
+      await axiosClient.get('/articulos/contar').then((response) => {
+        if (response.status == 200) {
+          setTotalArticulos(response.data.total)
+        }
+      })
+      
+      
+      await axiosClient.get('/comentarios/contar').then((response) => {
+        if (response.status == 200) {
+          setTotalComentarios(response.data.total)
+        }
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getData()
+  }, [])
+
   return (
-    <DefaultLayout>
-      <div className='w-full h-[91%] flex flex-col p-10 gap-5 bg-white rounded-2xl mt-15'>
-
-        <div className='flex flex-col justify-between h-full gap-10'>
-          <div className='flex justify-between'>
-            <div className='w-[24%] h-36 border rounded-2xl border-gray-100 bg-gray-200 p-4 mx-2 mt-4'>
-              <div className="font-bold text-lg">Usuarios</div>
-              <div className="text-center text-5xl text-green-500 font-bold mt-4">80</div>
-            </div>
-            <div className='w-[24%] h-36 border rounded-2xl border-gray-100 bg-gray-200 p-4 mx-2 mt-4'>
-              <div className="font-bold text-lg">Artículos</div>
-              <div className="text-center text-5xl text-red-500 font-bold mt-4">50</div>
-            </div>
-            <div className='w-[24%] h-36 border rounded-2xl border-gray-100 bg-gray-200 p-4 mx-2 mt-4'>
-              <div className="font-bold text-lg">Publicaciones</div>
-              <div className="text-center text-5xl text-blue-500 font-bold mt-4">100</div>
-            </div>
-            <div className='w-[24%] h-36 border rounded-2xl border-gray-100 bg-gray-200 p-4 mx-2 mt-4'>
-              <div className="font-bold text-lg">Comentarios</div>
-              <div className="text-center text-5xl text-orange-500 font-bold mt-4">90</div>
-            </div>
-          </div>
-          <div className='flex justify-center items-end h-[40%]'>
-
-            <div className='w-[63%] h-96 p-4  bg-gray-200 border rounded-2xl border-gray-100 overflow-hidden'>
-
-              <img src={sampleImage} alt="Sample" className="object-cover object-center w-[100%]  h-85 rounded-2xl" />
-            </div>
-          </div>
+    <DefaultLayout title="LinkCafé | Inicio">
+      <div className='w-full h-[91%] flex flex-col p-20 gap-10 bg-white rounded-2xl mt-15 overflow-y-auto'>
+        <div className='w-full flex flex-row flex-wrap gap-5 justify-center'>
+          <Link to="/usuarios">
+            <Counts icon={faUser} nombre={'Usuarios:'} cantidad={totalUsuarios} />
+          </Link>
+          <Link to="/articulos">
+            <Counts icon={faNewspaper} nombre={'Articulos:'} cantidad={totalArticulos} />
+          </Link>
+          <Link to="/publicaciones">
+            <Counts icon={faFire} nombre={'Publicaciones:'} cantidad={totalPublicaciones} />
+          </Link>
+          <Link to="/publicaciones">
+            <Counts icon={faMessage} nombre={'Comentarios:'} cantidad={totalComentarios} />
+          </Link>
         </div>
-
+        <div className='w-full h-full flex justify-center items-center'>
+          <PublicacionesPorDia data={publicaciones} />
+        </div>
       </div>
     </DefaultLayout>
   );
